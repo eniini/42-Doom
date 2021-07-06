@@ -44,7 +44,6 @@ void	loop(t_rend *renderer)
 		if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 			renderer->run = FALSE;
 	}
-	ft_bzero(renderer->win_pixel_buffer, WIN_H * WIN_W);
 	if (SDL_LockTexture(renderer->win_tex, NULL, \
 		(void **)&renderer->win_pixel_array, &renderer->win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
@@ -61,6 +60,8 @@ int main(void)
 	t_rend	renderer;
 	
 	ft_bzero(&renderer, sizeof(t_rend));
+	renderer.win_pixel_buffer = ft_memalloc(WIN_H * WIN_W);
+	renderer.win_pixel_array = ft_memalloc(WIN_H * WIN_W);
 	init(&renderer);
 	while (renderer.run)
 		loop(&renderer);

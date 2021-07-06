@@ -2,7 +2,7 @@ NAME	=	doom-nukem
 
 #compiler
 CC	=	gcc
-LFLAGS	=	-Wall -Wextra -Werror #-O3
+LFLAGS	=	-Wall -Wextra -Werror -g #-O3
 
 #sources & object files
 SRC_DIR =	./src/
