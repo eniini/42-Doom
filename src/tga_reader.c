@@ -1,24 +1,5 @@
 #include <fcntl.h>
-#include <stdint.h>
-
 #include "doom.h"
-
-/*
-typedef struct s_tgainfo {
-	unsigned char	id;
-	unsigned char	colormap;
-	unsigned char	imgfield;
-	int				colormap_entry;
-	int				colormap_length;
-	int				colormap_bpp;
-	int				x_origin;
-	int				y_origin;
-	int				img_w;
-	int				img_h;
-	int				img_bpp;
-	int				img_descriptor;
-}				t_tgainfo;
-*/
 
 t_imgdata 	*load_file(const char *filepath)
 {
@@ -36,28 +17,34 @@ t_imgdata 	*load_file(const char *filepath)
 	img = malloc(sizeof(t_imgdata));
 	if (!img)
 		return (NULL);
-
-	ft_printf("[imgtype:%d][bytedepth:%d][descriptorbyte:%#x]", header[0x02], header[0x10], header[0x11]);
-	ft_printf("[imgw:%d | imgh:%d]\n", header[0x0C] | header[0x0D] << 8 , header[0x0E] | header[0x0F] << 8 );
-	
 	img->w = header[0x0C] | header[0x0D] << 8;
 	img->h = header[0x0E] | header[0x0F] << 8;
 	img->bpp = header[0x10];
 	if (img->bpp != 32) //only support 32 bits for now (transparency!)
-	{
-		ft_putendl("wrong bpp");
 		return (NULL);
-	}
+	if (header[0x02] != 2) //wrong TGA type (uncompressed truecolor)
+		return (NULL);
 	img_size = img->w * img->h * (img->bpp / 8);
-	img->data = malloc(sizeof(unsigned char) * img_size);
-	if (!img->data)
-	{
-		ft_putendl("mailloc failed");
+	img->imgdata = malloc(sizeof(uint32_t) * img->w * img->h + 1);
+	if (!img->imgdata)
 		return (NULL);
-	}
-	if (read(fd, img->data, img_size) != img_size)
+	//incremental reading style
+	int readbytes = 0;
+	int i = 0;
+	char	data[4];
+	while (readbytes < img_size)
 	{
-		free(img->data);
+		if (read(fd, data, 4) != 4L)
+		{
+			free(img);
+			return (NULL);
+		}
+		img->imgdata[i++] = (data[3] & 255) << 24 | (data[2] & 255) << 16 | (data[1] & 255) << 8 | (data[0] & 255);
+		readbytes += 4;
+	}
+	if (readbytes != img_size)
+	{
+		free(img->imgdata);
 		free(img);
 		return (NULL);
 	}

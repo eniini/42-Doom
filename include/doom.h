@@ -2,6 +2,7 @@
 # define DOOM_H
 
 # include <unistd.h> //for sleep func
+# include <stdint.h>
 
 # include "../libSDL2/include/SDL2/SDL.h"
 
@@ -24,7 +25,7 @@ typedef struct s_rend
 }					t_rend;
 
 typedef struct s_imgdata {
-	unsigned char	*data;
+	uint32_t		*imgdata;
 	uint16_t		w;
 	uint16_t		h;
 	uint8_t			bpp;
