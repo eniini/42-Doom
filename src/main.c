@@ -20,7 +20,7 @@ void	init(t_rend *renderer)
 	if (!renderer->rend)
 		ft_getout(SDL_GetError());
 	renderer->win_tex = SDL_CreateTexture(renderer->rend, \
-		SDL_PIXELFORMAT_ABGR8888, SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
+		SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
 	if (!renderer->win_tex)
 		ft_getout(SDL_GetError());
 	//if ((SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND)))
@@ -58,11 +58,14 @@ void	loop(t_rend *renderer)
 int main(void)
 {
 	t_rend	renderer;
-	
+
 	ft_bzero(&renderer, sizeof(t_rend));
 	renderer.win_pixel_buffer = ft_memalloc(WIN_H * WIN_W);
 	renderer.win_pixel_array = ft_memalloc(WIN_H * WIN_W);
 	init(&renderer);
+	// tga testing suite
+	tga_load_test(&renderer);
+	//
 	while (renderer.run)
 		loop(&renderer);
 	cleanup(&renderer);

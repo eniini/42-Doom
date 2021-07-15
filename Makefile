@@ -7,8 +7,9 @@ LFLAGS	=	-Wall -Wextra -Werror -g #-O3
 #sources & object files
 SRC_DIR =	./src/
 OBJ_DIR =	./build/
-SRC_LIST =	main.c
-
+SRC_LIST =	main.c \
+		tga_reader.c \
+		load_img.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))
 
