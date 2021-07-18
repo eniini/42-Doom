@@ -1,13 +1,50 @@
 #include <fcntl.h>
 #include "doom.h"
 
-t_imgdata 	*load_file(const char *filepath)
+/*
+*	Reading all of the assumed pixel data fromt the file into the buffer.
+*	Each 4 bytes is stored into a single hexadecimal (ARGB) value.
+*/
+static t_imgdata	*load_data(t_imgdata *img, int fd)
+{
+	ssize_t		readbytes;
+	uint32_t	i;
+	char		*rawdata;
+	ssize_t		img_size;
+
+	readbytes = 0;
+	i = 0;
+	img_size = img->w * img->h * (img->bpp / 8);
+	rawdata = malloc(img_size);
+	img->data = malloc(sizeof(uint32_t) * img->w * img->h);
+	if (!img->data || !rawdata)
+		return (NULL);
+	if (read(fd, rawdata, img_size) != img_size)
+		return (NULL);
+	while (readbytes < img_size)
+	{
+		img->data[i++] = (rawdata[readbytes + 3] & 255) << 24 | \
+		(rawdata[readbytes + 2] & 255) << 16 | \
+		(rawdata[readbytes + 1] & 255) << 8 | (rawdata[readbytes] & 255);
+		readbytes += 4;
+	}
+	if (close(fd) != 0)
+		return (NULL);
+	free(rawdata);
+	return (img);
+}
+
+/*
+*	Naive .TGA loading. Only supports uncompressed truecolor (32-bit) variation
+*	If a wrong type of file or a malloc/IO error is encountered,
+*	function returns NULL. Otherwise a pointer to [t_img] struct is returned.
+*/
+t_imgdata 	*load_tga(const char *filepath)
 {
 	int				fd;
 	unsigned char	header[18];
-//	t_tgainfo		data;
 	t_imgdata		*img;
-	ssize_t			img_size;
+	t_imgdata		*return_ptr;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
@@ -20,35 +57,25 @@ t_imgdata 	*load_file(const char *filepath)
 	img->w = header[0x0C] | header[0x0D] << 8;
 	img->h = header[0x0E] | header[0x0F] << 8;
 	img->bpp = header[0x10];
-	if (img->bpp != 32) //only support 32 bits for now (transparency!)
-		return (NULL);
-	if (header[0x02] != 2) //wrong TGA type (uncompressed truecolor)
-		return (NULL);
-	img_size = img->w * img->h * (img->bpp / 8);
-	img->imgdata = malloc(sizeof(uint32_t) * img->w * img->h + 1);
-	if (!img->imgdata)
-		return (NULL);
-	//incremental reading style
-	int readbytes = 0;
-	int i = 0;
-	char	data[4];
-	while (readbytes < img_size)
+	if (img->bpp != 32 || header[0x02] != 2)
 	{
-		if (read(fd, data, 4) != 4L)
-		{
-			free(img);
-			return (NULL);
-		}
-		img->imgdata[i++] = (data[3] & 255) << 24 | (data[2] & 255) << 16 | (data[1] & 255) << 8 | (data[0] & 255);
-		readbytes += 4;
-	}
-	if (readbytes != img_size)
-	{
-		free(img->imgdata);
 		free(img);
 		return (NULL);
 	}
-	if (close(fd) != 0)
-		return (NULL);
-	return (img);
+	return_ptr = load_data(img, fd);
+	if (!return_ptr)
+		free(img);
+	return (return_ptr);
 }
+
+/*	WIP !
+void	*load_tga_info_wad(const char *filepath, t_struct WAD)
+{
+	load_tgafile();
+	check_for_WAD_position();
+	copy_argb_array_into_WAD_position();
+	update_WAD_struct();
+	
+	We should probably just save the RGB-array into the WAD.
+	Big question is where & how to save said imgdata's width and height.
+} */

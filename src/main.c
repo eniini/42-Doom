@@ -39,11 +39,17 @@ void	cleanup(t_rend *renderer)
 void	loop(t_rend *renderer)
 {
 	SDL_Event	e;
+
 	while (SDL_PollEvent(&e))
 	{
 		if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 			renderer->run = FALSE;
 	}
+	ft_bzero(renderer->win_pixel_array, WIN_H * WIN_W * sizeof(uint32_t));
+	ft_bzero(renderer->win_pixel_buffer, WIN_H * WIN_W * sizeof(uint32_t));
+	//linedraw testing
+	drawlinetest(renderer);
+	//linedraw testing
 	if (SDL_LockTexture(renderer->win_tex, NULL, \
 		(void **)&renderer->win_pixel_array, &renderer->win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
@@ -64,7 +70,7 @@ int main(void)
 	renderer.win_pixel_array = ft_memalloc(WIN_H * WIN_W);
 	init(&renderer);
 	// tga testing suite
-	tga_load_test(&renderer);
+	//tga_load_test(&renderer);
 	//
 	while (renderer.run)
 		loop(&renderer);

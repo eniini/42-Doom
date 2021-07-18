@@ -24,16 +24,31 @@ typedef struct s_rend
 	t_bool			run;
 }					t_rend;
 
+//this should probably be generic memory unit for all 'images'
+//thats why we probably need offset values. Also BPP might be useless since
+//every buffer wants the same 32-bit ARGB values.
+//(into which all filedata will be stored inside program memory)
 typedef struct s_imgdata {
-	uint32_t		*imgdata;
-	uint16_t		w;
-	uint16_t		h;
-	uint8_t			bpp;
-}					t_imgdata;
+	uint32_t	*data;
+	uint32_t	w;
+	uint32_t	h;
+	uint32_t	bpp;
+	uint32_t	x_pos;
+	uint32_t	y_pos;
+}				t_imgdata;
 
-t_imgdata 	*load_file(const char *filepath);
+t_imgdata 	*load_tga(const char *filepath);
 
+//{int x, int y} //Do we want these to be other way around?
+typedef struct s_point {
+	int	x;
+	int	y;
+}				t_point;
+
+void	drawpixel(int x, int y, t_rend *r, uint32_t color);
+void	draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color);
 //testfuncs
 void	tga_load_test(t_rend *renderer);
+void	drawlinetest(t_rend *r);
 
 #endif
