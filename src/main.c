@@ -28,6 +28,13 @@ void	init(t_rend *renderer)
 	renderer->run = TRUE;
 }
 
+static void	init_assets(t_assets *assets)
+{
+	assets->testimg = load_tga("resources/FEalm.tga");
+	if (!assets->testimg)
+		ft_getout("failed to load test image");
+}
+
 void	cleanup(t_rend *renderer)
 {
 	SDL_DestroyTexture(renderer->win_tex);
@@ -36,7 +43,7 @@ void	cleanup(t_rend *renderer)
 	SDL_Quit();
 }
 
-void	loop(t_rend *renderer)
+void	loop(t_rend *renderer, t_assets *assets)
 {
 	SDL_Event	e;
 
@@ -47,9 +54,10 @@ void	loop(t_rend *renderer)
 	}
 	ft_bzero(renderer->win_pixel_array, WIN_H * WIN_W * sizeof(uint32_t));
 	ft_bzero(renderer->win_pixel_buffer, WIN_H * WIN_W * sizeof(uint32_t));
-	//linedraw testing
+	// T E S T I N G
 	drawlinetest(renderer);
-	//linedraw testing
+	tga_load_test(renderer, assets);
+	// T E S T I N G
 	if (SDL_LockTexture(renderer->win_tex, NULL, \
 		(void **)&renderer->win_pixel_array, &renderer->win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
@@ -64,16 +72,15 @@ void	loop(t_rend *renderer)
 int main(void)
 {
 	t_rend	renderer;
+	t_assets assets;
 
 	ft_bzero(&renderer, sizeof(t_rend));
+	init_assets(&assets);
 	renderer.win_pixel_buffer = ft_memalloc(WIN_H * WIN_W);
 	renderer.win_pixel_array = ft_memalloc(WIN_H * WIN_W);
 	init(&renderer);
-	// tga testing suite
-	//tga_load_test(&renderer);
-	//
 	while (renderer.run)
-		loop(&renderer);
+		loop(&renderer, &assets);
 	cleanup(&renderer);
 	return (0);
 }

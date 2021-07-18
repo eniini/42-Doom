@@ -37,7 +37,12 @@ typedef struct s_imgdata {
 	uint32_t	y_pos;
 }				t_imgdata;
 
-t_imgdata 	*load_tga(const char *filepath);
+//place to hold all graphics etc. data we need. Also development stuff
+typedef struct s_assets {
+	t_imgdata	*testimg;
+}				t_assets;
+
+t_imgdata	*load_tga(const char *filepath);
 
 //{int x, int y} //Do we want these to be other way around?
 typedef struct s_point {
@@ -48,7 +53,7 @@ typedef struct s_point {
 void	drawpixel(int x, int y, t_rend *r, uint32_t color);
 void	draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color);
 //testfuncs
-void	tga_load_test(t_rend *renderer);
+void	tga_load_test(t_rend *renderer, t_assets *assets);
 void	drawlinetest(t_rend *r);
 
 #endif
