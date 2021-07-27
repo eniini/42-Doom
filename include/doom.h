@@ -9,6 +9,9 @@
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_gfx.h"
 
+# include "boid.h"
+# include "vector.h"
+
 # define WIN_W 800
 # define WIN_H 600
 # define WIN_NAME "DOOM-NUKEM @42 BY ESUKAVA/ENIINI/ESORMUNE"
@@ -40,6 +43,7 @@ typedef struct s_imgdata {
 //place to hold all graphics etc. data we need. Also development stuff
 typedef struct s_assets {
 	t_imgdata	*testimg;
+	t_boid		flock[BOID_COUNT];
 }				t_assets;
 
 t_imgdata	*load_tga(const char *filepath);
@@ -50,10 +54,15 @@ typedef struct s_point {
 	int	y;
 }				t_point;
 
-void	drawpixel(int x, int y, t_rend *r, uint32_t color);
-void	draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color);
 //testfuncs
-void	tga_load_test(t_rend *renderer, t_assets *assets);
-void	drawlinetest(t_rend *r);
+void		update_boids(t_boid *flock, t_rend *rend);
+
+void		drawpixel(int x, int y, t_rend *r, uint32_t color);
+void		draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color);
+void		draw_circle(t_rend *rend, t_point p, int r, uint32_t color);
+void		draw_filled_circle(t_rend *rend, t_point p, int r, uint32_t color);
+//testfuncs
+void		tga_load_test(t_rend *renderer, t_assets *assets);
+void		drawlinetest(t_rend *r);
 
 #endif

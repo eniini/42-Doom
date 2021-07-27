@@ -7,10 +7,13 @@ t_point	p1 = {1, 600};
 t_point	p2 = {800, 1};
 float	counter = 0.0;
 t_bool	flag = FALSE;
-//linedraw testing
+
+/*
+*	linedraw testing
+*/
 void	drawlinetest(t_rend *r)
 {
-	static t_point mp0;
+	static t_point	mp0;
 
 	mp0.x = ft_i_lerp(p1.x, p2.x, counter);
 	mp0.y = ft_i_lerp(p1.y, p2.y, counter);
@@ -79,6 +82,10 @@ static t_bool	init_points(t_point *p0, t_point *p1)
 	return (flip);
 }
 
+/*
+*	Bresenham's line algorithm.
+*	TODO: draw into given buffer instead of pre-chosen render target.
+*/
 void	draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color)
 {
 	int		derror;
@@ -104,6 +111,73 @@ void	draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color)
 			else
 				y += -1;
 			error -= (p1.x - p0.x) * 2;
+		}
+	}
+}
+
+/*
+*	Calculates points on the border of the circle in its first octant,
+*	rest are determined by symmetry. draw unique points until (x = y)
+*	choosing points closest to the radius of the circle.
+*/
+void	draw_circle(t_rend *rend, t_point p, int r, uint32_t color)
+{
+	int	x;
+	int	y;
+	int	d;
+
+	x = r;
+	y = 0;
+	d = 1 - r;
+	while (x >= y)
+	{
+		drawpixel(p.x + x, p.y + y, rend, color);
+		drawpixel(p.x - x, p.y + y, rend, color);
+		drawpixel(p.x + x, p.y - y, rend, color);
+		drawpixel(p.x - x, p.y - y, rend, color);
+		drawpixel(p.x + y, p.y + x, rend, color);
+		drawpixel(p.x - y, p.y + x, rend, color);
+		drawpixel(p.x + y, p.y - x, rend, color);
+		drawpixel(p.x - y, p.y - x, rend, color);
+		if (d < 0)
+			d += (2 * ++y) + 1;
+		else
+		{
+			x--;
+			d += (2 * (++y - x)) + 1;
+		}
+	}
+}
+
+/*
+*	Instead of drawing individual pixels on symmetrical positions along the
+*	circle's radius, we draw lines from one end to its opposite.
+*/
+void	draw_filled_circle(t_rend *rend, t_point p, int r, uint32_t color)
+{
+	int	x;
+	int	y;
+	int	d;
+
+	x = r;
+	y = 0;
+	d = 1 - r;
+	while (x >= y)
+	{
+		draw_line(rend, (t_point){p.x + x, p.y + y},
+			(t_point){p.x - x, p.y + y}, color);
+		draw_line(rend, (t_point){p.x + x, p.y - y},
+			(t_point){p.x - x, p.y - y}, color);
+		draw_line(rend, (t_point){p.x + y, p.y + x},
+			(t_point){p.x - y, p.y + x}, color);
+		draw_line(rend, (t_point){p.x + y, p.y - x},
+			(t_point){p.x - y, p.y - x}, color);
+		if (d < 0)
+			d += (2 * ++y) + 1;
+		else
+		{
+			x--;
+			d += (2 * (++y - x)) + 1;
 		}
 	}
 }

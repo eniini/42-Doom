@@ -33,6 +33,7 @@ static void	init_assets(t_assets *assets)
 	assets->testimg = load_tga("resources/FEalm.tga");
 	if (!assets->testimg)
 		ft_getout("failed to load test image");
+	init_boids_positions(assets->flock);
 }
 
 void	cleanup(t_rend *renderer)
@@ -41,6 +42,13 @@ void	cleanup(t_rend *renderer)
 	SDL_DestroyRenderer(renderer->rend);
 	SDL_DestroyWindow(renderer->win);
 	SDL_Quit();
+}
+
+static void	dotests(t_rend *renderer, t_assets *assets)
+{
+	//drawlinetest(renderer);
+	//tga_load_test(renderer, assets);
+	update_boids(assets->flock, renderer);
 }
 
 void	loop(t_rend *renderer, t_assets *assets)
@@ -54,10 +62,7 @@ void	loop(t_rend *renderer, t_assets *assets)
 	}
 	ft_bzero(renderer->win_pixel_array, WIN_H * WIN_W * sizeof(uint32_t));
 	ft_bzero(renderer->win_pixel_buffer, WIN_H * WIN_W * sizeof(uint32_t));
-	// T E S T I N G
-	drawlinetest(renderer);
-	tga_load_test(renderer, assets);
-	// T E S T I N G
+	dotests(renderer, assets);
 	if (SDL_LockTexture(renderer->win_tex, NULL, \
 		(void **)&renderer->win_pixel_array, &renderer->win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
@@ -69,10 +74,10 @@ void	loop(t_rend *renderer, t_assets *assets)
 	SDL_RenderPresent(renderer->rend);
 }
 
-int main(void)
+int	main(void)
 {
-	t_rend	renderer;
-	t_assets assets;
+	t_rend		renderer;
+	t_assets	assets;
 
 	ft_bzero(&renderer, sizeof(t_rend));
 	init_assets(&assets);
