@@ -26,6 +26,10 @@ void	init(t_rend *renderer)
 	//if ((SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND)))
 	//	ft_getout(SDL_GetError());
 	renderer->run = TRUE;
+
+	//we might need to call mix_init(MIX_INIT_MP3/OGG) if we want to use compressed files
+	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048 ) != 0)
+		ft_getout(SDL_GetError());
 }
 
 static void	init_assets(t_assets *assets)
@@ -41,6 +45,8 @@ void	cleanup(t_rend *renderer)
 	SDL_DestroyTexture(renderer->win_tex);
 	SDL_DestroyRenderer(renderer->rend);
 	SDL_DestroyWindow(renderer->win);
+
+	Mix_Quit();
 	SDL_Quit();
 }
 
