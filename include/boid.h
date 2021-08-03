@@ -2,7 +2,6 @@
 # define BOID_H
 
 # include "vector.h"
-# include "doom.h"
 
 # define BOID_COUNT 200
 # define BOID_MAXSPEED 1.2f
@@ -15,6 +14,6 @@ typedef struct s_boid
 	int			index;
 }				t_boid;
 
-void		init_boids_positions(t_boid *flock);
+void	init_boids_positions(t_boid *flock);
 
 #endif

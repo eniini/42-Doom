@@ -19,16 +19,16 @@ void	init_boids_positions(t_boid *flock)
 	}
 }
 
-static void	draw_boids(t_boid *flock, t_rend *rend)
+static void	draw_boids(t_boid *flock, t_buffer *buf)
 {
 	int	i;
 
 	i = 0;
 	while (i < BOID_COUNT)
 	{
-		drawpixel((int)flock[i].position.x, (int)flock[i].position.y, rend, \
+		drawpixel((int)flock[i].position.x, (int)flock[i].position.y, buf, \
 		0x00FFFFFF);
-		draw_circle(rend, \
+		draw_circle(buf, \
 			(t_point){(int)flock[i].position.x, (int)flock[i].position.y}, 5, \
 			0x006666ff);
 		i++;
@@ -184,8 +184,8 @@ static void	update_boids_positions(t_boid *flock)
 /*
 *	Called every frame to update the boids AI simulation
 */
-void	update_boids(t_boid *flock, t_rend *rend)
+void	update_boids(t_boid *flock, t_buffer *buf)
 {
-	draw_boids(flock, rend);
+	draw_boids(flock, buf);
 	update_boids_positions(flock);
 }

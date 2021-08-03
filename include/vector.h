@@ -1,8 +1,6 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
-# include "doom.h"
-
 typedef struct s_vector
 {
 	float	x;

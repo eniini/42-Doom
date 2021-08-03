@@ -6,7 +6,7 @@
 *			same thing with rendermodes, pixelformat etc.
 *			blending is only needed if we work with multiple texture layers
 */
-void	init(t_rend *renderer)
+static void	init(t_rend *renderer)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		ft_getout(SDL_GetError());
@@ -33,10 +33,10 @@ static void	init_assets(t_assets *assets)
 	assets->testimg = load_tga("resources/FEalm.tga");
 	if (!assets->testimg)
 		ft_getout("failed to load test image");
-	init_boids_positions(assets->flock);
+	//init_boids_positions(assets->flock);
 }
 
-void	cleanup(t_rend *renderer)
+static void	cleanup(t_rend *renderer)
 {
 	SDL_DestroyTexture(renderer->win_tex);
 	SDL_DestroyRenderer(renderer->rend);
@@ -44,14 +44,7 @@ void	cleanup(t_rend *renderer)
 	SDL_Quit();
 }
 
-static void	dotests(t_rend *renderer, t_assets *assets)
-{
-	//drawlinetest(renderer);
-	//tga_load_test(renderer, assets);
-	update_boids(assets->flock, renderer);
-}
-
-void	loop(t_rend *renderer, t_assets *assets)
+static void	loop(t_rend *renderer, t_assets *assets)
 {
 	SDL_Event	e;
 
@@ -60,13 +53,13 @@ void	loop(t_rend *renderer, t_assets *assets)
 		if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 			renderer->run = FALSE;
 	}
-	ft_bzero(renderer->win_pixel_array, WIN_H * WIN_W * sizeof(uint32_t));
-	ft_bzero(renderer->win_pixel_buffer, WIN_H * WIN_W * sizeof(uint32_t));
-	dotests(renderer, assets);
+	ft_bzero(renderer->win_pixels, WIN_H * WIN_W * sizeof(uint32_t));
+	ft_bzero(renderer->win_buffer.pixels, WIN_H * WIN_W * sizeof(uint32_t));
+	dotests(&renderer->win_buffer, assets);
 	if (SDL_LockTexture(renderer->win_tex, NULL, \
-		(void **)&renderer->win_pixel_array, &renderer->win_pixel_pitch) < 0)
+		(void **)&renderer->win_pixels, &renderer->win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
-	ft_memcpy(renderer->win_pixel_array, renderer->win_pixel_buffer, \
+	ft_memcpy(renderer->win_pixels, renderer->win_buffer.pixels, \
 	WIN_H * renderer->win_pixel_pitch);
 	SDL_UnlockTexture(renderer->win_tex);
 	if (SDL_RenderCopy(renderer->rend, renderer->win_tex, NULL, NULL) < 0)
@@ -81,8 +74,10 @@ int	main(void)
 
 	ft_bzero(&renderer, sizeof(t_rend));
 	init_assets(&assets);
-	renderer.win_pixel_buffer = ft_memalloc(WIN_H * WIN_W);
-	renderer.win_pixel_array = ft_memalloc(WIN_H * WIN_W);
+	renderer.win_buffer.w = WIN_W;
+	renderer.win_buffer.h = WIN_H;
+	renderer.win_buffer.pixels = ft_memalloc(WIN_H * WIN_W);
+	renderer.win_pixels = ft_memalloc(WIN_H * WIN_W);
 	init(&renderer);
 	while (renderer.run)
 		loop(&renderer, &assets);

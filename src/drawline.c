@@ -1,60 +1,33 @@
 #include "doom.h"
 
-//****************************************************************************//
-//linedraw testing
-t_point	p0 = {1, 1};
-t_point	p1 = {1, 600};
-t_point	p2 = {800, 1};
-float	counter = 0.0;
-t_bool	flag = FALSE;
-
 /*
-*	linedraw testing
+*	Colors the pixel in given coordinates of the given buffer as the given
+*	hexadecimal value [0xAARRGGBB]. (00 for AA being zero transparency)
 */
-void	drawlinetest(t_rend *r)
-{
-	static t_point	mp0;
-
-	mp0.x = ft_i_lerp(p1.x, p2.x, counter);
-	mp0.y = ft_i_lerp(p1.y, p2.y, counter);
-	if (!flag)
-	{
-		counter += 0.001;
-		if (counter >= 1.0)
-			flag = TRUE;
-	}
-	if (flag)
-	{
-		counter -= 0.001;
-		if (counter <= 0.0)
-			flag = FALSE;
-	}
-	draw_line(r, p0, mp0, ft_color_lerp(0x006666ff, 0x00ff6666, counter));
-}
-//****************************************************************************//
-//real functions
-
-void	drawpixel(int x, int y, t_rend *r, uint32_t color)
+void	drawpixel(uint32_t x, uint32_t y, t_buffer *buffer, uint32_t color)
 {
 	uint32_t	i;
 
-	i = (WIN_W * y) + x;
-	if (x < WIN_W && y < WIN_H && x >= 0 && y >= 0)
-		r->win_pixel_buffer[i] = color;
+	i = (buffer->w * y) + x;
+	if (x < buffer->w && y < buffer->h)
+		buffer->pixels[i] = color;
 }
 
-/*
-**	Initializing bunch of values in separate functions to appease Norminette.
-*	Otherwise pixel-accurate line drawing algorithm between 2 point coordinates.
-*	Initial checks make sure that drawing works for all angles into
-*	every direction. After that, drawline() plots
-*	a line of pixels from [point0] to [point1].
-*/
+/******************************************************************************/
+//	Initializing bunch of values in separate functions to appease Norminette.
+//	Otherwise pixel-accurate line drawing algorithm between 2 point coordinates.
+//	Initial checks make sure that drawing works for all angles into
+//	every direction. After that, drawline() plots
+//	a line of pixels from [point0] to [point1].
+/******************************************************************************/
 
-static void	init_startingvalues(t_point p0, int *x, int *y)
+static t_point	init_startingvalues(t_point p0, t_point p1, t_bool flip)
 {
-	*x = p0.x;
-	*y = p0.y;
+	t_point	abs_startval;
+
+	abs_startval.x = p0.x;
+	abs_startval.y = p0.y;
+	return (abs_startval);
 }
 
 static void	init_errors(t_point p0, t_point p1, int *derror, int *error)
@@ -84,32 +57,30 @@ static t_bool	init_points(t_point *p0, t_point *p1)
 
 /*
 *	Bresenham's line algorithm.
-*	TODO: draw into given buffer instead of pre-chosen render target.
 */
-void	draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color)
+void	draw_line(t_buffer *buf, t_point p0, t_point p1, uint32_t color)
 {
 	int		derror;
 	int		error;
-	int		x;
-	int		y;
+	t_point	crawler;
 	t_bool	flip;
 
 	flip = init_points(&p0, &p1);
+	crawler = init_startingvalues(p0, p1, flip);
 	init_errors(p0, p1, &derror, &error);
-	init_startingvalues(p0, &x, &y);
-	while (x <= p1.x && x++)
+	while (crawler.x <= p1.x)
 	{
 		if (!flip)
-			drawpixel(x - 1, y, r, color);
+			drawpixel(crawler.x++, crawler.y, buf, color);
 		else
-			drawpixel(y, x - 1, r, color);
+			drawpixel(crawler.y, crawler.x++, buf, color);
 		error += derror;
 		if (error > p1.x - p0.x)
 		{
 			if (p1.y > p0.y)
-				y += 1;
+				crawler.y += 1;
 			else
-				y += -1;
+				crawler.y += -1;
 			error -= (p1.x - p0.x) * 2;
 		}
 	}
@@ -120,7 +91,7 @@ void	draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color)
 *	rest are determined by symmetry. draw unique points until (x = y)
 *	choosing points closest to the radius of the circle.
 */
-void	draw_circle(t_rend *rend, t_point p, int r, uint32_t color)
+void	draw_circle(t_buffer *buf, t_point p, int r, uint32_t color)
 {
 	int	x;
 	int	y;
@@ -131,14 +102,14 @@ void	draw_circle(t_rend *rend, t_point p, int r, uint32_t color)
 	d = 1 - r;
 	while (x >= y)
 	{
-		drawpixel(p.x + x, p.y + y, rend, color);
-		drawpixel(p.x - x, p.y + y, rend, color);
-		drawpixel(p.x + x, p.y - y, rend, color);
-		drawpixel(p.x - x, p.y - y, rend, color);
-		drawpixel(p.x + y, p.y + x, rend, color);
-		drawpixel(p.x - y, p.y + x, rend, color);
-		drawpixel(p.x + y, p.y - x, rend, color);
-		drawpixel(p.x - y, p.y - x, rend, color);
+		drawpixel(p.x + x, p.y + y, buf, color);
+		drawpixel(p.x - x, p.y + y, buf, color);
+		drawpixel(p.x + x, p.y - y, buf, color);
+		drawpixel(p.x - x, p.y - y, buf, color);
+		drawpixel(p.x + y, p.y + x, buf, color);
+		drawpixel(p.x - y, p.y + x, buf, color);
+		drawpixel(p.x + y, p.y - x, buf, color);
+		drawpixel(p.x - y, p.y - x, buf, color);
 		if (d < 0)
 			d += (2 * ++y) + 1;
 		else
@@ -153,7 +124,7 @@ void	draw_circle(t_rend *rend, t_point p, int r, uint32_t color)
 *	Instead of drawing individual pixels on symmetrical positions along the
 *	circle's radius, we draw lines from one end to its opposite.
 */
-void	draw_filled_circle(t_rend *rend, t_point p, int r, uint32_t color)
+void	draw_filled_circle(t_buffer *buf, t_point p, int r, uint32_t color)
 {
 	int	x;
 	int	y;
@@ -164,13 +135,13 @@ void	draw_filled_circle(t_rend *rend, t_point p, int r, uint32_t color)
 	d = 1 - r;
 	while (x >= y)
 	{
-		draw_line(rend, (t_point){p.x + x, p.y + y},
+		draw_line(buf, (t_point){p.x + x, p.y + y},
 			(t_point){p.x - x, p.y + y}, color);
-		draw_line(rend, (t_point){p.x + x, p.y - y},
+		draw_line(buf, (t_point){p.x + x, p.y - y},
 			(t_point){p.x - x, p.y - y}, color);
-		draw_line(rend, (t_point){p.x + y, p.y + x},
+		draw_line(buf, (t_point){p.x + y, p.y + x},
 			(t_point){p.x - y, p.y + x}, color);
-		draw_line(rend, (t_point){p.x + y, p.y - x},
+		draw_line(buf, (t_point){p.x + y, p.y - x},
 			(t_point){p.x - y, p.y - x}, color);
 		if (d < 0)
 			d += (2 * ++y) + 1;

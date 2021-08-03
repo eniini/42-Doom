@@ -1,7 +1,6 @@
 #ifndef DOOM_H
 # define DOOM_H
 
-# include <unistd.h> //for sleep func
 # include <stdint.h>
 
 # include "../libSDL2/include/SDL2/SDL.h"
@@ -11,18 +10,25 @@
 
 # include "boid.h"
 # include "vector.h"
+# include "resourcefile.h"
 
 # define WIN_W 800
 # define WIN_H 600
 # define WIN_NAME "DOOM-NUKEM @42 BY ESUKAVA/ENIINI/ESORMUNE"
+
+typedef struct s_buffer {
+	uint32_t		*pixels;
+	uint32_t		w;
+	uint32_t		h;
+}					t_buffer;
 
 typedef struct s_rend
 {
 	SDL_Renderer	*rend;
 	SDL_Window		*win;
 	SDL_Texture		*win_tex;
-	uint32_t		*win_pixel_array;
-	uint32_t		*win_pixel_buffer;
+	uint32_t		*win_pixels;
+	t_buffer		win_buffer;
 	int				win_pixel_pitch;
 	t_bool			run;
 }					t_rend;
@@ -54,15 +60,18 @@ typedef struct s_point {
 	int	y;
 }				t_point;
 
-//testfuncs
-void		update_boids(t_boid *flock, t_rend *rend);
+int			blit_img(t_imgdata *img, uint32_t *buf, t_point start);
+int			blit_img_scaled(t_imgdata *img, uint32_t *buf, \
+t_point offs, float scale);
 
-void		drawpixel(int x, int y, t_rend *r, uint32_t color);
-void		draw_line(t_rend *r, t_point p0, t_point p1, uint32_t color);
-void		draw_circle(t_rend *rend, t_point p, int r, uint32_t color);
-void		draw_filled_circle(t_rend *rend, t_point p, int r, uint32_t color);
-//testfuncs
-void		tga_load_test(t_rend *renderer, t_assets *assets);
-void		drawlinetest(t_rend *r);
+void		drawpixel(uint32_t x, uint32_t y, t_buffer *buffer, uint32_t color);
+void		draw_line(t_buffer *buf, t_point p0, t_point p1, uint32_t color);
+void		draw_circle(t_buffer *buf, t_point p, int r, uint32_t color);
+void		draw_filled_circle(t_buffer *buf, t_point p, int r, uint32_t color);
+
+t_imgdata	*load_tga(const char *filepath);
+
+void		update_boids(t_boid *flock, t_buffer *buf);
+void		dotests(t_buffer *buf, t_assets *assets);
 
 #endif
