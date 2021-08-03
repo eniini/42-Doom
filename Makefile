@@ -22,9 +22,10 @@ LIBFT = libft/libft.a
 
 #SDL2
 SDL_SRC_DIR = SDL2-2.0.14
+SDL_MIX_SRC_DIR = SDL2_mixer-2.0.4
 SDL_DIR = libSDL2
 SDL_BUILD_DIR_PATH = $(CURDIR)/$(SDL_DIR)
-SDL_CFLAGS = `$(SDL_DIR)/bin/sdl2-config --cflags --libs`
+SDL_CFLAGS = `$(SDL_DIR)/bin/sdl2-config --cflags --libs` -lSDL2_mixer
 SDL_BIN = $(SDL_DIR)/lib/libSDL2.a
 
 .PHONY: all clean fclean re
@@ -42,10 +43,12 @@ $(NAME): $(OBJS)
 	$(CC) $(OBJS) $(SDL_CFLAGS) -L./libft/ -lft -lm -o $(NAME)
 
 $(SDL_BIN) :
-	echo "Extracting SDL archive..."
+	echo "Extracting SDL archives..."
 	tar xzf SDL2-2.0.14.tar.gz
+	tar xzf SDL2_mixer-2.0.4.tar.gz
 	mkdir -p $(SDL_DIR)
 	cd $(SDL_SRC_DIR); ./configure --prefix=$(SDL_BUILD_DIR_PATH); make -j6; make install
+	cd $(SDL_MIX_SRC_DIR); ./configure --prefix=$(SDL_BUILD_DIR_PATH); make -j6; make install
 
 clean:
 	make clean -C libft

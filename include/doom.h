@@ -3,6 +3,7 @@
 
 # include <stdint.h>
 
+# include "../libSDL2/include/SDL2/SDL_mixer.h"
 # include "../libSDL2/include/SDL2/SDL.h"
 
 # include "../libft/includes/libft.h"
