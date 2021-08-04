@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+         #
+#    By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/11 10:42:46 by eniini            #+#    #+#              #
-#    Updated: 2021/06/21 19:16:01 by eniini           ###   ########.fr        #
+#    Updated: 2021/07/17 19:20:40 by esormune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ GFX		=	libgfx.a
 
 # compiler
 CC	=	gcc
-CFLAGS	=	-Wall -Wextra -Werror -O3 -march=native -g
+CFLAGS	=	-Wall -Wextra -O3 -march=native -g #-Werror
 
 # header directory
 INCDIR	=	includes
