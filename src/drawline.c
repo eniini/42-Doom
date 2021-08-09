@@ -21,15 +21,6 @@ void	drawpixel(uint32_t x, uint32_t y, t_buffer *buffer, uint32_t color)
 //	a line of pixels from [point0] to [point1].
 /******************************************************************************/
 
-static t_point	init_startingvalues(t_point p0, t_point p1, t_bool flip)
-{
-	t_point	abs_startval;
-
-	abs_startval.x = p0.x;
-	abs_startval.y = p0.y;
-	return (abs_startval);
-}
-
 static void	init_errors(t_point p0, t_point p1, int *derror, int *error)
 {
 	*derror = abs(p1.y - p0.y) * 2;
@@ -66,7 +57,7 @@ void	draw_line(t_buffer *buf, t_point p0, t_point p1, uint32_t color)
 	t_bool	flip;
 
 	flip = init_points(&p0, &p1);
-	crawler = init_startingvalues(p0, p1, flip);
+	crawler = (t_point){p0.x, p0.y};
 	init_errors(p0, p1, &derror, &error);
 	while (crawler.x <= p1.x)
 	{

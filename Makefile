@@ -2,7 +2,7 @@ NAME	=	doom-nukem
 
 #compiler
 CC	=	gcc
-LFLAGS	=	-Wall -Wextra -g #-Werror -g #-O3
+LFLAGS	=	-Wall -Wextra -g #-Werror #-O3
 
 #sources & object files
 SRC_DIR =	./src/
@@ -13,7 +13,8 @@ SRC_LIST =	main.c \
 		drawline.c \
 		boids.c \
 		vec_utility.c \
-		testing.c
+		testing.c \
+		resourcefile.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))
 
@@ -57,6 +58,7 @@ clean:
 fclean: clean
 	rm $(NAME)
 	rm -rf $(SDL_SRC_DIR)
+	rm -rf $(SDL_MIX_SRC_DIR)
 	make fclean -C libft
 
 re: fclean all

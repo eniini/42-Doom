@@ -27,15 +27,16 @@ void	drawlinetest(t_buffer *buf)
 		counter = 0.0f;
 }
 
-static void	tga_load_test(t_rend *renderer, t_assets *assets)
+static void	tga_load_test(t_buffer *buf, t_assets *assets)
 {	
 	static uint32_t	x;
 	static uint32_t	y;
 	static float	size = 1;
 
-	if (blit_img_scaled(assets->testimg, renderer->win_pixels, \
+	//blit_img(assets->testimg, buf, (t_point){x, y});
+	if (blit_img_scaled(assets->testimg, buf, \
 		(t_point){x, y}, size) < 0)
-		ft_getout("blit out of bounds / Nulpointer");
+		ft_getout("blit out of bounds / Nulpointer / too small");
 	if (y < WIN_H)
 	{
 		if (x < WIN_W)
@@ -54,9 +55,26 @@ static void	tga_load_test(t_rend *renderer, t_assets *assets)
 	}
 }
 
+void	init_tests(t_assets *assets)
+{
+	//assets->testimg = load_tga("resources/FEalm.tga");
+	//if (!assets->testimg)
+	//	ft_getout("failed to load test image");
+	//init_boids_positions(assets->flock);
+	create_rf();
+	assets->testimg = load_from_rf();
+	if (!assets->testimg)
+		ft_getout("fml");
+}
+
 void	dotests(t_buffer *buf, t_assets *assets)
 {
-	drawlinetest(buf);
-	//tga_load_test(buf, assets);
+	//drawlinetest(buf);
+	tga_load_test(buf, assets);
+	/*if (!assets->testimg)
+		ft_getout("no testimage struct found!");
+	if (!assets->testimg->data)
+		ft_getout("no testimage image data found!");
+	blit_img(assets->testimg, buf, (t_point){1, 1});*/
 	//update_boids(assets->flock, buf);
 }
