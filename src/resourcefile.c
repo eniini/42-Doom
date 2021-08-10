@@ -10,7 +10,7 @@ int	init_resourcefile(int fd)
 	static unsigned char	rfheader[10] = {
 		'R', 'F',
 		'A', 'A', 'A', 'A',
-		0, 0, 0, 0,};
+		0, 0, 0, 0, };
 
 	if (write(fd, rfheader, 10) != 10)
 		return (FALSE);
@@ -90,7 +90,8 @@ void	create_rf(void)
 	total_lumpsize = 0;
 	lumpcount = 0;
 	fd = open_resourcefile('w', "DATA");
-	total_lumpsize += load_tga_info_rf("resources/a.tga", fd, total_lumpsize + 10);
+	total_lumpsize += load_tga_info_rf("resources/a.tga", \
+	fd, total_lumpsize + 10);
 	lumpcount++;
 	update_lumpcount(fd, lumpcount);
 	update_lumplist_offset(fd, total_lumpsize);
@@ -102,16 +103,16 @@ void	create_rf(void)
 */
 t_imgdata	*load_from_rf(void)
 {
-	int		fd;
-	char	header[10];
-	uint32_t	lump_count;
-	uint32_t	lump_totalsize;
+	int			fd;
+	char		h[10];
+	uint32_t	l_count;
+	uint32_t	l_totalsize;
 
 	fd = open_resourcefile('r', "DATA");
-	if (read(fd, header, 10) != 10)
+	if (read(fd, h, 10) != 10)
 		return (FALSE);
-	lump_count = header[2] | header[3] << 8 | header[4] << 16 | header[5] << 24;
-	lump_totalsize = header[6] | header[7] << 8 | header[8] << 16 | header[9] << 24;
-	printf("n: of lumps:%u|total bytesize of lumps:%u\n", lump_count, lump_totalsize);
+	l_count = h[2] | h[3] << 8 | h[4] << 16 | h[5] << 24;
+	l_totalsize = h[6] | h[7] << 8 | h[8] << 16 | h[9] << 24;
+	printf("n: of lumps:%u|total bytesize of lumps:%u\n", l_count, l_totalsize);
 	return (load_tga_from_rf(fd));
 }

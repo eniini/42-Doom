@@ -8,9 +8,11 @@ LFLAGS	=	-Wall -Wextra -g #-Werror #-O3
 SRC_DIR =	./src/
 OBJ_DIR =	./build/
 SRC_LIST =	main.c \
+		draw_pixel.c \
+		draw_line.c \
+		draw_shapes.c \
 		load_tga.c \
 		blit.c \
-		drawline.c \
 		boids.c \
 		vec_utility.c \
 		testing.c \

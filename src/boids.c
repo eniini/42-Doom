@@ -26,7 +26,7 @@ static void	draw_boids(t_boid *flock, t_buffer *buf)
 	i = 0;
 	while (i < BOID_COUNT)
 	{
-		drawpixel((int)flock[i].position.x, (int)flock[i].position.y, buf, \
+		draw_pixel((int)flock[i].position.x, (int)flock[i].position.y, buf, \
 		0x00FFFFFF);
 		draw_circle(buf, \
 			(t_point){(int)flock[i].position.x, (int)flock[i].position.y}, 5, \

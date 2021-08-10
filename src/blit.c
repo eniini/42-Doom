@@ -11,7 +11,7 @@ int	blit_img(t_imgdata *img, t_buffer *buf, t_point start)
 
 	if (!img || !buf)
 		return (-1);
-	if ((start.x > buf->w || start.x < 0) || (start.y > buf->h || start.y < 0))
+	if (start.x > buf->w || start.y > buf->h)
 		return (-1);
 	y = 0;
 	while ((y + start.y) <= buf->h && y < img->h)
@@ -65,7 +65,7 @@ int	blit_img_scaled(t_imgdata *img, t_buffer *buf, t_point offs, float scale)
 
 	if (!img || !buf || scale < 0.1f)
 		return (-1);
-	if ((offs.x > buf->w || offs.x < 0) || (offs.y > buf->h || offs.y < 0))
+	if (offs.x > buf->w || offs.y > buf->h)
 		return (-1);
 	s_img.w = (uint32_t)(img->w * scale);
 	s_img.h = (uint32_t)(img->h * scale);

@@ -76,18 +76,19 @@ t_imgdata 	*load_tga(const char *filepath)
 */
 uint32_t	load_tga_info_rf(const char *filepath, int rf_fd, uint32_t offset)
 {
-	int			tga_fd;
-	char		*buffer;
-	ssize_t		retval;
+	int				tga_fd;
+	char			*buffer;
+	ssize_t			retval;
 	unsigned char	header[18];
 	ssize_t			imgbytesize;
 
 	tga_fd = open(filepath, O_RDONLY);
-	if (tga_fd <= 0|| rf_fd <= 0)
+	if (tga_fd <= 0 || rf_fd <= 0)
 		return (FALSE);
 	if (read(tga_fd, header, 18) != 18)
 		return (FALSE);
-	imgbytesize = ((header[0x0C] | header[0x0D] << 8) * (header[0x0E] | header[0x0F] << 8) * (header[0x10] / 8)) + 18;
+	imgbytesize = ((header[0x0C] | header[0x0D] << 8) * \
+		(header[0x0E] | header[0x0F] << 8) * (header[0x10] / 8)) + 18;
 	buffer = malloc(imgbytesize);
 	if (!buffer)
 		return (FALSE);
@@ -96,10 +97,8 @@ uint32_t	load_tga_info_rf(const char *filepath, int rf_fd, uint32_t offset)
 		return (FALSE);
 	lseek(rf_fd, offset, SEEK_SET);
 	retval = write(rf_fd, (void *)buffer, imgbytesize);
-	if (retval != imgbytesize)
-		return (FALSE);
 	free(buffer);
-	if (retval == -1)
+	if (retval != imgbytesize || retval - 1)
 		return (FALSE);
 	return ((uint32_t)retval);
 }

@@ -7,7 +7,7 @@ t_point	p3 = {WIN_W, WIN_H};
 t_point	p4 = {WIN_W, 0};
 float	counter = 0.0;
 
-void	drawlinetest(t_buffer *buf)
+static void	drawlinetest(t_buffer *buf)
 {
 	t_point	mp;
 	counter += 0.001;
@@ -33,7 +33,6 @@ static void	tga_load_test(t_buffer *buf, t_assets *assets)
 	static uint32_t	y;
 	static float	size = 1;
 
-	//blit_img(assets->testimg, buf, (t_point){x, y});
 	if (blit_img_scaled(assets->testimg, buf, \
 		(t_point){x, y}, size) < 0)
 		ft_getout("blit out of bounds / Nulpointer / too small");
@@ -55,26 +54,44 @@ static void	tga_load_test(t_buffer *buf, t_assets *assets)
 	}
 }
 
+static void	gridtest(t_buffer *buf)
+{
+	int gridw = 8;
+	int gridcount = 16;
+	int squaresize = 100;
+	int xorig = 0;
+	int	yorig = 400;
+
+	int i = 0;
+	while (i < gridcount)
+	{
+		int x = (i % gridw) * squaresize + xorig;
+		int y = (i / gridw) * squaresize + yorig;
+		draw_square((t_point){x, y}, (t_point){x + squaresize, y + squaresize},
+		buf, ft_color_lerp(0x008b53b2, 0x00ee9f3c, i / (double)gridcount));
+		i++;
+	}
+}
+
 void	init_tests(t_assets *assets)
 {
-	//assets->testimg = load_tga("resources/FEalm.tga");
-	//if (!assets->testimg)
-	//	ft_getout("failed to load test image");
-	//init_boids_positions(assets->flock);
+	init_boids_positions(assets->flock);
 	create_rf();
 	assets->testimg = load_from_rf();
 	if (!assets->testimg)
-		ft_getout("fml");
+		ft_getout("failed to load test image");
+}
+
+void	cleanup_tests(t_assets *assets)
+{
+	free(assets->testimg->data);
+	free(assets->testimg);
 }
 
 void	dotests(t_buffer *buf, t_assets *assets)
 {
-	//drawlinetest(buf);
+	gridtest(buf);
+	drawlinetest(buf);
 	tga_load_test(buf, assets);
-	/*if (!assets->testimg)
-		ft_getout("no testimage struct found!");
-	if (!assets->testimg->data)
-		ft_getout("no testimage image data found!");
-	blit_img(assets->testimg, buf, (t_point){1, 1});*/
-	//update_boids(assets->flock, buf);
+	update_boids(assets->flock, buf);
 }

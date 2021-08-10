@@ -2,9 +2,12 @@
 
 /*
 *	Todo:	read up on windowflags in case we could have additional features
-*			do we need sethint() and should it be to linear or nearest?
+*			Q:do we need sethint() and should it be to linear or nearest?
 *			same thing with rendermodes, pixelformat etc.
+*			A:Currently we don't use any SDL texture transformation funcs so its
+*			probably not needed!
 *			blending is only needed if we work with multiple texture layers
+*			(and if we want to blend them together)
 */
 static void	init(t_rend *renderer)
 {
@@ -14,7 +17,6 @@ static void	init(t_rend *renderer)
 		SDL_WINDOWPOS_UNDEFINED, WIN_W, WIN_H, 0);
 	if (!renderer->win)
 		ft_getout(SDL_GetError());
-	//SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 	renderer->rend = SDL_CreateRenderer(renderer->win, -1, \
 		SDL_RENDERER_ACCELERATED);
 	if (!renderer->rend)
@@ -23,12 +25,8 @@ static void	init(t_rend *renderer)
 		SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
 	if (!renderer->win_tex)
 		ft_getout(SDL_GetError());
-	//if ((SDL_SetTextureBlendMode(tex, SDL_BLENDMODE_BLEND)))
-	//	ft_getout(SDL_GetError());
 	renderer->run = TRUE;
-
-	//we might need to call mix_init(MIX_INIT_MP3/OGG) if we want to use compressed files
-	if(Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048 ) != 0)
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048 ) != 0)
 		ft_getout(SDL_GetError());
 }
 
@@ -37,13 +35,9 @@ static void	cleanup(t_rend *renderer, t_assets *assets)
 	SDL_DestroyTexture(renderer->win_tex);
 	SDL_DestroyRenderer(renderer->rend);
 	SDL_DestroyWindow(renderer->win);
-
 	free(renderer->win_buffer->pixels);
 	free(renderer->win_buffer);
-	//free(renderer->win_pixels);
-	free(assets->testimg->data);
-	free(assets->testimg);
-
+	cleanup_tests(assets);
 	Mix_Quit();
 	SDL_Quit();
 }
@@ -63,7 +57,6 @@ static void	loop(t_rend *renderer, t_assets *assets)
 		if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 			renderer->run = FALSE;
 	}
-	//ft_bzero(renderer->win_pixels, WIN_H * WIN_W * sizeof(uint32_t));
 	ft_bzero(renderer->win_buffer->pixels, WIN_H * WIN_W * sizeof(uint32_t));
 	dotests(renderer->win_buffer, assets);
 	if (SDL_LockTexture(renderer->win_tex, NULL, \
@@ -90,7 +83,6 @@ int	main(void)
 	renderer.win_buffer->w = WIN_W;
 	renderer.win_buffer->h = WIN_H;
 	renderer.win_buffer->pixels = (uint32_t *)ft_memalloc(WIN_H * WIN_W);
-	//renderer.win_pixels = (uint32_t *)ft_memalloc(WIN_H * WIN_W);
 	init(&renderer);
 	while (renderer.run)
 		loop(&renderer, &assets);
