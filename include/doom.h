@@ -1,7 +1,9 @@
 #ifndef DOOM_H
 # define DOOM_H
 
-# include <stdint.h>
+# include <stdint.h> //for datatypes
+# include <string.h> //for sterror
+# include <errno.h> //for errno macro
 
 # include "../libSDL2/include/SDL2/SDL_mixer.h"
 # include "../libSDL2/include/SDL2/SDL.h"
@@ -51,8 +53,8 @@ typedef struct s_rend
 	SDL_Renderer	*rend;
 	SDL_Window		*win;
 	SDL_Texture		*win_tex;
-	uint32_t		*win_pixels;
-	t_buffer		win_buffer;
+	void			*win_pixels;
+	t_buffer		*win_buffer;
 	int				win_pixel_pitch;
 	t_bool			run;
 	t_mouse			mouse;
@@ -83,21 +85,36 @@ typedef struct s_assets {
 
 t_imgdata	*load_tga(const char *filepath);
 
+<<<<<<< HEAD
 //{int x, int y} //Do we want these to be other way around?
 
+=======
+//datatype for handling buffer/array coordinates
+typedef struct s_point {
+	uint32_t	x;
+	uint32_t	y;
+}				t_point;
+>>>>>>> 780b92eaa12ed34cd37883f4310129ce708eeb5f
 
-int			blit_img(t_imgdata *img, uint32_t *buf, t_point start);
-int			blit_img_scaled(t_imgdata *img, uint32_t *buf, \
+int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);
+int			blit_img_scaled(t_imgdata *img, t_buffer *buf, \
 t_point offs, float scale);
 
-void		drawpixel(uint32_t x, uint32_t y, t_buffer *buffer, uint32_t color);
+void		draw_pixel(uint32_t x, uint32_t y, t_buffer *buf, uint32_t color);
 void		draw_line(t_buffer *buf, t_point p0, t_point p1, uint32_t color);
 void		draw_circle(t_buffer *buf, t_point p, int r, uint32_t color);
 void		draw_filled_circle(t_buffer *buf, t_point p, int r, uint32_t color);
+void		draw_square(t_point a, t_point b, t_buffer *buf, int color);
 
 t_imgdata	*load_tga(const char *filepath);
+uint32_t	load_tga_info_rf(const char *filepath, int rf_fd, uint32_t offset);
+t_imgdata	*load_tga_from_rf(int fd);
 
 void		update_boids(t_boid *flock, t_buffer *buf);
+void		init_tests(t_assets *assets);
+void		cleanup_tests(t_assets *assets);
 void		dotests(t_buffer *buf, t_assets *assets);
+
+t_imgdata	*load_from_rf(void);
 
 #endif

@@ -1,37 +1,29 @@
 #include "doom.h"
 
-/*************************************************************************/
-//TODO: blitting to different buffers (that can be of different size than
-//program window) means that we should have limits of each buffer saved.
-//i.e. buffer being a struct: [start.x > WIN_W -> start.x > buf.width]
-/*************************************************************************/
-
 /*
-*	Copy [img->data] into [buf] starting the from given x/y coordinates.
+*	Copy [img->data] into [buf->pixels] starting the from given x/y coordinates.
 *	Returns -1 on error.
 */
-int	blit_img(t_imgdata *img, uint32_t *buf, t_point start)
+int	blit_img(t_imgdata *img, t_buffer *buf, t_point start)
 {
 	uint32_t	x;
 	uint32_t	y;
 
 	if (!img || !buf)
 		return (-1);
-	if ((start.x > WIN_W || start.x < 0) || (start.y > WIN_H || start.y < 0))
+	if (start.x > buf->w || start.y > buf->h)
 		return (-1);
 	y = 0;
-	while ((y + start.y) < WIN_H)
+	while ((y + start.y) <= buf->h && y < img->h)
 	{
 		x = 0;
-		while ((x + start.x) < WIN_W)
+		while ((x + start.x) <= buf->w && x < img->w)
 		{
 			if (img->data[y * img->w + x] != 0)
 			{
-				buf[((y + start.y) * WIN_W) + x + start.x] \
+				buf->pixels[((y + start.y) * buf->w) + x + start.x] \
 				= img->data[y * img->w + x];
 			}
-			if (x > img->w)
-				break ;
 			x++;
 		}
 		y++;
@@ -67,13 +59,13 @@ static void	copy_loop(t_imgdata *o, t_imgdata *n, float step_x, float step_y)
 *	nearest-neighbor technique. [Scale] must be a positive (>=0.1f) scalar.
 *	Returns -1 on error.
 */
-int	blit_img_scaled(t_imgdata *img, uint32_t *buf, t_point offs, float scale)
+int	blit_img_scaled(t_imgdata *img, t_buffer *buf, t_point offs, float scale)
 {
 	t_imgdata	s_img;
 
 	if (!img || !buf || scale < 0.1f)
 		return (-1);
-	if ((offs.x > WIN_W || offs.x < 0) || (offs.y > WIN_H || offs.y < 0))
+	if (offs.x > buf->w || offs.y > buf->h)
 		return (-1);
 	s_img.w = (uint32_t)(img->w * scale);
 	s_img.h = (uint32_t)(img->h * scale);
