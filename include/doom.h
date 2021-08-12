@@ -51,11 +51,11 @@ typedef struct s_imgdata {
 
 //place to hold all graphics etc. data we need. Also development stuff
 typedef struct s_assets {
-	t_imgdata	*testimg;
+	t_imgdata	*testimg001;
+	t_imgdata	*testimg002;
+	t_imgdata	*testimg003;
 	t_boid		flock[BOID_COUNT];
 }				t_assets;
-
-t_imgdata	*load_tga(const char *filepath);
 
 //datatype for handling buffer/array coordinates
 typedef struct s_point {
@@ -74,14 +74,13 @@ void		draw_filled_circle(t_buffer *buf, t_point p, int r, uint32_t color);
 void		draw_square(t_point a, t_point b, t_buffer *buf, int color);
 
 t_imgdata	*load_tga(const char *filepath);
-uint32_t	load_tga_info_rf(const char *filepath, int rf_fd, uint32_t offset);
-t_imgdata	*load_tga_from_rf(int fd);
+void		add_tga_to_rf(t_rf *rf, const char *filepath);
+t_imgdata	*load_tga_from_rf(t_rf *rf, short lump_id);
+t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id);
 
 void		update_boids(t_boid *flock, t_buffer *buf);
-void		init_tests(t_assets *assets);
+void		init_tests(t_rf *rf, t_assets *assets);
 void		cleanup_tests(t_assets *assets);
 void		dotests(t_buffer *buf, t_assets *assets);
-
-t_imgdata	*load_from_rf(void);
 
 #endif

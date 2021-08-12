@@ -1,118 +1,72 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   resourcefile.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/08/12 22:01:59 by eniini            #+#    #+#             */
+/*   Updated: 2021/08/13 00:09:23 by eniini           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "doom.h"
 #include <unistd.h>
-#include <fcntl.h>
 
 /*
-*	Return [fd] unless write fails
+*	Updates specified header information with the given data.
+*	valid datapositions are either RF_LUMPCOUNT_POSITION or RF_LUMPLIST_OFFSET
+*	Returns FALSE if write() call fails or an invalid position is given.
 */
-int	init_resourcefile(int fd)
+static t_bool	rf_update_header(int fd, unsigned int datapos, off_t newdata)
 {
-	static unsigned char	rfheader[10] = {
-		'R', 'F',
-		'A', 'A', 'A', 'A',
-		0, 0, 0, 0, };
+	unsigned char	val[8];
 
-	if (write(fd, rfheader, 10) != 10)
-		return (FALSE);
-	return (fd);
-}
-
-void	update_lumpcount(int fd, uint32_t newsize)
-{
-	unsigned char	val[4];
-
-	lseek(fd, 2, SEEK_SET);
-	val[0] = (unsigned char)(newsize);
-	val[1] = (unsigned char)(newsize >> 8);
-	val[2] = (unsigned char)(newsize >> 16);
-	val[3] = (unsigned char)(newsize >> 24);
-	write(fd, val, 4);
-}
-
-//TODO: this should probably be ssize_t or size_t (8 bytes) //
-void	update_lumplist_offset(int fd, uint32_t newpos)
-{
-	unsigned char	val[4];
-
-	lseek(fd, 6, SEEK_SET);
-	val[0] = (unsigned char)(newpos);
-	val[1] = (unsigned char)(newpos >> 8);
-	val[2] = (unsigned char)(newpos >> 16);
-	val[3] = (unsigned char)(newpos >> 24);
-	write(fd, val, 4);
-}
-
-/*
-*	Opens the designated resource file in a desired mode.
-*	Valid modes are:
-*	[r] - read only
-*	[w] - write only
-*	[m] - read & write.
-*	Returns file descriptor on success, -1 on failure.
-*/
-int	open_resourcefile(char openmode, char *filename)
-{
-	int	fd;
-
-	fd = -1;
-	if (openmode == 'r')
-		fd = open(filename, O_RDONLY);
-	else if (openmode == 'w')
+	if (datapos == RF_LUMPCOUNT_POSITION || datapos == RF_LUMPLIST_OFFSET)
 	{
-		fd = open(filename, O_WRONLY);
-		if (fd == -1)
-		{
-			fd = open(filename, O_WRONLY | O_CREAT | O_EXCL,
-					S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-			if (fd != -1)
-				return (init_resourcefile(fd));
-		}
+		lseek(fd, datapos, SEEK_SET);
+		set_charray_value(val, newdata, sizeof(newdata));
+		if (write(fd, val, 8) == -1)
+			return (FALSE);
+		return (TRUE);
 	}
-	else if (openmode == 'm')
-		fd = open(filename, O_RDWR);
-	if (fd >= 0)
-		return (fd);
-	return (-1);
-}
-
-void	close_rf(int fd)
-{
-	if (close(fd) == -1)
-		ft_getout(strerror(errno));
-}
-
-void	create_rf(void)
-{
-	int			fd;
-	uint32_t	lumpcount;
-	uint32_t	total_lumpsize;
-
-	total_lumpsize = 0;
-	lumpcount = 0;
-	fd = open_resourcefile('w', "DATA");
-	total_lumpsize += load_tga_info_rf("resources/a.tga", \
-	fd, total_lumpsize + 10);
-	lumpcount++;
-	update_lumpcount(fd, lumpcount);
-	update_lumplist_offset(fd, total_lumpsize);
-	close_rf(fd);
+	return (FALSE);
 }
 
 /*
-*	Probably called with lump ID or something similar
+*	Handles the whole process of adding a .TGA file into
+*	the active resource file.
 */
-t_imgdata	*load_from_rf(void)
+void	add_tga_to_rf(t_rf *rf, const char *asset)
 {
-	int			fd;
-	char		h[10];
-	uint32_t	l_count;
-	uint32_t	l_totalsize;
+	if (!rf->fd)
+		ft_getout("no active file descriptor! (while creating the lump)");
+	if (!(rf_load_tga_into_rf(rf, asset)))
+		ft_getout("failed to load asset!");
+	if (!rf_update_header(rf->fd, RF_LUMPCOUNT_POSITION, rf->lumpcount))
+		ft_getout("failed to update resourcefile header");
+	if (!rf_update_header(rf->fd, RF_LUMPLIST_OFFSET, rf->lumpdata_offset))
+		ft_getout("failed to update resourcefile header");
+}
 
-	fd = open_resourcefile('r', "DATA");
-	if (read(fd, h, 10) != 10)
-		return (FALSE);
-	l_count = h[2] | h[3] << 8 | h[4] << 16 | h[5] << 24;
-	l_totalsize = h[6] | h[7] << 8 | h[8] << 16 | h[9] << 24;
-	printf("n: of lumps:%u|total bytesize of lumps:%u\n", l_count, l_totalsize);
-	return (load_tga_from_rf(fd));
+/*
+*	Handles the whole process of loading a .TGA file from the active resource
+*	resource file. Returns an [imgdata] pointer to translated image data
+*	or NULL on failure.
+*/
+t_imgdata	*load_tga_from_rf(t_rf *rf, short lump_id)
+{
+	int				fd;
+	unsigned char	h[RF_HEADERSIZE];
+	off_t			l_count;
+	off_t			l_totalsize;
+
+	fd = rf_open_resourcefile('r', "DATA");
+	if (read(fd, h, RF_HEADERSIZE) != RF_HEADERSIZE)
+		ft_getout("Failed to find TGA lump position in RF!");
+	l_count = get_charray_value(&h[RF_LUMPCOUNT_POSITION], (sizeof(off_t)));
+	l_totalsize = get_charray_value(&h[RF_LUMPLIST_OFFSET], (sizeof(off_t)));
+	ft_printf("n: of lumps:%li|total bytesize of lumps:%li\n", \
+	l_count, l_totalsize);
+	return (rf_load_tga_lump(rf, lump_id));
 }
