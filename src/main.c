@@ -77,7 +77,6 @@ int	main(void)
 	t_rf		rf;
 
 	rf = (t_rf){0, 18, NULL, 0};
-	//ft_bzero(&rf, sizeof(t_rf));
 	ft_bzero(&renderer, sizeof(t_rend));
 	init_tests(&rf, &assets);
 	renderer.win_buffer = (t_buffer *)malloc(sizeof(t_buffer));

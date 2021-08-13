@@ -90,14 +90,16 @@ t_bool	rf_load_tga_into_rf(t_rf *rf, const char *filepath)
 		(header[0x0E] | header[0x0F] << 8) * (header[0x10] / 8)) + 18;
 	if (imgbytesize <= 0)
 		return (FALSE);
-	buffer = malloc((size_t)imgbytesize);
+	buffer = malloc(imgbytesize);
 	if (!buffer)
 		return (FALSE);
 	if (lseek(tga_fd, 0, SEEK_SET) == -1)
 		return (FALSE);
 	if (read(tga_fd, (void *)buffer, (size_t)imgbytesize) != imgbytesize)
 		return (FALSE);
-	if (lseek(rf->fd, rf->lumpdata_offset + RF_HEADERSIZE, SEEK_SET) == -1)
+	if (close(tga_fd) == -1)
+		return (FALSE);
+	if (lseek(rf->fd, rf->lumpdata_offset, SEEK_SET) == -1)
 		return (FALSE);
 	retval = write(rf->fd, (void *)buffer, imgbytesize);
 	free(buffer);
@@ -115,9 +117,11 @@ t_bool	rf_load_tga_into_rf(t_rf *rf, const char *filepath)
 t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id)
 {
 	t_rf_lump		*next;
+	t_rf_lump		*head;
 	unsigned char	header[18];
 	t_imgdata		*img;
 
+	head = rf->lumplist;
 	next = rf->lumplist->next;
 	while (rf->lumplist->id != lump_id)
 	{
@@ -128,11 +132,8 @@ t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id)
 	}
 	if (rf->lumplist->type != RF_TYPE_TGA)
 		ft_getout("found lump with correct ID but wrong data type");
-	ft_printf("current fd is [%d]\n", rf->fd);
 	if (lseek(rf->fd, rf->lumplist->offset, SEEK_SET) != rf->lumplist->offset)
 		ft_getout("failed to position fd correctly to read data");
-	ft_printf("[current offset: %li]\n", rf->lumplist->offset);
-	ft_printf("current fd is [%d]\n", rf->fd);
 	if (read(rf->fd, header, 18) == -1)
 	{
 		ft_getout(strerror(errno));
@@ -140,7 +141,10 @@ t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id)
 	}
 	img = malloc(sizeof(t_imgdata));
 	if (!img)
+	{
+		ft_getout(strerror(errno));
 		return (NULL);
+	}
 	img->w = header[0x0C] | header[0x0D] << 8;
 	img->h = header[0x0E] | header[0x0F] << 8;
 	img->bpp = header[0x10];
@@ -151,5 +155,6 @@ t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id)
 	}
 	if (!load_data(img, rf->fd))
 		return (NULL);
+	rf->lumplist = head;
 	return (img);
 }

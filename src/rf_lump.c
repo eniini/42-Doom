@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 17:02:39 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/12 23:58:27 by eniini           ###   ########.fr       */
+/*   Updated: 2021/08/13 10:39:05 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ t_bool	rf_create_lumpinfo(t_rf *rf, off_t	bytesize, char type)
 	}
 	else
 		rf->lumplist = newlump;
+	ft_printf("Loaded asset [%hd] to offset [%lu]\n", rf->lumplist->id, \
+	rf->lumpdata_offset);
 	rf->lumpdata_offset += bytesize;
 	return (TRUE);
 }
@@ -76,32 +78,4 @@ void	rf_write_lumplist(t_rf *rf)
 	if (lumpcount != rf->lumpcount)
 		ft_getout("new and existing lumpcounts do not match!");
 	rf->lumplist = head;
-}
-
-/*
-*	TODO:
-*	Reads the lump list into memory from the resource file
-*/
-t_bool	rf_read_lumplist(t_rf *rf)
-{
-	int		i;
-	char	lumpinfo[RF_LUMPINFOSIZE];
-
-	if (lseek(rf->fd, rf->lumpdata_offset, SEEK_SET) != rf->lumpdata_offset)
-		return (FALSE);
-	i = 0;
-	while (i < rf->lumpcount)
-	{
-		i++;
-	}
-	return (TRUE);
-}
-
-/*
-*	TODO:
-*	Iterates through the read list of lumpdata, returns the one that matches.
-*/
-t_rf_lump	*rf_find_lump(t_rf *rf, uint32_t lump_id)
-{
-	return (NULL);
 }

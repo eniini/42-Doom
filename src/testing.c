@@ -34,8 +34,8 @@ static void	tga_load_test(t_buffer *buf, t_assets *assets)
 	static float	size = 1;
 
 	blit_img_scaled(assets->testimg001, buf, (t_point){x, y}, size);
-	blit_img_scaled(assets->testimg002, buf, (t_point){x + 10, y + 10}, size);
-	blit_img_scaled(assets->testimg003, buf, (t_point){x + 50, y + 50}, size);
+	blit_img_scaled(assets->testimg002, buf, (t_point){x + 50, y + 50}, size);
+	blit_img_scaled(assets->testimg003, buf, (t_point){x + 100, y + 100}, size);
 	if (y < WIN_H)
 	{
 		if (x < WIN_W)
@@ -75,21 +75,25 @@ static void	gridtest(t_buffer *buf)
 
 void	init_tests(t_rf *rf, t_assets *assets)
 {
-	//init_boids_positions(assets->flock);
+	init_boids_positions(assets->flock);
 	rf->fd = rf_open_resourcefile('w', "DATA");
 	add_tga_to_rf(rf, "resources/a.tga");
 	add_tga_to_rf(rf, "resources/b.tga");
 	add_tga_to_rf(rf, "resources/c.tga");
 	rf_write_lumplist(rf);
+	rf_close_fd(rf);
 	assets->testimg001 = load_tga_from_rf(rf, 001);
 	if (!(assets->testimg001))
 		ft_getout("failed to load test image001");
+	ft_printf("asset 001 loaded successfully!\n");
 	assets->testimg002 = load_tga_from_rf(rf, 002);
 	if (!assets->testimg002)
 		ft_getout("failed to load test image002");
+	ft_printf("asset 002 loaded successfully!\n");
 	assets->testimg003 = load_tga_from_rf(rf, 003);
 	if (!assets->testimg003)
 		ft_getout("failed to load test image003");
+	ft_printf("asset 003 loaded successfully!\n");
 }
 
 void	cleanup_tests(t_assets *assets)
@@ -104,8 +108,8 @@ void	cleanup_tests(t_assets *assets)
 
 void	dotests(t_buffer *buf, t_assets *assets)
 {
-	//gridtest(buf);
-	//drawlinetest(buf);
+	gridtest(buf);
+	drawlinetest(buf);
 	tga_load_test(buf, assets);
-	//update_boids(assets->flock, buf);
+	update_boids(assets->flock, buf);
 }
