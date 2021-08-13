@@ -6,12 +6,26 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 17:02:39 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/13 10:39:05 by eniini           ###   ########.fr       */
+/*   Updated: 2021/08/13 11:47:51 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "doom.h"
 #include <unistd.h>
+
+void	rf_free_lumplist(t_rf_lump *head)
+{
+	t_rf_lump	*temp;
+
+	while (head != NULL)
+	{
+		temp = head;
+		head = head->next;
+		temp->next = NULL;
+		free(temp);
+	}
+	head = NULL;
+}
 
 /*
 *	Creates a new lump struct into linked list stored in [rf] until all

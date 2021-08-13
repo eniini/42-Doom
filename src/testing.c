@@ -94,6 +94,7 @@ void	init_tests(t_rf *rf, t_assets *assets)
 	if (!assets->testimg003)
 		ft_getout("failed to load test image003");
 	ft_printf("asset 003 loaded successfully!\n");
+	rf_free_lumplist(rf->lumplist);
 }
 
 void	cleanup_tests(t_assets *assets)

@@ -35,7 +35,7 @@ off_t	get_charray_value(unsigned char *p, unsigned int s);
 void	set_charray_value(unsigned char *p, off_t value, unsigned int size);
 
 t_bool	rf_create_lumpinfo(t_rf *rf, off_t	bytesize, char type);
+void	rf_free_lumplist(t_rf_lump *head);
 void	rf_write_lumplist(t_rf *rf);
-t_bool	rf_read_lumplist(t_rf *rf);
 
 #endif
