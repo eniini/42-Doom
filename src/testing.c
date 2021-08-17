@@ -73,16 +73,33 @@ static void	gridtest(t_buffer *buf)
 	}
 }
 
+static void sprite_test(t_buffer *buf, t_assets *assets)
+{
+	static int i = 0;
+	static int counter = 0;
+	blit_img(assets->sprite->img, buf, (t_point){0, 0});
+	blit_sprite(assets->sprite, buf, i, (t_point){0, 0});
+	if (counter > 1000)
+	{
+		counter = 0;
+		i++;
+		if (i > 16)
+			i = 0;
+	}
+	counter++;
+}
+
 void	init_tests(t_rf *rf, t_assets *assets)
 {
-	init_boids_positions(assets->flock);
+	//init_boids_positions(assets->flock);
 	rf->fd = rf_open_resourcefile('w', "DATA");
-	add_tga_to_rf(rf, "resources/a.tga");
-	add_tga_to_rf(rf, "resources/b.tga");
-	add_tga_to_rf(rf, "resources/c.tga");
+	//add_tga_to_rf(rf, "resources/a.tga");
+	//add_tga_to_rf(rf, "resources/b.tga");
+	//add_tga_to_rf(rf, "resources/c.tga");
+	add_tga_to_rf(rf, "resources/ikaruga.tga");
 	rf_write_lumplist(rf);
 	rf_close_fd(rf);
-	assets->testimg001 = load_tga_from_rf(rf, 001);
+	/*assets->testimg001 = load_tga_from_rf(rf, 001);
 	if (!(assets->testimg001))
 		ft_getout("failed to load test image001");
 	ft_printf("asset 001 loaded successfully!\n");
@@ -93,24 +110,36 @@ void	init_tests(t_rf *rf, t_assets *assets)
 	assets->testimg003 = load_tga_from_rf(rf, 003);
 	if (!assets->testimg003)
 		ft_getout("failed to load test image003");
-	ft_printf("asset 003 loaded successfully!\n");
+	ft_printf("asset 003 loaded successfully!\n");*/
+	assets->sprite_tester = load_tga_from_rf(rf, 001);
+	if (!assets->sprite_tester)
+		ft_getout("failed to load spritesheet TGA");
+	ft_printf("asset [ikaruga.tga] loaded successfully!\n");
 	rf_free_lumplist(rf->lumplist);
+	assets->sprite = create_sprite(assets->sprite_tester, 16, \
+		(t_point){200, 200});
+	if (!assets->sprite)
+		ft_getout("spritesheet creation failed!");
 }
 
 void	cleanup_tests(t_assets *assets)
 {
-	free(assets->testimg001->data);
-	free(assets->testimg001);
-	free(assets->testimg002->data);
-	free(assets->testimg002);
-	free(assets->testimg003->data);
-	free(assets->testimg003);
+	//free(assets->testimg001->data);
+	//free(assets->testimg001);
+	//free(assets->testimg002->data);
+	//free(assets->testimg002);
+	//free(assets->testimg003->data);
+	//free(assets->testimg003);
+	free(assets->sprite->img->data);
+	free(assets->sprite->img);
+	free(assets->sprite);
 }
 
 void	dotests(t_buffer *buf, t_assets *assets)
 {
-	gridtest(buf);
-	drawlinetest(buf);
-	tga_load_test(buf, assets);
-	update_boids(assets->flock, buf);
+	sprite_test(buf, assets);
+	//gridtest(buf);
+	//drawlinetest(buf);
+	//tga_load_test(buf, assets);
+	//update_boids(assets->flock, buf);
 }

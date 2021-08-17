@@ -44,16 +44,25 @@ typedef struct s_imgdata {
 	uint32_t	*data;
 	uint32_t	w;
 	uint32_t	h;
-	uint32_t	bpp;
-	uint32_t	x_pos;
-	uint32_t	y_pos;
 }				t_imgdata;
+
+//sprite in the context of this program refers to struct that 
+//holds a spritesheet and from which you can blit individual sprites from.
+typedef struct s_sprite {
+	t_imgdata	*img;
+	uint32_t	sprite_count;
+	uint32_t	sprite_w;
+	uint32_t	sprite_h;
+	uint32_t	width;
+}				t_sprite;
 
 //place to hold all graphics etc. data we need. Also development stuff
 typedef struct s_assets {
 	t_imgdata	*testimg001;
 	t_imgdata	*testimg002;
 	t_imgdata	*testimg003;
+	t_imgdata	*sprite_tester;
+	t_sprite	*sprite;
 	t_boid		flock[BOID_COUNT];
 }				t_assets;
 
@@ -66,6 +75,10 @@ typedef struct s_point {
 int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);
 int			blit_img_scaled(t_imgdata *img, t_buffer *buf, \
 t_point offs, float scale);
+
+t_sprite	*create_sprite(t_imgdata *img, uint32_t spr_count, \
+t_point spr_unit);
+t_bool		blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_point pos);
 
 void		draw_pixel(uint32_t x, uint32_t y, t_buffer *buf, uint32_t color);
 void		draw_line(t_buffer *buf, t_point p0, t_point p1, uint32_t color);

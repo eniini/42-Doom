@@ -16,7 +16,7 @@ static t_bool	load_data(t_imgdata *img, int fd)
 
 	readbytes = 0;
 	i = 0;
-	img_size = img->w * img->h * (img->bpp / 8);
+	img_size = img->w * img->h * 4;
 	rawdata = (char *)malloc(img_size);
 	img->data = (uint32_t *)malloc(sizeof(uint32_t) * img->w * img->h);
 	if (!img->data || !rawdata)
@@ -57,8 +57,7 @@ t_imgdata 	*load_tga(const char *filepath)
 		return (NULL);
 	img->w = header[0x0C] | header[0x0D] << 8;
 	img->h = header[0x0E] | header[0x0F] << 8;
-	img->bpp = header[0x10];
-	if (img->bpp != 32 || header[0x02] != 2)
+	if (header[0x10] != 32 || header[0x02] != 2)
 	{
 		free(img);
 		return (NULL);
@@ -147,8 +146,7 @@ t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id)
 	}
 	img->w = header[0x0C] | header[0x0D] << 8;
 	img->h = header[0x0E] | header[0x0F] << 8;
-	img->bpp = header[0x10];
-	if (img->bpp != 32 || header[0x02] != 2)
+	if (header[0x10] != 32 || header[0x02] != 2)
 	{
 		free(img);
 		return (NULL);

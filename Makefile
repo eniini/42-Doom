@@ -14,6 +14,7 @@ SRC_LIST =	main.c \
 		draw_shapes.c \
 		load_tga.c \
 		blit.c \
+		spritesheet.c \
 		boids.c \
 		vec_utility.c \
 		testing.c \
