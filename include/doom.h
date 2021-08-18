@@ -74,7 +74,7 @@ typedef struct s_point {
 
 typedef struct	s_audio{
 	Mix_Chunk	*sound;
-	int			sound_trigger;
+	t_bool		sound_trigger;
 }				t_audio;
 
 int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);

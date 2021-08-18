@@ -2,8 +2,8 @@
 
 void	init_audio(t_audio *audio)
 {
+	ft_bzero(audio, sizeof(t_audio));
 	audio->sound = NULL;
-	audio->sound_trigger = 0;
 	if( SDL_Init(SDL_INIT_AUDIO) < 0 )
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 	if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
@@ -20,10 +20,10 @@ void audio_cleanup(t_audio *audio)
 
 void	audios(t_audio *audio)
 {
-	if (audio->sound_trigger == 1)
+	if (audio->sound_trigger == TRUE)
 	{
 		Mix_PlayChannel(-1, audio->sound, 0);
-		audio->sound_trigger = 0;
+		audio->sound_trigger = FALSE;
 	}
 
 }
