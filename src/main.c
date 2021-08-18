@@ -9,7 +9,7 @@
 *			blending is only needed if we work with multiple texture layers
 *			(and if we want to blend them together)
 */
-static void	init(t_rend *renderer)
+static void	init(t_rend *renderer, t_audio *audio)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 		ft_getout(SDL_GetError());
@@ -28,15 +28,17 @@ static void	init(t_rend *renderer)
 	renderer->run = TRUE;
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048 ) != 0)
 		ft_getout(SDL_GetError());
+	init_audio(audio);
 }
 
-static void	cleanup(t_rend *renderer, t_assets *assets)
+static void	cleanup(t_rend *renderer, t_assets *assets, t_audio *audio)
 {
 	SDL_DestroyTexture(renderer->win_tex);
 	SDL_DestroyRenderer(renderer->rend);
 	SDL_DestroyWindow(renderer->win);
 	free(renderer->win_buffer->pixels);
 	free(renderer->win_buffer);
+	audio_cleanup(audio);
 	cleanup_tests(assets);
 	Mix_Quit();
 	SDL_Quit();
@@ -48,7 +50,7 @@ static void	cleanup(t_rend *renderer, t_assets *assets)
 *	This is why you need to query for the pixel_pitch too since its the only
 *	way to know the 1-directional pitch of the created buffer.
 */
-static void	loop(t_rend *renderer, t_assets *assets)
+static void	loop(t_rend *renderer, t_assets *assets, t_audio *audio)
 {
 	SDL_Event	e;
 
@@ -59,6 +61,7 @@ static void	loop(t_rend *renderer, t_assets *assets)
 	}
 	ft_bzero(renderer->win_buffer->pixels, WIN_H * WIN_W * sizeof(uint32_t));
 	dotests(renderer->win_buffer, assets);
+	audios(audio);
 	if (SDL_LockTexture(renderer->win_tex, NULL, \
 		&renderer->win_pixels, &renderer->win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
@@ -75,6 +78,7 @@ int	main(void)
 	t_rend		renderer;
 	t_assets	assets;
 	t_rf		rf;
+	t_audio		audio;
 
 	rf = (t_rf){0, 18, NULL, 0};
 	ft_bzero(&renderer, sizeof(t_rend));
@@ -85,9 +89,9 @@ int	main(void)
 	renderer.win_buffer->w = WIN_W;
 	renderer.win_buffer->h = WIN_H;
 	renderer.win_buffer->pixels = (uint32_t *)ft_memalloc(WIN_H * WIN_W);
-	init(&renderer);
+	init(&renderer, &audio);
 	while (renderer.run)
-		loop(&renderer, &assets);
-	cleanup(&renderer, &assets);
+		loop(&renderer, &assets, &audio);
+	cleanup(&renderer, &assets, &audio);
 	return (0);
 }

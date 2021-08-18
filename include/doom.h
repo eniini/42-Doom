@@ -72,6 +72,11 @@ typedef struct s_point {
 	uint32_t	y;
 }				t_point;
 
+typedef struct	s_audio{
+	Mix_Chunk	*sound;
+	int			sound_trigger;
+}				t_audio;
+
 int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);
 int			blit_img_scaled(t_imgdata *img, t_buffer *buf, \
 t_point offs, float scale);
@@ -95,5 +100,9 @@ void		update_boids(t_boid *flock, t_buffer *buf);
 void		init_tests(t_rf *rf, t_assets *assets);
 void		cleanup_tests(t_assets *assets);
 void		dotests(t_buffer *buf, t_assets *assets);
+
+void		init_audio(t_audio *audio);
+void		audio_cleanup(t_audio *audio);
+void		audios(t_audio *audio);
 
 #endif

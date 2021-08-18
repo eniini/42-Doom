@@ -20,7 +20,8 @@ SRC_LIST =	main.c \
 		testing.c \
 		resourcefile.c \
 		rf_lump.c \
-		rf_io.c
+		rf_io.c \
+		audio.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))
 
