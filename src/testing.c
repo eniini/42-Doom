@@ -89,16 +89,16 @@ static void sprite_test(t_buffer *buf, t_assets *assets)
 	counter++;
 }
 
-void	init_tests(t_rf *rf, t_assets *assets)
+void	init_tests(t_doom *doom)
 {
 	//init_boids_positions(assets->flock);
-	rf->fd = rf_open_resourcefile('w', "DATA");
+	doom->rf.fd = rf_open_resourcefile('w', "DATA");
 	//add_tga_to_rf(rf, "resources/a.tga");
 	//add_tga_to_rf(rf, "resources/b.tga");
 	//add_tga_to_rf(rf, "resources/c.tga");
-	add_tga_to_rf(rf, "resources/ikaruga.tga");
-	rf_write_lumplist(rf);
-	rf_close_fd(rf);
+	add_tga_to_rf(&doom->rf, "resources/ikaruga.tga");
+	rf_write_lumplist(&doom->rf);
+	rf_close_fd(&doom->rf);
 	/*assets->testimg001 = load_tga_from_rf(rf, 001);
 	if (!(assets->testimg001))
 		ft_getout("failed to load test image001");
@@ -111,15 +111,17 @@ void	init_tests(t_rf *rf, t_assets *assets)
 	if (!assets->testimg003)
 		ft_getout("failed to load test image003");
 	ft_printf("asset 003 loaded successfully!\n");*/
-	assets->sprite_tester = load_tga_from_rf(rf, 001);
-	if (!assets->sprite_tester)
+	doom->assets.sprite_tester = load_tga_from_rf(&doom->rf, 001);
+	if (!doom->assets.sprite_tester)
 		ft_getout("failed to load spritesheet TGA");
 	ft_printf("asset [ikaruga.tga] loaded successfully!\n");
-	rf_free_lumplist(rf->lumplist);
-	assets->sprite = create_sprite(assets->sprite_tester, 16, \
+	rf_free_lumplist(doom->rf.lumplist);
+	doom->assets.sprite = create_sprite(doom->assets.sprite_tester, 16, \
 		(t_point){200, 200});
-	if (!assets->sprite)
+	if (!doom->assets.sprite)
 		ft_getout("spritesheet creation failed!");
+	init_world(&doom->world, &doom->map, doom->rend.win_buffer);
+	init_minimap(&doom->world, &doom->mmap, doom->rend.win_buffer, 4);
 }
 
 void	cleanup_tests(t_assets *assets)
@@ -135,9 +137,11 @@ void	cleanup_tests(t_assets *assets)
 	free(assets->sprite);
 }
 
-void	dotests(t_buffer *buf, t_assets *assets)
+void	dotests(t_doom *doom)
 {
-	sprite_test(buf, assets);
+	draw_map(&doom->map, &doom->world);
+	draw_minimap(&doom->mmap, &doom->world);
+	//sprite_test(buf, assets);
 	//gridtest(buf);
 	//drawlinetest(buf);
 	//tga_load_test(buf, assets);

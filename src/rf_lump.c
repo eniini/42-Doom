@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/11 17:02:39 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/13 11:47:51 by eniini           ###   ########.fr       */
+/*   Updated: 2021/08/26 18:12:42 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,16 @@ t_bool	rf_create_lumpinfo(t_rf *rf, off_t	bytesize, char type)
 	return (TRUE);
 }
 
+static void	lumplist_write_loop(t_rf *rf, unsigned char *lumpinfo)
+{
+	set_charray_value(lumpinfo, rf->lumplist->offset, sizeof(off_t));
+	set_charray_value(&lumpinfo[8], rf->lumplist->bytesize, sizeof(off_t));
+	set_charray_value(&lumpinfo[16], rf->lumplist->id, sizeof(short));
+	set_charray_value(&lumpinfo[18], rf->lumplist->type, sizeof(char));
+	if (write(rf->fd, lumpinfo, RF_LUMPINFOSIZE) != RF_LUMPINFOSIZE)
+		ft_getout("failed to write lumpinfo into fd");
+}
+
 /*
 *	Iterates through all of the lumps within [rf->lumplist] and writes the
 *	data in segments after the last actual lump within the given resource file.
@@ -80,12 +90,7 @@ void	rf_write_lumplist(t_rf *rf)
 	while (rf->lumplist)
 	{
 		next = rf->lumplist->next;
-		set_charray_value(lumpinfo, rf->lumplist->offset, sizeof(off_t));
-		set_charray_value(&lumpinfo[8], rf->lumplist->bytesize, sizeof(off_t));
-		set_charray_value(&lumpinfo[16], rf->lumplist->id, sizeof(short));
-		set_charray_value(&lumpinfo[18], rf->lumplist->type, sizeof(char));
-		if (write(rf->fd, lumpinfo, RF_LUMPINFOSIZE) != RF_LUMPINFOSIZE)
-			ft_getout("failed to write lumpinfo into fd");
+		lumplist_write_loop(rf, lumpinfo);
 		rf->lumplist = next;
 		lumpcount++;
 	}

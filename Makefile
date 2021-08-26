@@ -16,11 +16,16 @@ SRC_LIST =	main.c \
 		blit.c \
 		spritesheet.c \
 		boids.c \
-		vec_utility.c \
 		testing.c \
+		r_init.c \
+		r_map.c \
+		r_minimap.c \
+		r_utility.c \
 		resourcefile.c \
 		rf_lump.c \
 		rf_io.c \
+		vec_math.c \
+		vec_utility.c \
 		audio.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))

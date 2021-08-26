@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 15:01:46 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/10 15:01:58 by eniini           ###   ########.fr       */
+/*   Updated: 2021/08/20 15:33:54 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,28 +47,50 @@ void	draw_circle(t_buffer *buf, t_point p, int r, uint32_t color)
 }
 
 /*
+*	Avoiding unsigned integer overflow by clamping substractions.
+*	Ugly but works.
+*/
+static void	check_drawline(t_buffer *buf, t_point p, t_point i, uint32_t col)
+{
+	t_point	diff;
+	t_point	crossdiff;
+
+	diff = i;
+	if (diff.x > p.x)
+		diff.x = p.x;
+	if (diff.y > p.y)
+		diff.y = p.y;
+	crossdiff = i;
+	if (crossdiff.x > p.y)
+		crossdiff.x = p.y;
+	if (crossdiff.y > p.x)
+		crossdiff.y = p.x;
+	draw_line(buf, (t_point){p.x + i.x, p.y + i.y},
+		(t_point){p.x - diff.x, p.y + i.y}, col);
+	draw_line(buf, (t_point){p.x + i.x, p.y - diff.y},
+		(t_point){p.x - diff.x, p.y - diff.y}, col);
+	draw_line(buf, (t_point){p.x + i.y, p.y + i.x},
+		(t_point){p.x - crossdiff.y, p.y + i.x}, col);
+	draw_line(buf, (t_point){p.x + i.y, p.y - crossdiff.x},
+		(t_point){p.x - crossdiff.y, p.y - crossdiff.x}, col);
+}
+
+/*
 *	Instead of drawing individual pixels on symmetrical positions along the
 *	circle's radius, we draw lines from one end to its opposite.
 */
 void	draw_filled_circle(t_buffer *buf, t_point p, int r, uint32_t color)
 {
-	int	x;
-	int	y;
-	int	d;
+	uint32_t	x;
+	uint32_t	y;
+	int			d;
 
 	x = r;
 	y = 0;
 	d = 1 - r;
 	while (x >= y)
 	{
-		draw_line(buf, (t_point){p.x + x, p.y + y},
-			(t_point){p.x - x, p.y + y}, color);
-		draw_line(buf, (t_point){p.x + x, p.y - y},
-			(t_point){p.x - x, p.y - y}, color);
-		draw_line(buf, (t_point){p.x + y, p.y + x},
-			(t_point){p.x - y, p.y + x}, color);
-		draw_line(buf, (t_point){p.x + y, p.y - x},
-			(t_point){p.x - y, p.y - x}, color);
+		check_drawline(buf, p, (t_point){x, y}, color);
 		if (d < 0)
 			d += (2 * ++y) + 1;
 		else
