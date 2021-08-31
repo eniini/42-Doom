@@ -82,6 +82,7 @@ typedef struct s_mmap {
 	t_vert		min_coord;
 	t_vert		coord_diff;
 	t_vert		buf_unit;
+	t_vert		mm_p_angle;
 	t_buffer	*mmapbuf;
 	int			scale;
 }				t_mmap;
@@ -96,7 +97,6 @@ typedef struct s_map {
 
 typedef struct	s_player {
 	t_point		pos;
-
 }				t_player;
 
 //superstruct that holds all the subsystem structs
@@ -125,10 +125,14 @@ void		draw_circle(t_buffer *buf, t_point p, int r, uint32_t color);
 void		draw_filled_circle(t_buffer *buf, t_point p, int r, uint32_t color);
 void		draw_square(t_point a, t_point b, t_buffer *buf, int color);
 
+void		cull_vertices(t_world *world);
+void		draw_visibleverts(t_map *map, t_world *world);
 void		init_world(t_world *world, t_map *map, t_buffer *buf);
 void		init_minimap(t_world *w, t_mmap *mmmap, t_buffer *buf, uint32_t s);
 void		draw_map(t_map *map, t_world *world);
 void		draw_minimap(t_mmap *mm, t_world *world);
+
+void		rotate_player(t_world *world, t_mmap *mmap, int r);
 
 t_imgdata	*load_tga(const char *filepath);
 void		add_tga_to_rf(t_rf *rf, const char *filepath);

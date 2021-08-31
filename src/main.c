@@ -70,6 +70,11 @@ static void	keyevent(t_doom *doom, SDL_Event *e)
 			doom->player.pos.x += 1;
 		printf("player x = %d\n", doom->player.pos.x);
 		printf("player y = %d\n", doom->player.pos.y);
+		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
+		{
+			rotate_player(&doom->world, &doom->mmap, 1);
+			cull_vertices(&doom->world);
+		}
 	}
 }
 /*

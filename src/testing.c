@@ -91,6 +91,7 @@ static void sprite_test(t_buffer *buf, t_assets *assets)
 
 void	init_tests(t_doom *doom)
 {
+	int	i = 0;
 	//init_boids_positions(assets->flock);
 	doom->rf.fd = rf_open_resourcefile('w', "DATA");
 	//add_tga_to_rf(rf, "resources/a.tga");
@@ -121,7 +122,14 @@ void	init_tests(t_doom *doom)
 	if (!doom->assets.sprite)
 		ft_getout("spritesheet creation failed!");
 	init_world(&doom->world, &doom->map, doom->rend.win_buffer);
-	init_minimap(&doom->world, &doom->mmap, doom->rend.win_buffer, 4);
+	init_minimap(&doom->world, &doom->mmap, doom->rend.win_buffer, 2);
+	while (i < doom->world.vertcount)
+	{
+		ft_printf("[vert %d]=[x:%+.3hd|y:%+.3hd]\n",i, \
+			doom->world.p_verts[i].x, doom->world.p_verts[i].y);
+		i++;
+	}
+	cull_vertices(&doom->world);
 }
 
 void	cleanup_tests(t_assets *assets)
@@ -147,9 +155,9 @@ void	draw_player(t_doom *doom)
 
 void	dotests(t_doom *doom)
 {
-	draw_map(&doom->map, &doom->world);
+	draw_visibleverts(&doom->map, &doom->world);
+	//draw_map(&doom->map, &doom->world);
 	draw_minimap(&doom->mmap, &doom->world);
-	draw_player(doom);
 	//sprite_test(buf, assets);
 	//gridtest(buf);
 	//drawlinetest(buf);

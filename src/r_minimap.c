@@ -66,10 +66,7 @@ void	draw_minimap(t_mmap *mm, t_world *world)
 	do_minimap_line(mm, world->verts[i], world->verts[0], MAP_C_WALL);
 	i = 0;
 	while (i < world->vertcount)
-	{
-		do_minimap_pixel(mm, world->verts[i], MMAP_C_VERTICE);
-		i++;
-	}
+		do_minimap_pixel(mm, world->verts[i++], MMAP_C_VERTICE);
 	do_minimap_circle(mm, world->player, 5, MMAP_C_PLAYER);
-	do_minimap_line(mm, world->player, world->p_angle, MMAP_C_PLAYERLOOK);
+	do_minimap_line(mm, world->player, mm->mm_p_angle, MMAP_C_PLAYERLOOK);
 }

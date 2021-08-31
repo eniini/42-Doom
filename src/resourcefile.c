@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 22:01:59 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/26 18:05:21 by eniini           ###   ########.fr       */
+/*   Updated: 2021/08/26 18:25:26 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,6 @@ t_imgdata	*load_tga_from_rf(t_rf *rf, short lump_id)
 	l_count = get_charray_value(&h[RF_LUMPCOUNT_POSITION], (sizeof(off_t)));
 	l_totalsize = get_charray_value(&h[RF_LUMPLIST_OFFSET], (sizeof(off_t)));
 	ft_printf("Resourcefile loaded with [%ld] lumps", l_count);
-	ft_printf(" and a total size of [%ld] bytes\n", l_totalsize);
+	ft_printf(" with a total size of [%ld] bytes\n", l_totalsize);
 	return (rf_load_tga_lump(rf, lump_id));
 }

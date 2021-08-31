@@ -46,9 +46,13 @@ typedef struct s_range {
 
 typedef struct s_world {
 	t_vert		*verts;
-	int			vertcount;
+	t_vert		*p_verts;
+	t_vert		*v_verts;
 	t_vert		player;
 	t_vert		p_angle;
+	int			vertcount;
+	int			v_vertcount;
+	int			w_angle;
 }				t_world;
 
 long		map_value_to_range(t_range input, t_range output, long value);
