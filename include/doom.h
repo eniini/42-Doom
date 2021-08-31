@@ -94,6 +94,11 @@ typedef struct s_map {
 	t_buffer	*mapbuf;
 }				t_map;
 
+typedef struct	s_player {
+	t_point		pos;
+
+}				t_player;
+
 //superstruct that holds all the subsystem structs
 typedef struct s_doom {
 	t_rend		rend;
@@ -103,6 +108,7 @@ typedef struct s_doom {
 	t_world		world;
 	t_map		map;
 	t_mmap		mmap;
+	t_player	player;
 }				t_doom;
 
 int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);

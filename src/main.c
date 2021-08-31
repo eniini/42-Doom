@@ -29,6 +29,8 @@ static void	init(t_doom *doom)
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, 2, 2048 ) != 0)
 		ft_getout(SDL_GetError());
 	init_audio(&doom->audio);
+	doom->player.pos.x = 100;
+	doom->player.pos.y = 100;
 }
 
 static void	cleanup(t_doom *doom)
@@ -45,6 +47,31 @@ static void	cleanup(t_doom *doom)
 	SDL_Quit();
 }
 
+void	physics(t_doom *doom)
+{
+
+
+
+}
+
+static void	keyevent(t_doom *doom, SDL_Event *e)
+{
+	while (SDL_PollEvent(e))
+	{
+		if (e->window.event == SDL_WINDOWEVENT_CLOSE)
+			doom->rend.run = FALSE;
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_UP)
+			doom->player.pos.y -= 1;
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_DOWN)
+			doom->player.pos.y = doom->player.pos.y + 1;
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_LEFT)
+			doom->player.pos.x -= 1;
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RIGHT)
+			doom->player.pos.x += 1;
+		printf("player x = %d\n", doom->player.pos.x);
+		printf("player y = %d\n", doom->player.pos.y);
+	}
+}
 /*
 *	Note about SDL_LockTexture: void **pixels is 'filled in', meaning that SDL
 *	creates its own allocated pixel buffer thats returned to the given pointer.
@@ -55,12 +82,9 @@ static void	loop(t_doom	*doom)
 {
 	SDL_Event	e;
 
-	while (SDL_PollEvent(&e))
-	{
-		if (e.window.event == SDL_WINDOWEVENT_CLOSE)
-			doom->rend.run = FALSE;
-	}
 	ft_bzero(doom->rend.win_buffer->pixels, WIN_H * WIN_W * sizeof(uint32_t));
+	keyevent(doom, &e);
+	physics(doom);
 	dotests(doom);
 	audios(&doom->audio);
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \

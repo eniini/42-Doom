@@ -137,10 +137,19 @@ void	cleanup_tests(t_assets *assets)
 	free(assets->sprite);
 }
 
+void	draw_player(t_doom *doom)
+{
+
+	draw_circle(doom->map.mapbuf, doom->player.pos, 5, MMAP_C_PLAYER);
+	draw_circle(doom->map.mapbuf, doom->player.pos, 10, MMAP_C_PLAYER);
+
+}
+
 void	dotests(t_doom *doom)
 {
 	draw_map(&doom->map, &doom->world);
 	draw_minimap(&doom->mmap, &doom->world);
+	draw_player(doom);
 	//sprite_test(buf, assets);
 	//gridtest(buf);
 	//drawlinetest(buf);
