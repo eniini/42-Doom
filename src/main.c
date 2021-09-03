@@ -36,6 +36,8 @@ static void	init(t_doom *doom)
 static void	cleanup(t_doom *doom)
 {
 	free(doom->world.verts);
+	free(doom->world.p_verts);
+	free(doom->world.v_walls);
 	SDL_DestroyTexture(doom->rend.win_tex);
 	SDL_DestroyRenderer(doom->rend.renderer);
 	SDL_DestroyWindow(doom->rend.win);
@@ -68,8 +70,8 @@ static void	keyevent(t_doom *doom, SDL_Event *e)
 			doom->player.pos.x -= 1;
 		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_RIGHT)
 			doom->player.pos.x += 1;
-		printf("player x = %d\n", doom->player.pos.x);
-		printf("player y = %d\n", doom->player.pos.y);
+		//printf("player x = %d\n", doom->player.pos.x);
+		//printf("player y = %d\n", doom->player.pos.y);
 		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
 		{
 			rotate_player(&doom->world, &doom->mmap, 1);

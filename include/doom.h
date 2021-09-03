@@ -95,7 +95,7 @@ typedef struct s_map {
 	t_buffer	*mapbuf;
 }				t_map;
 
-typedef struct	s_player {
+typedef struct s_player {
 	t_point		pos;
 }				t_player;
 

@@ -1,128 +1,71 @@
 #include "doom.h"
 
 /*
-*	TODO: probably not ideal to malloc a new list of verts every time player
-*	rotates view, think of alternatives!
+*	Debug colortable
 */
-void	cull_vertices(t_world *world)
+uint32_t	wall_colortable(int i)
 {
-	int		i;
+	static uint32_t	colortable[8] = {
+	0x00b93b3b,
+	0x00b9743b,
+	0x003bb974,
+	0x003bb3b9,
+	0x003b77b9,
+	0x003b3cb9,
+	0x006a3bb9,
+	0x00b93ba8};
 
-	i = 1;
-	if (world->v_verts)
-		free(world->v_verts);
-	world->v_vertcount = 0;
-	world->v_verts = (t_vert *)malloc(sizeof(t_vert) * world->vertcount);
-	if (!world->v_verts)
-		ft_getout("failed to malloc visible vertex array!");
-	while (i < world->vertcount - 1)
-	{
-		if (world->p_verts[i].y > 0 || world->p_verts[i + 1].y > 0)
-		{
-			if (world->p_verts[i].y > 0)
-				world->v_verts[world->v_vertcount] = world->p_verts[i];
-			else
-				world->v_verts[world->v_vertcount] = (t_vert){world->p_verts[i].x, 0};
-			/*if (world->v_verts[world->v_vertcount].y)
-			{
-				world->v_verts[world->v_vertcount].x /= \
-				world->v_verts[world->v_vertcount].y; //emulate distance projection
-			}*/
-			world->v_vertcount++;
-		}
-		i++;
-	}
+	if (i < 8)
+		return (colortable[i]);
+	return (0x00000000);
 }
 
+/*
+*	Translate coordinates into buffer.
+*/
+static void	draw_buffer_line(t_map *map, t_vert start, t_vert end, uint32_t c)
+{
+	draw_line(map->mapbuf, \
+		(t_point){map->mapbuf->w / 2 + map->buf_unit.x * start.x,
+		map->mapbuf->h / 2 + map->buf_unit.y * start.y}, \
+		(t_point){map->mapbuf->w / 2 + map->buf_unit.x * end.x, \
+		map->mapbuf->h / 2 + map->buf_unit.y * end.y}, c);
+}
+
+/*
+*	Draws only what is visible to the player of the currently loaded mapdata.
+*/
 void	draw_visibleverts(t_map *map, t_world *world)
 {
 	int		i;
 
 	i = 0;
-	while (i < world->v_vertcount - 1)
+	while (i < world->v_wallcount)
 	{
-		draw_line(map->mapbuf, (t_point){map->mapbuf->w / 2 + map->buf_unit.x * \
-			world->v_verts[i].x, map->mapbuf->h / 2 + map->buf_unit.y * \
-			world->v_verts[i].y}, (t_point){map->mapbuf->w / 2 + map->buf_unit.x * \
-			world->v_verts[i + 1].x, map->mapbuf->h / 2 + map->buf_unit.y * \
-			world->v_verts[i + 1].y}, MAP_C_WALL);
-		i++;
-	}
-	i = 0;
-	while (i < world->v_vertcount)
-	{
-		draw_pixel(map->mapbuf->w / 2 + map->buf_unit.x * world->v_verts[i].x, \
-		map->mapbuf->h / 2 + map->buf_unit.y * world->v_verts[i].y, map->mapbuf, \
-		MAP_C_VERTICE);
+		draw_buffer_line(map, world->v_walls[i].start, world->v_walls[i].end, \
+			world->v_walls[i].color);
 		i++;
 	}
 }
 
+/*
+*	Draws all the loaded mapdata.
+*/
 void	draw_map(t_map *map, t_world *world)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (i < world->vertcount - 1)
 	{
-		draw_line(map->mapbuf, (t_point){map->mapbuf->w / 2 + map->buf_unit.x * \
-			world->p_verts[i].x, map->mapbuf->h / 2 + map->buf_unit.y * \
-			world->p_verts[i].y}, (t_point){map->mapbuf->w / 2 + map->buf_unit.x * \
-			world->p_verts[i + 1].x, map->mapbuf->h / 2 + map->buf_unit.y * \
-			world->p_verts[i + 1].y}, MAP_C_WALL);
+		draw_buffer_line(map, world->p_verts[i], world->p_verts[i + 1],
+			wall_colortable(i));
 		i++;
 	}
-	draw_line(map->mapbuf, (t_point){map->mapbuf->w / 2 + map->buf_unit.x * \
-		world->p_verts[0].x, map->mapbuf->h / 2 + map->buf_unit.y * \
-		world->p_verts[0].y}, (t_point){map->mapbuf->w / 2 + map->buf_unit.x * \
-		world->p_verts[i].x, map->mapbuf->h / 2 + map->buf_unit.y * \
-		world->p_verts[i].y}, MAP_C_WALL);
+	draw_buffer_line(map, world->p_verts[i], world->p_verts[0],
+		wall_colortable(i));
 	i = 0;
-	while (i < world->vertcount)
-	{
-		draw_pixel(map->mapbuf->w / 2 + map->buf_unit.x * world->p_verts[i].x, \
-		map->mapbuf->h / 2 + map->buf_unit.y * world->p_verts[i].y, map->mapbuf, \
-		MAP_C_VERTICE);
-		i++;
-	}
-	draw_line(map->mapbuf, (t_point){map->mapbuf->w / 2, map->mapbuf->h / 2}, \
-		(t_point){(map->mapbuf->w / 2) + (map->buf_unit.x * world->p_angle.x), \
-		(map->mapbuf->h / 2) + (map->buf_unit.y * world->p_angle.y)}, \
-		MAP_C_PLAYERLOOK);
-	draw_circle(map->mapbuf, (t_point){map->mapbuf->w / 2, map->mapbuf->h / 2}, \
-	10, MMAP_C_PLAYER);
-}
-
-/*
-*	Applies a 2d matrix rotation around the origin / player to every
-*	vertex inside given map. (currently all vertices). So in fact this rotates
-*	the entire world around the player.
-*	! Because our Y-axis points down, this rotates clockwise.
-*/
-void	rotate_player(t_world *w, t_mmap *mmap, int r)
-{
-	int		i;
-	double	c;
-	double	s;
-
-	i = 0;
-	w->w_angle += r;
-	w->w_angle = w->w_angle % 360;
-	c = cos(w->w_angle * RAD_CON);
-	s = sin(w->w_angle * RAD_CON);
-	while (i < w->vertcount)
-	{
-		w->p_verts[i].x = (short)round(w->verts[i].x * c - w->verts[i].y * s);
-		w->p_verts[i].y = (short)round(w->verts[i].x * s + w->verts[i].y * c);
-		i++;
-	}
-	i = 0;
-	while (i < w->v_vertcount)
-	{
-		w->v_verts[i].x = (short)round(w->verts[i].x * c - w->verts[i].y * s);
-		w->v_verts[i].y = (short)round(w->verts[i].x * s + w->verts[i].y * c);
-		i++;
-	}
-	mmap->mm_p_angle.x = (short)round((w->p_angle.x * c) - (w->p_angle.y * s));
-	mmap->mm_p_angle.y = (short)round((w->p_angle.x * s) + (w->p_angle.y * c));
+	draw_buffer_line(map, (t_vert){0, 0}, world->p_angle, MMAP_C_PLAYERLOOK);
+	draw_circle(map->mapbuf, (t_point){map->mapbuf->w / 2, map->mapbuf->h / 2},
+		10, MMAP_C_PLAYER);
 }

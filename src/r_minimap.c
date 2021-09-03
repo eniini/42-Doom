@@ -60,10 +60,11 @@ void	draw_minimap(t_mmap *mm, t_world *world)
 		C_BLACK);
 	while (i < world->vertcount - 1)
 	{
-		do_minimap_line(mm, world->verts[i], world->verts[i + 1], MAP_C_WALL);
+		do_minimap_line(mm, world->verts[i], world->verts[i + 1], \
+			wall_colortable(i));
 		i++;
 	}
-	do_minimap_line(mm, world->verts[i], world->verts[0], MAP_C_WALL);
+	do_minimap_line(mm, world->verts[i], world->verts[0], wall_colortable(i));
 	i = 0;
 	while (i < world->vertcount)
 		do_minimap_pixel(mm, world->verts[i++], MMAP_C_VERTICE);

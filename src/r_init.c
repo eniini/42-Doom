@@ -51,27 +51,10 @@ static void	normalize_coords(t_vert *min, t_vert *max)
 		max->x = max->y;
 }
 
-void	init_world(t_world *world, t_map *map, t_buffer *buf)
+static void	init_world_cont(t_world *world, t_map *map, t_buffer *buf)
 {
 	int	i;
 
-	world->w_angle = 0;
-	world->player = (t_vert){0, 0};
-	world->p_angle = (t_vert){0 * MAP_UNIT, 1 * MAP_UNIT};
-	world->vertcount = 8;
-	world->verts = malloc(sizeof(t_vert) * world->vertcount);
-	world->p_verts = malloc(sizeof(t_vert) * world->vertcount);
-	world->v_verts = NULL;
-	if (!world->verts || !world->p_verts)
-		ft_getout("failed to malloc world.verts[]!");
-	world->verts[0] = (t_vert){2 * MAP_UNIT, -4 * MAP_UNIT},
-		world->verts[1] = (t_vert){4 * MAP_UNIT, 1 * MAP_UNIT},
-		world->verts[2] = (t_vert){1 * MAP_UNIT, 1 * MAP_UNIT},
-		world->verts[3] = (t_vert){0 * MAP_UNIT, 4 * MAP_UNIT},
-		world->verts[4] = (t_vert){-1 * MAP_UNIT, 1 * MAP_UNIT},
-		world->verts[5] = (t_vert){-4 * MAP_UNIT, 1 * MAP_UNIT},
-		world->verts[6] = (t_vert){-2 * MAP_UNIT, -4 * MAP_UNIT},
-		world->verts[7] = (t_vert){0 * MAP_UNIT, -1 * MAP_UNIT};
 	i = 0;
 	while (i < world->vertcount)
 	{
@@ -86,6 +69,30 @@ void	init_world(t_world *world, t_map *map, t_buffer *buf)
 	map->buf_unit.x = ((short)buf->h / map->coord_diff.x);
 	map->buf_unit.y = ((short)buf->h / map->coord_diff.y);
 	map->mapbuf = buf;
+}
+
+void	init_world(t_world *world, t_map *map, t_buffer *buf)
+{
+	world->w_angle = 0;
+	world->player = (t_vert){0, 0};
+	world->p_angle = (t_vert){0 * MAP_UNIT, 1 * MAP_UNIT};
+	world->vertcount = 8;
+	world->verts = malloc(sizeof(t_vert) * world->vertcount);
+	world->p_verts = malloc(sizeof(t_vert) * world->vertcount);
+	world->v_walls = malloc(sizeof(t_linedef) * (world->vertcount * 2));
+	if (!world->v_walls)
+		ft_getout("failed to malloc visible wall array!");
+	if (!world->verts || !world->p_verts)
+		ft_getout("failed to malloc world.verts[]!");
+	world->verts[0] = (t_vert){2 * MAP_UNIT, -4 * MAP_UNIT},
+		world->verts[1] = (t_vert){4 * MAP_UNIT, 1 * MAP_UNIT},
+		world->verts[2] = (t_vert){1 * MAP_UNIT, 1 * MAP_UNIT},
+		world->verts[3] = (t_vert){0 * MAP_UNIT, 4 * MAP_UNIT},
+		world->verts[4] = (t_vert){-1 * MAP_UNIT, 1 * MAP_UNIT},
+		world->verts[5] = (t_vert){-4 * MAP_UNIT, 1 * MAP_UNIT},
+		world->verts[6] = (t_vert){-2 * MAP_UNIT, -4 * MAP_UNIT},
+		world->verts[7] = (t_vert){0 * MAP_UNIT, -1 * MAP_UNIT};
+	init_world_cont(world, map, buf);
 }
 
 void	init_minimap(t_world *w, t_mmap *mmap, t_buffer *buf, uint32_t s)

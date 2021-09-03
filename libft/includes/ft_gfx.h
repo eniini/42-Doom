@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 17:23:17 by eniini            #+#    #+#             */
-/*   Updated: 2021/06/21 19:05:17 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/03 14:26:06 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 # include <math.h>
 # include "libft.h"
 
-# define RAD_CON	0.01745329251993888928
+# define DEG_TO_RAD 0.01745329251
+# define RAD_TO_DEG 57.2957795131
 
 //	Rotation matrix for RGB/integer colors
 typedef struct s_rgb_mat

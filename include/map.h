@@ -39,6 +39,12 @@ typedef struct s_vert {
 	short	y;
 }				t_vert;
 
+typedef struct s_linedef {
+	t_vert		start;
+	t_vert		end;
+	uint32_t	color;
+}				t_linedef;
+
 typedef struct s_range {
 	long	start;
 	long	end;
@@ -47,13 +53,15 @@ typedef struct s_range {
 typedef struct s_world {
 	t_vert		*verts;
 	t_vert		*p_verts;
-	t_vert		*v_verts;
+	t_linedef	*v_walls;
 	t_vert		player;
 	t_vert		p_angle;
 	int			vertcount;
-	int			v_vertcount;
+	int			v_wallcount;
 	int			w_angle;
 }				t_world;
+
+uint32_t	wall_colortable(int i);
 
 long		map_value_to_range(t_range input, t_range output, long value);
 uint32_t	map_value_to_buffer(t_range input, uint32_t limit, long value);

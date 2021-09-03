@@ -20,6 +20,7 @@ SRC_LIST =	main.c \
 		r_init.c \
 		r_map.c \
 		r_minimap.c \
+		r_rotation.c \
 		r_utility.c \
 		resourcefile.c \
 		rf_lump.c \
