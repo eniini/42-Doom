@@ -72,6 +72,11 @@ typedef struct s_point {
 	uint32_t	y;
 }				t_point;
 
+typedef struct s_f_point {
+	float		x;
+	float		y;
+}				t_f_point;
+
 typedef struct s_audio {
 	Mix_Chunk	*sound;
 	t_bool		sound_trigger;
@@ -96,8 +101,15 @@ typedef struct s_map {
 }				t_map;
 
 typedef struct s_player {
-	t_point		pos;
+	t_f_point		pos;
 }				t_player;
+
+typedef struct s_keys {
+	t_bool	up_pressed;
+	t_bool	down_pressed;
+	t_bool	left_pressed;
+	t_bool	right_pressed;
+}				t_keys;
 
 //superstruct that holds all the subsystem structs
 typedef struct s_doom {
@@ -109,6 +121,9 @@ typedef struct s_doom {
 	t_map		map;
 	t_mmap		mmap;
 	t_player	player;
+	t_keys		keys;
+	int			global_fps;
+	t_bool		fps_switch;
 }				t_doom;
 
 int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);
@@ -148,4 +163,5 @@ void		init_audio(t_audio *audio);
 void		audio_cleanup(t_audio *audio);
 void		audios(t_audio *audio);
 
+void		fps_counter(int *global_fps);
 #endif

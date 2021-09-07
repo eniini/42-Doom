@@ -145,14 +145,6 @@ void	cleanup_tests(t_assets *assets)
 	free(assets->sprite);
 }
 
-void	draw_player(t_doom *doom)
-{
-
-	draw_circle(doom->map.mapbuf, doom->player.pos, 5, MMAP_C_PLAYER);
-	draw_circle(doom->map.mapbuf, doom->player.pos, 10, MMAP_C_PLAYER);
-
-}
-
 void	dotests(t_doom *doom)
 {
 	draw_visibleverts(&doom->map, &doom->world);
