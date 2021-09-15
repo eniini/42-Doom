@@ -49,14 +49,14 @@ void	mouse_click(SDL_Event e, t_img *img)
 				working_to_undo(img->edit);
 				set_walls(pixel, img, img->edit->working);
 				working_to_output(img->edit);
-				draw_map(img, img->edit->output);
+				draw_emap(img, img->edit->output);
 			}
 			else
 			{
 				undo_to_working(img->edit);
 				set_walls(pixel, img, img->edit->working);
 				working_to_output(img->edit);
-				draw_map(img, img->edit->output);
+				draw_emap(img, img->edit->output);
 				img->edit->redo = FALSE;
 			}
 		}

@@ -8,15 +8,26 @@ LFLAGS	=	-Wall -Wextra -g #-Werror #-O3
 SRC_DIR =	./src/
 OBJ_DIR =	./build/
 SRC_LIST =	main.c \
+		array_value_manip.c \
 		draw_pixel.c \
 		draw_line.c \
 		draw_shapes.c \
 		load_tga.c \
 		blit.c \
+		spritesheet.c \
 		boids.c \
-		vec_utility.c \
 		testing.c \
-		resourcefile.c
+		r_init.c \
+		r_map.c \
+		r_minimap.c \
+		r_rotation.c \
+		r_utility.c \
+		resourcefile.c \
+		rf_lump.c \
+		rf_io.c \
+		vec_math.c \
+		vec_utility.c \
+		audio.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))
 
@@ -56,6 +67,7 @@ $(SDL_BIN) :
 clean:
 	make clean -C libft
 	rm -rf $(OBJ_DIR)
+	rm -rf DATA
 
 fclean: clean
 	rm $(NAME)

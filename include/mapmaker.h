@@ -66,7 +66,7 @@ void	key_events(SDL_Event e, t_img *img);
 void	init_editor(t_img *img);
 void	clear_canvas(t_img *img);
 void	save_map(t_wall *src, t_wall *dest, int size);
-void	draw_map(t_img *img, t_buf *output);
+void	draw_emap(t_img *img, t_buf *output);
 //void	draw_map(t_img *img, t_editor *edit);
 void	set_walls(t_point pixel, t_img *img, t_buf *buf);
 void	draw_button(int y_start, t_img *img, uint32_t colour);

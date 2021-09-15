@@ -29,13 +29,13 @@ void	undo_last(t_img *img)
 		img->edit->undo->finished = -1;
 	}
 	undo_to_output(img->edit);
-	draw_map(img, img->edit->output);
+	draw_emap(img, img->edit->output);
 	img->edit->redo = TRUE;
 }
 
 void	redo_last(t_img *img)
 {
 	working_to_output(img->edit);
-	draw_map(img, img->edit->output);
+	draw_emap(img, img->edit->output);
 	img->edit->redo = FALSE;
 }

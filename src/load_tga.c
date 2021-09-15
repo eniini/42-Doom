@@ -16,7 +16,7 @@ static t_bool	load_data(t_imgdata *img, int fd)
 
 	readbytes = 0;
 	i = 0;
-	img_size = img->w * img->h * (img->bpp / 8);
+	img_size = img->w * img->h * 4;
 	rawdata = (char *)malloc(img_size);
 	img->data = (uint32_t *)malloc(sizeof(uint32_t) * img->w * img->h);
 	if (!img->data || !rawdata)
@@ -57,8 +57,7 @@ t_imgdata 	*load_tga(const char *filepath)
 		return (NULL);
 	img->w = header[0x0C] | header[0x0D] << 8;
 	img->h = header[0x0E] | header[0x0F] << 8;
-	img->bpp = header[0x10];
-	if (img->bpp != 32 || header[0x02] != 2)
+	if (header[0x10] != 32 || header[0x02] != 2)
 	{
 		free(img);
 		return (NULL);
@@ -70,62 +69,90 @@ t_imgdata 	*load_tga(const char *filepath)
 
 /*
 *	Takes in a writeable file descriptor for the resource file.
-*	Returns 0 if [fd] can't be opened, tga file can't be accessed or read
+*	Returns FALSE if [fd] can't be opened, tga file can't be accessed or read
 *	or if writing to the resource file fails.
-*	Otherwise returns the amount of bytes written.
 */
-uint32_t	load_tga_info_rf(const char *filepath, int rf_fd, uint32_t offset)
+t_bool	rf_load_tga_into_rf(t_rf *rf, const char *filepath)
 {
 	int				tga_fd;
 	char			*buffer;
-	ssize_t			retval;
+	off_t			retval;
 	unsigned char	header[18];
-	ssize_t			imgbytesize;
+	long		 	imgbytesize;
 
 	tga_fd = open(filepath, O_RDONLY);
-	if (tga_fd <= 0 || rf_fd <= 0)
+	if (tga_fd <= 0 || rf->fd <= 0)
 		return (FALSE);
 	if (read(tga_fd, header, 18) != 18)
 		return (FALSE);
 	imgbytesize = ((header[0x0C] | header[0x0D] << 8) * \
 		(header[0x0E] | header[0x0F] << 8) * (header[0x10] / 8)) + 18;
+	if (imgbytesize <= 0)
+		return (FALSE);
 	buffer = malloc(imgbytesize);
 	if (!buffer)
 		return (FALSE);
-	lseek(tga_fd, 0, SEEK_SET);
-	if (read(tga_fd, (void *)buffer, imgbytesize) != imgbytesize)
+	if (lseek(tga_fd, 0, SEEK_SET) == -1)
 		return (FALSE);
-	lseek(rf_fd, offset, SEEK_SET);
-	retval = write(rf_fd, (void *)buffer, imgbytesize);
+	if (read(tga_fd, (void *)buffer, (size_t)imgbytesize) != imgbytesize)
+		return (FALSE);
+	if (close(tga_fd) == -1)
+		return (FALSE);
+	if (lseek(rf->fd, rf->lumpdata_offset, SEEK_SET) == -1)
+		return (FALSE);
+	retval = write(rf->fd, (void *)buffer, imgbytesize);
 	free(buffer);
-	if (retval != imgbytesize || retval - 1)
+	if (retval != imgbytesize)
 		return (FALSE);
-	return ((uint32_t)retval);
+	if (!rf_create_lumpinfo(rf, retval, RF_TYPE_TGA))
+		return (FALSE);
+	return (TRUE);
 }
 
 /*
 *	Loads TGA from a resource file.
 *	Assumes that [fd] points at the first byte of the image header data.
 */
-t_imgdata	*load_tga_from_rf(int fd)
+t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id)
 {
+	t_rf_lump		*next;
+	t_rf_lump		*head;
 	unsigned char	header[18];
 	t_imgdata		*img;
 
-	if (read(fd, header, 18) != 18)
+	head = rf->lumplist;
+	next = rf->lumplist->next;
+	while (rf->lumplist->id != lump_id)
+	{
+		if (next == NULL)
+			ft_getout("no TGA lump with correct id found");
+		rf->lumplist = next;
+		next = rf->lumplist->next;
+	}
+	if (rf->lumplist->type != RF_TYPE_TGA)
+		ft_getout("found lump with correct ID but wrong data type");
+	if (lseek(rf->fd, rf->lumplist->offset, SEEK_SET) != rf->lumplist->offset)
+		ft_getout("failed to position fd correctly to read data");
+	if (read(rf->fd, header, 18) == -1)
+	{
+		ft_getout(strerror(errno));
 		return (NULL);
+	}
 	img = malloc(sizeof(t_imgdata));
 	if (!img)
+	{
+		ft_getout(strerror(errno));
 		return (NULL);
+	}
 	img->w = header[0x0C] | header[0x0D] << 8;
 	img->h = header[0x0E] | header[0x0F] << 8;
-	img->bpp = header[0x10];
-	if (img->bpp != 32 || header[0x02] != 2)
+	if (header[0x10] != 32 || header[0x02] != 2)
 	{
 		free(img);
 		return (NULL);
 	}
-	if (!load_data(img, fd))
+	if (!load_data(img, rf->fd))
 		return (NULL);
+	rf->lumplist = head;
 	return (img);
 }

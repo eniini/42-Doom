@@ -33,9 +33,9 @@ static void	tga_load_test(t_buffer *buf, t_assets *assets)
 	static uint32_t	y;
 	static float	size = 1;
 
-	if (blit_img_scaled(assets->testimg, buf, \
-		(t_point){x, y}, size) < 0)
-		ft_getout("blit out of bounds / Nulpointer / too small");
+	blit_img_scaled(assets->testimg001, buf, (t_point){x, y}, size);
+	blit_img_scaled(assets->testimg002, buf, (t_point){x + 50, y + 50}, size);
+	blit_img_scaled(assets->testimg003, buf, (t_point){x + 100, y + 100}, size);
 	if (y < WIN_H)
 	{
 		if (x < WIN_W)
@@ -73,25 +73,86 @@ static void	gridtest(t_buffer *buf)
 	}
 }
 
-void	init_tests(t_assets *assets)
+static void sprite_test(t_buffer *buf, t_assets *assets)
 {
-	init_boids_positions(assets->flock);
-	create_rf();
-	assets->testimg = load_from_rf();
-	if (!assets->testimg)
-		ft_getout("failed to load test image");
+	static int i = 0;
+	static int counter = 0;
+	blit_img(assets->sprite->img, buf, (t_point){0, 0});
+	blit_sprite(assets->sprite, buf, i, (t_point){0, 0});
+	if (counter > 1000)
+	{
+		counter = 0;
+		i++;
+		if (i > 16)
+			i = 0;
+	}
+	counter++;
+}
+
+void	init_tests(t_doom *doom)
+{
+	int	i = 0;
+	//init_boids_positions(assets->flock);
+	doom->rf.fd = rf_open_resourcefile('w', "DATA");
+	//add_tga_to_rf(rf, "resources/a.tga");
+	//add_tga_to_rf(rf, "resources/b.tga");
+	//add_tga_to_rf(rf, "resources/c.tga");
+	add_tga_to_rf(&doom->rf, "resources/ikaruga.tga");
+	rf_write_lumplist(&doom->rf);
+	rf_close_fd(&doom->rf);
+	/*assets->testimg001 = load_tga_from_rf(rf, 001);
+	if (!(assets->testimg001))
+		ft_getout("failed to load test image001");
+	ft_printf("asset 001 loaded successfully!\n");
+	assets->testimg002 = load_tga_from_rf(rf, 002);
+	if (!assets->testimg002)
+		ft_getout("failed to load test image002");
+	ft_printf("asset 002 loaded successfully!\n");
+	assets->testimg003 = load_tga_from_rf(rf, 003);
+	if (!assets->testimg003)
+		ft_getout("failed to load test image003");
+	ft_printf("asset 003 loaded successfully!\n");*/
+	doom->assets.sprite_tester = load_tga_from_rf(&doom->rf, 001);
+	if (!doom->assets.sprite_tester)
+		ft_getout("failed to load spritesheet TGA");
+	ft_printf("asset [ikaruga.tga] loaded successfully!\n");
+	rf_free_lumplist(doom->rf.lumplist);
+	doom->assets.sprite = create_sprite(doom->assets.sprite_tester, 16, \
+		(t_point){200, 200});
+	if (!doom->assets.sprite)
+		ft_getout("spritesheet creation failed!");
+	init_world(&doom->world, &doom->map, doom->rend.win_buffer);
+	init_minimap(&doom->world, &doom->mmap, doom->rend.win_buffer, 2);
+	while (i < doom->world.vertcount)
+	{
+		ft_printf("[vert %d]=[x:%+.3hd|y:%+.3hd]\n",i, \
+			doom->world.p_verts[i].x, doom->world.p_verts[i].y);
+		i++;
+	}
+	cull_vertices(&doom->world);
 }
 
 void	cleanup_tests(t_assets *assets)
 {
-	free(assets->testimg->data);
-	free(assets->testimg);
+	//free(assets->testimg001->data);
+	//free(assets->testimg001);
+	//free(assets->testimg002->data);
+	//free(assets->testimg002);
+	//free(assets->testimg003->data);
+	//free(assets->testimg003);
+	free(assets->sprite->img->data);
+	free(assets->sprite->img);
+	free(assets->sprite);
 }
 
-void	dotests(t_buffer *buf, t_assets *assets)
+void	dotests(t_doom *doom)
 {
-	gridtest(buf);
-	drawlinetest(buf);
-	tga_load_test(buf, assets);
-	update_boids(assets->flock, buf);
+	draw_visibleverts(&doom->map, &doom->world);
+	//draw_map(&doom->map, &doom->world);
+	draw_minimap(&doom->mmap, &doom->world);
+	//sprite_test(buf, assets);
+	//gridtest(buf);
+	//drawlinetest(buf);
+	//tga_load_test(buf, assets);
+	//update_boids(assets->flock, buf);
 }

@@ -7,7 +7,7 @@
 ** every case, and if an end point is specified, draws a connecting line.
 */
 
-void	draw_map(t_img *img, t_buf *output)
+void	draw_emap(t_img *img, t_buf *output)
 {
 	int	i;
 

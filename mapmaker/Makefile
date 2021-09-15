@@ -15,7 +15,7 @@ SRC_LIST =	main.c \
 			draw_line.c \
 			draw_pixel.c \
 			draw_shapes.c \
-			draw_map.c \
+			draw_emap.c \
 			draw_button.c \
 			init.c \
 			error.c \

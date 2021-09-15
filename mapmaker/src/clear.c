@@ -58,5 +58,5 @@ void	event_clear(t_img *img)
 	working_to_undo(img->edit);
 	clear_buffer(img->edit->working);
 	working_to_output(img->edit);
-	draw_map(img, img->edit->output);
+	draw_emap(img, img->edit->output);
 }
