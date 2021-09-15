@@ -1,40 +1,73 @@
-#include "doom.h"
-#include <stdio.h>
+#include "mapmaker.h"
+
+/*
+** Toggles the "connect" flag for the editor, then modifies
+** the necessary values in order for it to take effect immediately.
+*/
+
+static void	toggle_cnct(t_editor *edit)
+{
+	t_point	nul;
+	int		i;
+
+	nul.x = 0;
+	nul.y = 0;
+	i = edit->working->i;
+	if (edit->cnct == TRUE)
+	{
+		edit->cnct = FALSE;
+		edit->working->walls[i].start = nul;
+		edit->working->finished = -1;
+	}
+	else
+	{
+		edit->cnct = TRUE;
+		edit->working->walls[i].start = edit->working->walls[i - 1].end;
+		edit->working->finished = FALSE;
+	}
+}
 
 /*
 ** Takes in the clicked mouse event and does necessary action based on which button
-** has been pressed.
+** has been pressed. Checks where it has been pressed and whether this corresponds to
+** a button or to draw on the map.
 */
 
-void	mouse_click(SDL_Event e, t_rend *rend)
+void	mouse_click(SDL_Event e, t_img *img)
 {
-	int	x;
-	int	y;
-	int	pixel;
+	t_point	pixel;
 
-	x = e.button.x;
-	y = e.button.y;
-	rend->mouse.new.x = x;
-	rend->mouse.new.y = y;
-	pixel = y * WIN_W + x;
+	pixel.x = (uint32_t)e.button.x;
+	pixel.y = (uint32_t)e.button.y;
+	img->mouse.new = pixel;
 	if (e.button.button == 1)
 	{
-		if (rend->mouse.line == -1 || (rend->mouse.new.x != rend->mouse.prev.x \
-			&& rend->mouse.new.y != rend->mouse.prev.y))
+		if (pixel.x >= (TBAR_W + RADIUS))
 		{
-			if (rend->mouse.line == TRUE)
+			if (img->edit->redo == FALSE)
 			{
-				draw_line(rend, rend->mouse.prev, rend->mouse.new);
-				rend->mouse.prev.x = rend->mouse.new.x;
-				rend->mouse.prev.y = rend->mouse.new.y;
+				working_to_undo(img->edit);
+				set_walls(pixel, img, img->edit->working);
+				working_to_output(img->edit);
+				draw_map(img, img->edit->output);
 			}
-			if (rend->mouse.line == -1)
+			else
 			{
-				rend->mouse.prev.x = x;
-				rend->mouse.prev.y = y;
-				rend->mouse.line = TRUE;
+				undo_to_working(img->edit);
+				set_walls(pixel, img, img->edit->working);
+				working_to_output(img->edit);
+				draw_map(img, img->edit->output);
+				img->edit->redo = FALSE;
 			}
-			draw_dot(rend, pixel);
+		}
+		else if (pixel.x >= BUTTON_X && pixel.x <= BUTTON_X + BUTTON_SIZE)
+		{
+//			if (pixel.y >= BUTTON_SAVE && (pixel.y <= BUTTON_SAVE + BUTTON_SIZE))
+//				save_map(img);
+			if (pixel.y >= BUTTON_CNCT && (pixel.y <= BUTTON_CNCT + BUTTON_SIZE))
+				toggle_cnct(img->edit);
+			else if (pixel.y >= BUTTON_UNDO && (pixel.y <= BUTTON_UNDO + BUTTON_SIZE))
+				undo_last(img);
 		}
 	}
 }

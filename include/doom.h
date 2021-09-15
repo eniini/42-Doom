@@ -4,6 +4,7 @@
 # include <stdint.h> //for datatypes
 # include <string.h> //for sterror
 # include <errno.h> //for errno macro
+# include <unistd.h> //for write TBD
 
 # include "../libSDL2/include/SDL2/SDL_mixer.h"
 # include "../libSDL2/include/SDL2/SDL.h"
@@ -19,28 +20,32 @@
 # define TRUE 1
 # define FALSE 0
 
-# define WHITE 0XFFFFFF
-# define GREY 0X949494
+/*
+** COLOURS
+*/
+
+# define BLUE		0XFF0000FF
+# define GREEN		0XFF00FF00
+# define RED		0XFFFF0000
+# define TEAL		0XFF00FBFF
+# define GREY		0XFF949494
+# define WHITE		0XFFFFFFFF
+# define BLACK		0XFF000000
 
 # include "boid.h"
 # include "vector.h"
 //# include "resourcefile.h"
-
+/*
 # define WIN_W 800
 # define WIN_H 600
 # define WIN_NAME "DOOM-NUKEM @42 BY ESUKAVA/ENIINI/ESORMUNE"
-
+*/
+//datatype for handling buffer/array coordinates
 typedef struct s_point {
-	int	x;
-	int	y;
+	uint32_t	x;
+	uint32_t	y;
 }				t_point;
 
-typedef struct s_mouse
-{
-	t_point	prev;
-	t_point	new;
-	int		line;
-}				t_mouse;
 
 typedef struct s_buffer {
 	uint32_t		*pixels;
@@ -57,12 +62,8 @@ typedef struct s_rend
 	t_buffer		*win_buffer;
 	int				win_pixel_pitch;
 	t_bool			run;
-	t_mouse			mouse;
 }					t_rend;
 
-void	mouse_click(SDL_Event e, t_rend *rend);
-void	draw_dot(t_rend *rend, int pixel);
-//void	draw_line(t_rend *rend, t_point start, t_point end);
 
 //this should probably be generic memory unit for all 'images'
 //thats why we probably need offset values. Also BPP might be useless since
@@ -84,17 +85,6 @@ typedef struct s_assets {
 }				t_assets;
 
 t_imgdata	*load_tga(const char *filepath);
-
-<<<<<<< HEAD
-//{int x, int y} //Do we want these to be other way around?
-
-=======
-//datatype for handling buffer/array coordinates
-typedef struct s_point {
-	uint32_t	x;
-	uint32_t	y;
-}				t_point;
->>>>>>> 780b92eaa12ed34cd37883f4310129ce708eeb5f
 
 int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);
 int			blit_img_scaled(t_imgdata *img, t_buffer *buf, \

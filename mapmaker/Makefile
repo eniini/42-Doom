@@ -7,7 +7,20 @@ LFLAGS	=	-Wall -Wextra -g #-O3 -Werror
 #sources & object files
 SRC_DIR =	./src/
 OBJ_DIR =	./build/
-SRC_LIST =	main.c mouse.c draw.c
+SRC_LIST =	main.c \
+			mouse.c \
+			keys.c \
+			clear.c \
+			save.c \
+			draw_line.c \
+			draw_pixel.c \
+			draw_shapes.c \
+			draw_map.c \
+			draw_button.c \
+			init.c \
+			error.c \
+			walls.c \
+			undo.c
 
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))

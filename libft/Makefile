@@ -6,7 +6,7 @@
 #    By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/11 10:42:46 by eniini            #+#    #+#              #
-#    Updated: 2021/07/17 19:20:40 by esormune         ###   ########.fr        #
+#    Updated: 2021/08/19 21:53:11 by esormune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -121,7 +121,8 @@ SRCS	=	ft_free_arr.c \
 		ft_putwstr.c \
 		ft_wcharlen.c \
 		ft_wstrlen.c \
-		ft_wstrnlen.c
+		ft_wstrnlen.c \
+		ft_calloc.c
 PFTSRCS	=	ft_printf.c \
 		ftprintf_c.c \
 		ftprintf_convert.c \
