@@ -53,5 +53,5 @@ void	l_clicked(t_point pixel, t_img *img, t_editor *edit)
 			edit->current = edit->current->next;
 		}
 	}
-	printf_head(edit->head);
+//	printf_head(edit->head);
 }

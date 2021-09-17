@@ -44,7 +44,7 @@ void	mouse_click(SDL_Event e, t_img *img)
 	{
 		if (pixel.x >= (TBAR_W + RADIUS))
 		{
-			if (img->edit->redo == FALSE)
+/*			if (img->edit->redo == FALSE)
 			{
 				working_to_undo(img->edit);
 				set_walls(pixel, img, img->edit->working);
@@ -58,8 +58,9 @@ void	mouse_click(SDL_Event e, t_img *img)
 				working_to_output(img->edit);
 				draw_emap(img, img->edit->output);
 				img->edit->redo = FALSE;
-			}
+			}*/
 			l_clicked(pixel, img, img->edit);
+			e_draw_map(img, img->edit->head);
 		}
 		else if (pixel.x >= BUTTON_X && pixel.x <= BUTTON_X + BUTTON_SIZE)
 		{

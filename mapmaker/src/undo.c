@@ -1,5 +1,40 @@
 #include "mapmaker.h"
 
+
+/*
+** Goes through the list to find the last and second to last
+** items of the list. The second-to-last's next gets set to NULL,
+** while the last item gets put at the top of the tail list
+** pointer.
+*/
+
+void	e_undo_last(t_editor *edit)
+{
+	t_wlist	*temp;
+	t_wlist	*last;
+
+	temp = edit->head;
+	if (!temp)
+		return ;
+	last = w_lstlast(edit->head);
+	if (last == temp)
+	{
+		edit->head = NULL;
+		return ;
+	}
+	if (temp->next != NULL)
+	{
+		while (temp->next->next != NULL)
+			temp = temp->next;
+		temp->next = NULL;
+	}
+	w_lstadd(&edit->tail, last);
+	printf("tail:\n");
+	printf_head(edit->tail);
+	printf("head:\n");
+	printf_head(edit->head);
+}
+
 /*
 ** In the case of a undo/redo event, the output of either the
 ** undo or the working buffer is put out on the output. The

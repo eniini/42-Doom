@@ -92,6 +92,7 @@ void	init_editor(t_img *img)
 	///////// !!!!!!!!!!!
 	img->edit->current = NULL;
 	img->edit->head = NULL;
+	img->edit->tail = NULL;
 	img->edit->i = 0;
 	img->edit->finished = -1;
 }

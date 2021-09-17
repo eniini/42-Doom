@@ -50,6 +50,7 @@ typedef struct s_editor
 	t_buf	*working;
 	t_buf	*undo;
 	t_wlist	*head;
+	t_wlist	*tail;
 	t_wlist	*current;
 //	t_list	*lst;
 	int		i;
@@ -108,3 +109,6 @@ void	w_lstpush(t_wlist **alst, t_wlist *new);
 int		w_lstsize(t_wlist *lst);
 
 void	l_clicked(t_point pixel, t_img *img, t_editor *edit);
+void	e_draw_map(t_img *img, t_wlist *head);
+void	e_undo_last(t_editor *edit);
+void	printf_head(t_wlist *head);
