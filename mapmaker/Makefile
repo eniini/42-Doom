@@ -20,7 +20,9 @@ SRC_LIST =	main.c \
 			init.c \
 			error.c \
 			walls.c \
-			undo.c
+			undo.c \
+			lists.c \
+			l_add.c
 
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))

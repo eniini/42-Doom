@@ -25,7 +25,6 @@ void	init_points(t_img *img)
 	}
 }
 
-
 /*
 ** Initialises buttons onto the toolbar.
 */
@@ -90,6 +89,11 @@ void	init_editor(t_img *img)
 	init_points(img);
 	img->edit->cnct = TRUE;
 	img->edit->redo = FALSE;
+	///////// !!!!!!!!!!!
+	img->edit->current = NULL;
+	img->edit->head = NULL;
+	img->edit->i = 0;
+	img->edit->finished = -1;
 }
 /*
 void	clear_buffer(t_img *img)

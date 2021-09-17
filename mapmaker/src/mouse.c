@@ -59,6 +59,7 @@ void	mouse_click(SDL_Event e, t_img *img)
 				draw_emap(img, img->edit->output);
 				img->edit->redo = FALSE;
 			}
+			l_clicked(pixel, img, img->edit);
 		}
 		else if (pixel.x >= BUTTON_X && pixel.x <= BUTTON_X + BUTTON_SIZE)
 		{
