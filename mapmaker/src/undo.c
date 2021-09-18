@@ -19,6 +19,7 @@ void	e_undo_last(t_editor *edit)
 	last = w_lstlast(edit->head);
 	if (last == temp)
 	{
+		w_lstadd(&edit->tail, last);
 		edit->head = NULL;
 		return ;
 	}
