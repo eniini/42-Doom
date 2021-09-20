@@ -66,8 +66,8 @@ static void	init_world_cont(t_world *world, t_map *map, t_buffer *buf)
 	normalize_coords(&map->min_coord, &map->max_coord);
 	map->coord_diff.x = map->max_coord.x - map->min_coord.x;
 	map->coord_diff.y = map->max_coord.y - map->min_coord.y;
-	map->buf_unit.x = ((short)buf->h / map->coord_diff.x);
-	map->buf_unit.y = ((short)buf->h / map->coord_diff.y);
+	map->buf_unit.x = ((int)buf->h / map->coord_diff.x);
+	map->buf_unit.y = ((int)buf->h / map->coord_diff.y);
 	map->mapbuf = buf;
 }
 
@@ -102,8 +102,8 @@ void	init_minimap(t_world *w, t_mmap *mmap, t_buffer *buf, uint32_t s)
 	normalize_coords(&mmap->min_coord, &mmap->max_coord);
 	mmap->coord_diff.x = mmap->max_coord.x - mmap->min_coord.x;
 	mmap->coord_diff.y = mmap->max_coord.y - mmap->min_coord.y;
-	mmap->buf_unit.x = ((short)buf->h / mmap->coord_diff.x);
-	mmap->buf_unit.y = ((short)buf->h / mmap->coord_diff.y);
+	mmap->buf_unit.x = ((int)buf->h / mmap->coord_diff.x);
+	mmap->buf_unit.y = ((int)buf->h / mmap->coord_diff.y);
 	mmap->scale = s;
 	mmap->mmapbuf = buf;
 	mmap->mm_p_angle = w->p_angle;

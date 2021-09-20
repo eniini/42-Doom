@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 17:56:50 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/03 18:04:55 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/06 15:54:58 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static t_vert	project_point_to_axis(t_vert p, t_vert n)
 	if (p.x <= 0)
 	{
 		a_tan = RAD_TO_DEG * atan((abs(n.x - p.x) / (double)side));
-		result.x = (short)round(tan(a_tan * DEG_TO_RAD) * p.y);
+		result.x = (int)round(tan(a_tan * DEG_TO_RAD) * p.y);
 		if (p.x > n.x)
 			result.x = p.x - result.x;
 		else
@@ -54,7 +54,7 @@ static t_vert	project_point_to_axis(t_vert p, t_vert n)
 	else
 	{
 		a_tan = RAD_TO_DEG * atan((abs(p.x - n.x) / (double)side));
-		result.x = (short)round(tan(a_tan * DEG_TO_RAD) * p.y);
+		result.x = (int)round(tan(a_tan * DEG_TO_RAD) * p.y);
 		result.x = p.x - result.x;
 	}
 	return (result);
@@ -138,10 +138,10 @@ void	rotate_player(t_world *w, t_mmap *mmap, int r)
 	s = sin(w->w_angle * DEG_TO_RAD);
 	while (i < w->vertcount)
 	{
-		w->p_verts[i].x = (short)round(w->verts[i].x * c - w->verts[i].y * s);
-		w->p_verts[i].y = (short)round(w->verts[i].x * s + w->verts[i].y * c);
+		w->p_verts[i].x = (int)round(w->verts[i].x * c - w->verts[i].y * s);
+		w->p_verts[i].y = (int)round(w->verts[i].x * s + w->verts[i].y * c);
 		i++;
 	}
-	mmap->mm_p_angle.x = (short)round((w->p_angle.x * c) + (w->p_angle.y * s));
-	mmap->mm_p_angle.y = (short)round((w->p_angle.x * -s) + (w->p_angle.y * c));
+	mmap->mm_p_angle.x = (int)round((w->p_angle.x * c) + (w->p_angle.y * s));
+	mmap->mm_p_angle.y = (int)round((w->p_angle.x * -s) + (w->p_angle.y * c));
 }

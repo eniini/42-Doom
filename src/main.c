@@ -43,7 +43,6 @@ static void	init(t_doom *doom)
 		ft_getout(SDL_GetError());
 	init_audio(&doom->audio);
 	init_player(doom);
-
 }
 
 static void	cleanup(t_doom *doom)
@@ -109,6 +108,20 @@ static void	keyevent(t_doom *doom, SDL_Event *e)
 			else
 				doom->fps_switch = FALSE;
 		}
+		//PROJECTION STUFF
+		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
+			rotate_player(&doom->world, &doom->mmap, 1);
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_w)
+			apply_movement(&doom->world, (t_vert){0, 1});
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_s)
+			apply_movement(&doom->world, (t_vert){0, -1});
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_a)
+			apply_movement(&doom->world, (t_vert){1, 0});
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_d)
+			apply_movement(&doom->world, (t_vert){-1, 0});
+		cull_vertices(&doom->world);
+		apply_perspective(&doom->world);
+		//PROJECTION STUFF
 	}
 }
 /*

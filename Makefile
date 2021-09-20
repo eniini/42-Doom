@@ -12,6 +12,7 @@ SRC_LIST =	main.c \
 		draw_pixel.c \
 		draw_line.c \
 		draw_shapes.c \
+		fps_counter.c \
 		load_tga.c \
 		blit.c \
 		spritesheet.c \
@@ -20,6 +21,8 @@ SRC_LIST =	main.c \
 		r_init.c \
 		r_map.c \
 		r_minimap.c \
+		r_movement.c \
+		r_projection.c \
 		r_rotation.c \
 		r_utility.c \
 		resourcefile.c \
