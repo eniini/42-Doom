@@ -12,7 +12,8 @@ void	key_events(SDL_Event e, t_img *img)
 	if (key == SDLK_ESCAPE)
 		img->run = FALSE;
 	else if (key == SDLK_c)
-		event_clear(img);
+	//	event_clear(img);
+		e_clear(img->edit);
 	else if (key == SDLK_u)
 	//	undo_last(img);
 		e_undo_last(img->edit);

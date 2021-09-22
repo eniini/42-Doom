@@ -38,26 +38,16 @@ typedef struct s_mouse
 	t_point	new;
 }				t_mouse;
 
-typedef struct s_buf
-{
-	t_wall	*walls;
-	int		i;
-	int		finished;
-}			t_buf;
-
 typedef struct s_editor
 {
-	t_buf	*output;
-	t_buf	*working;
-	t_buf	*undo;
 	t_wlist	*head;
 	t_wlist	*tail;
 	t_wlist	*current;
-//	t_list	*lst;
 	int		i;
 	int		finished;
 	t_bool	cnct;
 	t_bool	redo;
+	t_bool	clear;
 }			t_editor;
 
 typedef struct s_img
@@ -78,25 +68,8 @@ void	key_events(SDL_Event e, t_img *img);
 
 void	init_editor(t_img *img);
 void	clear_canvas(t_img *img);
-void	save_map(t_wall *src, t_wall *dest, int size);
-void	draw_emap(t_img *img, t_buf *output);
-//void	draw_map(t_img *img, t_editor *edit);
-void	set_walls(t_point pixel, t_img *img, t_buf *buf);
 void	draw_button(int y_start, t_img *img, uint32_t colour);
-//void	set_walls(t_point pixel, t_img *img, t_editor *edit);
 void	die(char *reason);
-
-void	undo_last(t_img *img);
-void	redo_last(t_img *img);
-
-void	event_clear(t_img *img);
-
-void	working_to_output(t_editor *edit);
-void	working_to_undo(t_editor *edit);
-void	undo_to_working(t_editor *edit);
-void	undo_to_output(t_editor *edit);
-
-
 
 // lists
 
@@ -115,3 +88,4 @@ void	e_undo_last(t_editor *edit);
 void	printf_head(t_wlist *head);
 void	e_del_list(t_wlist **list);
 void	e_redo(t_editor *edit);
+void	e_clear(t_editor *edit);

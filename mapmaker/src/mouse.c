@@ -7,24 +7,10 @@
 
 static void	toggle_cnct(t_editor *edit)
 {
-	t_point	nul;
-	int		i;
-
-	nul.x = 0;
-	nul.y = 0;
-	i = edit->working->i;
 	if (edit->cnct == TRUE)
-	{
 		edit->cnct = FALSE;
-		edit->working->walls[i].start = nul;
-		edit->working->finished = -1;
-	}
 	else
-	{
 		edit->cnct = TRUE;
-		edit->working->walls[i].start = edit->working->walls[i - 1].end;
-		edit->working->finished = FALSE;
-	}
 }
 
 /*
@@ -44,25 +30,11 @@ void	mouse_click(SDL_Event e, t_img *img)
 	{
 		if (pixel.x >= (TBAR_W + RADIUS))
 		{
-/*			if (img->edit->redo == FALSE)
-			{
-				working_to_undo(img->edit);
-				set_walls(pixel, img, img->edit->working);
-				working_to_output(img->edit);
-				draw_emap(img, img->edit->output);
-			}
-			else
-			{
-				undo_to_working(img->edit);
-				set_walls(pixel, img, img->edit->working);
-				working_to_output(img->edit);
-				draw_emap(img, img->edit->output);
-				img->edit->redo = FALSE;
-			}*/
-			if (img->edit->redo == TRUE)
+			if (img->edit->redo == TRUE || img->edit->clear == TRUE)
 			{
 				e_del_list(&img->edit->tail);
 				img->edit->redo = FALSE;
+				img->edit->clear = FALSE;
 			}
 			l_clicked(pixel, img, img->edit);
 			e_draw_map(img, img->edit->head);
@@ -74,7 +46,10 @@ void	mouse_click(SDL_Event e, t_img *img)
 			if (pixel.y >= BUTTON_CNCT && (pixel.y <= BUTTON_CNCT + BUTTON_SIZE))
 				toggle_cnct(img->edit);
 			else if (pixel.y >= BUTTON_UNDO && (pixel.y <= BUTTON_UNDO + BUTTON_SIZE))
-				undo_last(img);
+			{
+				e_undo_last(img->edit);
+				e_draw_map(img, img->edit->head);
+			}
 		}
 	}
 }

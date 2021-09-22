@@ -11,7 +11,6 @@ SRC_LIST =	main.c \
 			mouse.c \
 			keys.c \
 			clear.c \
-			save.c \
 			draw_line.c \
 			draw_pixel.c \
 			draw_shapes.c \
@@ -19,7 +18,6 @@ SRC_LIST =	main.c \
 			draw_button.c \
 			init.c \
 			error.c \
-			walls.c \
 			undo.c \
 			lists.c \
 			l_add.c \

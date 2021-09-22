@@ -23,40 +23,12 @@ void	clear_canvas(t_img *img)
 		}
 		j++;
 	}
-//	img->edit->finished = -1;
-//	clear_buffer(img);
 }
 
-/*
-** Clears the buffer given to it.
-*/
-
-static void	clear_buffer(t_buf *buf)
+void	e_clear(t_editor *edit)
 {
-	t_point	nul;
-	int		i;
-
-	i = 0;
-	nul.x = 0;
-	nul.y = 0;
-	while (i <= buf->i)
-	{
-		buf->walls[i].start = nul;
-		buf->walls[i].end = nul;
-		i++;
-	}
-	buf->i = 0;
-	buf->finished = -1;
-}
-
-/*
-** Handles clear event by clearing canvas and then the working buffer.
-*/
-
-void	event_clear(t_img *img)
-{
-	working_to_undo(img->edit);
-	clear_buffer(img->edit->working);
-	working_to_output(img->edit);
-	draw_emap(img, img->edit->output);
+	e_del_list(&edit->tail);
+	edit->tail = edit->head;
+	edit->head = NULL;
+	edit->clear = TRUE;
 }

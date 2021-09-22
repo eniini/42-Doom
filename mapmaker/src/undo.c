@@ -13,68 +13,33 @@ void	e_undo_last(t_editor *edit)
 	t_wlist	*temp;
 	t_wlist	*last;
 
-//	temp = edit->head;
-	if (!edit->head)
-		return ;
-	last = w_lstlast(edit->head);
-	if (last == edit->head)
+	if (edit->clear == FALSE)
 	{
-		w_lstadd(&edit->tail, last);
-		edit->head = NULL;
-		return ;
-	}
-/*	if (temp->next != NULL)
-	{
-		while (temp->next->next != NULL)
-			temp = temp->next;
-		temp->next = NULL;
-	}*/
-	temp = last->prev;
-	w_lstadd(&edit->tail, last);
-	temp->next = NULL;
-	printf("tail:\n");
-	printf_head(edit->tail);
-	printf("head:\n");
-	printf_head(edit->head);
-	edit->redo = TRUE;
-}
-
-/*
-** In the case of a undo/redo event, the output of either the
-** undo or the working buffer is put out on the output. The
-** "redo" flag signifies that a redo action is possible. If a
-** disconnected wall piece is undo'd, it is fully erased.
-*/
-
-void	undo_last(t_img *img)
-{
-	t_point	nul;
-	int		i;
-
-	i = img->edit->undo->i;
-	nul.x = 0;
-	nul.y = 0;
-	if (img->edit->cnct == FALSE)
-	{
-		if (img->edit->undo->walls[i].start.x == 0)
+		if (!edit->head)
+			return ;
+		last = w_lstlast(edit->head);
+		if (last == edit->head)
 		{
-			img->edit->undo->i--;
-			i = img->edit->undo->i;
-			img->edit->undo->walls[i].start = nul;
-			img->edit->undo->walls[i].end = nul;
+			w_lstadd(&edit->tail, last);
+			edit->head = NULL;
+			return ;
 		}
-		else
-			img->edit->undo->walls[i].start = nul;
-		img->edit->undo->finished = -1;
+		temp = last->prev;
+		w_lstadd(&edit->tail, last);
+		temp->next = NULL;
+		//	printf("tail:\n");
+		//	printf_head(edit->tail);
+		//	printf("head:\n");
+		//	printf_head(edit->head);
+		edit->redo = TRUE;
 	}
-	undo_to_output(img->edit);
-	draw_emap(img, img->edit->output);
-	img->edit->redo = TRUE;
-}
-
-void	redo_last(t_img *img)
-{
-	working_to_output(img->edit);
-	draw_emap(img, img->edit->output);
-	img->edit->redo = FALSE;
+	else
+	{
+		if (!edit->tail)
+			return ;
+		edit->head = edit->tail;
+		edit->tail = NULL;
+		edit->redo = FALSE;
+		edit->clear = FALSE;
+	}
 }
