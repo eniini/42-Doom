@@ -22,7 +22,8 @@ SRC_LIST =	main.c \
 			walls.c \
 			undo.c \
 			lists.c \
-			l_add.c
+			l_add.c \
+			redo.c
 
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))

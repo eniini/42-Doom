@@ -17,7 +17,7 @@ void	key_events(SDL_Event e, t_img *img)
 	//	undo_last(img);
 		e_undo_last(img->edit);
 	else if (key == SDLK_r && img->edit->redo == TRUE)
-		redo_last(img);
+		e_redo(img->edit);
 	e_draw_map(img, img->edit->head);
 	return ;
 }

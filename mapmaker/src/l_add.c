@@ -30,7 +30,6 @@ void	printf_head(t_wlist *head)
 void	l_clicked(t_point pixel, t_img *img, t_editor *edit)
 {
 	t_wlist	*new;
-	t_wlist	*temp;
 	t_point	nul;
 
 	nul.x = 0;
@@ -44,17 +43,17 @@ void	l_clicked(t_point pixel, t_img *img, t_editor *edit)
 			new = w_lstnew();
 			if (!new)
 				die("Malloc failure in linked list.");
-			if (edit->head != NULL && edit->cnct == TRUE)
-			{
-				new->wall.start = img->mouse.prev;
-				new->wall.end = pixel;
-			}
-			else
-				new->wall.start = pixel;
 			if (edit->head == NULL)
 				edit->head = new;
 			else
 				w_lstpush(&edit->head, new);
+			if (new->prev != NULL && edit->cnct == TRUE)
+			{
+				new->wall.start = new->prev->wall.end;
+				new->wall.end = pixel;
+			}
+			else
+				new->wall.start = pixel;
 			edit->current = new;
 			if (edit->current != edit->head && edit->cnct == TRUE)
 				edit->current = edit->current->next;

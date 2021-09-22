@@ -5,6 +5,7 @@ void	w_lstadd(t_wlist **alst, t_wlist *new)
 	if (!alst || !new)
 		return ;
 	new->next = (*alst);
+	new->prev = NULL;
 	*alst = new;
 }
 
@@ -18,7 +19,7 @@ void	w_lstdel(t_wlist **alst, void (*del)(void *, size_t))
 	while (*alst)
 	{
 		temp = (*alst)->next;
-	//	del((*alst)->wall, sizeof(t_wall));
+//		del((*alst)->wall, sizeof(t_wall));
 		free(*alst);
 		*alst = temp;
 	}
@@ -73,6 +74,7 @@ t_wlist	*w_lstnew(void)
 	new->wall.start = nul;
 	new->wall.end= nul;
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }
 
@@ -85,6 +87,7 @@ void	w_lstpush(t_wlist **alst, t_wlist *new)
 	if (*alst)
 	{
 		last = w_lstlast(*alst);
+		new->prev = last;
 		last->next = new;
 	}
 	else

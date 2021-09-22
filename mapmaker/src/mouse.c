@@ -59,6 +59,11 @@ void	mouse_click(SDL_Event e, t_img *img)
 				draw_emap(img, img->edit->output);
 				img->edit->redo = FALSE;
 			}*/
+			if (img->edit->redo == TRUE)
+			{
+				e_del_list(&img->edit->tail);
+				img->edit->redo = FALSE;
+			}
 			l_clicked(pixel, img, img->edit);
 			e_draw_map(img, img->edit->head);
 		}

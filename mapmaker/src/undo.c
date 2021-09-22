@@ -13,27 +13,30 @@ void	e_undo_last(t_editor *edit)
 	t_wlist	*temp;
 	t_wlist	*last;
 
-	temp = edit->head;
-	if (!temp)
+//	temp = edit->head;
+	if (!edit->head)
 		return ;
 	last = w_lstlast(edit->head);
-	if (last == temp)
+	if (last == edit->head)
 	{
 		w_lstadd(&edit->tail, last);
 		edit->head = NULL;
 		return ;
 	}
-	if (temp->next != NULL)
+/*	if (temp->next != NULL)
 	{
 		while (temp->next->next != NULL)
 			temp = temp->next;
 		temp->next = NULL;
-	}
+	}*/
+	temp = last->prev;
 	w_lstadd(&edit->tail, last);
+	temp->next = NULL;
 	printf("tail:\n");
 	printf_head(edit->tail);
 	printf("head:\n");
 	printf_head(edit->head);
+	edit->redo = TRUE;
 }
 
 /*
