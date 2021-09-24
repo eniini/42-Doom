@@ -14,13 +14,14 @@ SRC_LIST =	main.c \
 			draw_line.c \
 			draw_pixel.c \
 			draw_shapes.c \
-			draw_emap.c \
+			draw_map.c \
 			draw_button.c \
 			init.c \
 			error.c \
 			undo.c \
-			lists.c \
-			l_add.c \
+			w_lists.c \
+			wall.c \
+			w_del.c \
 			redo.c
 
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))

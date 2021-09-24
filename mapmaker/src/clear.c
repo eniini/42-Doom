@@ -1,34 +1,24 @@
 #include "mapmaker.h"
 
 /*
-** Handles the "clear" event. Resets mouse clicked status to non-clicked.
-** Erases buffer. Erases saved points of map.
+** Clears all the data that has been stored in the tail's
+** storage, then sets the entirety of the head as the new
+** tail, so we can return to it. Sets head at NULL to clear it.
+** Clears previous mouse point to make sure the clicked
+** point spawns. Sets the current pointer to the head.
 */
 
-void	clear_canvas(t_img *img)
+void	e_clear(t_img *img, t_editor *edit)
 {
-	int			i;
-	int			j;
-	uint32_t	pixel;
-
-	j = 0;
-	while (j <= WIN_H)
-	{
-		i = TBAR_W;
-		while (i <= WIN_W)
-		{
-			pixel = j * WIN_W + i;
-			img->win_buffer->pixels[pixel] = BLACK;
-			i++;
-		}
-		j++;
-	}
-}
-
-void	e_clear(t_editor *edit)
-{
-	e_del_list(&edit->tail);
+	img->mouse.prev.x = 0;
+	img->mouse.prev.y = 0;
+	if (!edit->head)
+		return ;
+	if (edit->tail)
+		w_del_list(&edit->tail);
 	edit->tail = edit->head;
 	edit->head = NULL;
+	edit->current = edit->head;
 	edit->clear = TRUE;
+	edit->redo = FALSE;
 }

@@ -22,7 +22,7 @@ void	init(t_img *renderer)
 		SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, WIN_W, WIN_H);
 	if (!renderer->win_tex)
 		ft_getout(SDL_GetError());
-	init_editor(renderer);
+	e_init_editor(renderer);
 	renderer->run = TRUE;
 }
 
@@ -43,9 +43,9 @@ void	loop(t_img *renderer)
 		if (e.window.event == SDL_WINDOWEVENT_CLOSE)
 			renderer->run = FALSE;
 		if (e.button.state == SDL_PRESSED)
-			mouse_click(e, renderer);
+			e_mouse(e, renderer);
 		if (e.key.keysym.sym && e.type == SDL_KEYDOWN)
-			key_events(e, renderer);
+			e_keys(e, renderer);
 	}
 	if (SDL_LockTexture(renderer->win_tex, NULL, \
 		&renderer->win_pixels, &renderer->win_pixel_pitch) < 0)

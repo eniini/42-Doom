@@ -1,5 +1,9 @@
 #include "mapmaker.h"
 
+/*
+** Adds the new wlist item to the front of the list.
+*/
+
 void	w_lstadd(t_wlist **alst, t_wlist *new)
 {
 	if (!alst || !new)
@@ -9,46 +13,9 @@ void	w_lstadd(t_wlist **alst, t_wlist *new)
 	*alst = new;
 }
 
-
-void	w_lstdel(t_wlist **alst, void (*del)(void *, size_t))
-{
-	t_wlist	*temp;
-
-	if (!alst || !del)
-		return ;
-	while (*alst)
-	{
-		temp = (*alst)->next;
-//		del((*alst)->wall, sizeof(t_wall));
-		free(*alst);
-		*alst = temp;
-	}
-	*alst = NULL;
-}
-
-
-void	w_lstdelone(t_wlist **alst, void (*del)(void *, size_t))
-{
-	if (!alst || !del)
-		return ;
-//	del((*alst)->content, (*alst)->content_size);
-	free(*alst);
-	*alst = NULL;
-}
-
-void	w_lstiter(t_wlist *lst, void (*f)(t_wlist *elem))
-{
-	t_wlist	*temp;
-
-	if (!lst || !f)
-		return ;
-	while (lst != NULL)
-	{
-		temp = lst->next;
-		f(lst);
-		lst = temp;
-	}
-}
+/*
+** Returns the last wlist item on the list.
+*/
 
 t_wlist	*w_lstlast(t_wlist *lst)
 {
@@ -60,6 +27,10 @@ t_wlist	*w_lstlast(t_wlist *lst)
 	}
 	return (lst);
 }
+
+/*
+** Creates a new, formatted to 0's and NULLs, wlist item.
+*/
 
 t_wlist	*w_lstnew(void)
 {
@@ -78,6 +49,10 @@ t_wlist	*w_lstnew(void)
 	return (new);
 }
 
+/*
+** Adds the new wlist item to the back of the list.
+*/
+
 void	w_lstpush(t_wlist **alst, t_wlist *new)
 {
 	t_wlist	*last;
@@ -93,6 +68,10 @@ void	w_lstpush(t_wlist **alst, t_wlist *new)
 	else
 		*alst = new;
 }
+
+/*
+** Returns the size of a list.
+*/
 
 int	w_lstsize(t_wlist *lst)
 {

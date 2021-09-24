@@ -27,16 +27,14 @@ void	printf_head(t_wlist *head)
 
 // TODO make a check this doesn't grow too big
 
-void	l_clicked(t_point pixel, t_img *img, t_editor *edit)
+void	e_wall_add(t_point pixel, t_img *img, t_editor *edit)
 {
 	t_wlist	*new;
-	t_point	nul;
 
-	nul.x = 0;
-	nul.y = 0;
-	if (edit->i < W_BUFF_SIZE && (edit->finished == -1
-		|| (img->mouse.new.x != img->mouse.prev.x
-		|| img->mouse.new.y != img->mouse.prev.y)))
+	printf("prev xy %d, %d; new xy %d, %d\n", img->mouse.prev.x, img->mouse.prev.y,
+		img->mouse.new.x, img->mouse.new.y);
+	if ((img->mouse.new.x != img->mouse.prev.x
+		|| img->mouse.new.y != img->mouse.prev.y))
 	{
 		if (edit->current == NULL)
 		{
@@ -65,50 +63,5 @@ void	l_clicked(t_point pixel, t_img *img, t_editor *edit)
 		}
 		img->mouse.prev = pixel;
 	}
-	printf_head(edit->head);
-}
-
-/*
-
-void	l_clicked(t_point pixel, t_img *img, t_editor *edit)
-{
-	t_wlist	*new;
-	t_wlist	*temp;
-	t_point	nul;
-
-	nul.x = 0;
-	nul.y = 0;
-	if (edit->i < W_BUFF_SIZE && (edit->finished == -1
-		|| (img->mouse.new.x != img->mouse.prev.x
-		|| img->mouse.new.y != img->mouse.prev.y)))
-	{
-		img->mouse.prev = pixel;
-		if (edit->current == NULL)
-		{
-			new = w_lstnew();
-			if (!new)
-				die("Malloc failure in linked list.");
-			new->wall.start = pixel;
-			if (edit->head == NULL)
-				edit->head = new;
-			else
-				w_lstpush(&edit->head, new);
-			edit->current = new;
-		}
-		else
-		{
-			edit->current->wall.end = pixel;
-			if (edit->cnct == TRUE)
-			{
-				new = w_lstnew();
-				if (!new)
-					die("Malloc failure in linked list.");
-				new->wall.start = pixel;
-				edit->current->next = new;
-			}
-			edit->current = edit->current->next;
-		}
-	}
 //	printf_head(edit->head);
 }
-*/

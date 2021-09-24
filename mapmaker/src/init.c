@@ -4,11 +4,11 @@
 ** Initialises buttons onto the toolbar.
 */
 
-void	init_buttons(t_img *img)
+void	e_init_buttons(t_img *img)
 {
-	draw_button(BUTTON_SAVE, img, GREEN);
-	draw_button(BUTTON_CNCT, img, RED);
-	draw_button(BUTTON_UNDO, img, TEAL);
+	e_draw_button(BUTTON_SAVE, img, GREEN);
+	e_draw_button(BUTTON_CNCT, img, RED);
+	e_draw_button(BUTTON_UNDO, img, TEAL);
 }
 
 /*
@@ -16,7 +16,7 @@ void	init_buttons(t_img *img)
 ** function.
 */
 
-void	init_editor(t_img *img)
+void	e_init_editor(t_img *img)
 {
 	int			i;
 	int			j;
@@ -38,14 +38,11 @@ void	init_editor(t_img *img)
 		}
 		j++;
 	}
-	init_buttons(img);
+	e_init_buttons(img);
 	img->edit->cnct = TRUE;
 	img->edit->redo = FALSE;
-	///////// !!!!!!!!!!!
 	img->edit->current = NULL;
 	img->edit->head = NULL;
 	img->edit->tail = NULL;
-	img->edit->i = 0;
-	img->edit->finished = -1;
 	img->edit->clear = FALSE;
 }

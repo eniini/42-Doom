@@ -4,7 +4,7 @@
 ** Handles key events for the mapmaker.
 */
 
-void	key_events(SDL_Event e, t_img *img)
+void	e_keys(SDL_Event e, t_img *img)
 {
 	int key;
 
@@ -12,11 +12,9 @@ void	key_events(SDL_Event e, t_img *img)
 	if (key == SDLK_ESCAPE)
 		img->run = FALSE;
 	else if (key == SDLK_c)
-	//	event_clear(img);
-		e_clear(img->edit);
+		e_clear(img, img->edit);
 	else if (key == SDLK_u)
-	//	undo_last(img);
-		e_undo_last(img->edit);
+		e_undo(img, img->edit);
 	else if (key == SDLK_r && img->edit->redo == TRUE)
 		e_redo(img->edit);
 	e_draw_map(img, img->edit->head);

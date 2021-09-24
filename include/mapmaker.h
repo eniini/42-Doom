@@ -43,8 +43,6 @@ typedef struct s_editor
 	t_wlist	*head;
 	t_wlist	*tail;
 	t_wlist	*current;
-	int		i;
-	int		finished;
 	t_bool	cnct;
 	t_bool	redo;
 	t_bool	clear;
@@ -63,29 +61,27 @@ typedef struct s_img
 	t_editor		*edit;
 }					t_img;
 
-void	mouse_click(SDL_Event e, t_img *img);
-void	key_events(SDL_Event e, t_img *img);
+void	e_mouse(SDL_Event e, t_img *img);
+void	e_keys(SDL_Event e, t_img *img);
 
-void	init_editor(t_img *img);
-void	clear_canvas(t_img *img);
-void	draw_button(int y_start, t_img *img, uint32_t colour);
+void	e_init_editor(t_img *img);
+void	e_clear_canvas(t_img *img);
+void	e_draw_button(int y_start, t_img *img, uint32_t colour);
 void	die(char *reason);
 
 // lists
 
 void	w_lstadd(t_wlist **alst, t_wlist *new);
-void	w_lstdel(t_wlist **alst, void (*del)(void *, size_t));
-void	w_lstdelone(t_wlist **alst, void (*del)(void *, size_t));
 void	w_lstiter(t_wlist *lst, void (*f)(t_wlist *elem));
 t_wlist	*w_lstlast(t_wlist *lst);
 t_wlist	*w_lstnew(void);
 void	w_lstpush(t_wlist **alst, t_wlist *new);
 int		w_lstsize(t_wlist *lst);
+void	w_del_list(t_wlist **list);
 
-void	l_clicked(t_point pixel, t_img *img, t_editor *edit);
+void	e_wall_add(t_point pixel, t_img *img, t_editor *edit);
 void	e_draw_map(t_img *img, t_wlist *head);
-void	e_undo_last(t_editor *edit);
-void	printf_head(t_wlist *head);
-void	e_del_list(t_wlist **list);
+void	e_undo(t_img *img, t_editor *edit);
+void	e_printf_head(t_wlist *head);
 void	e_redo(t_editor *edit);
-void	e_clear(t_editor *edit);
+void	e_clear(t_img *img, t_editor *edit);

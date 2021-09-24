@@ -19,7 +19,11 @@ static void	toggle_cnct(t_editor *edit)
 ** a button or to draw on the map.
 */
 
-void	mouse_click(SDL_Event e, t_img *img)
+// TODO take the centre into a dif function for clicking. Then add
+// the checks for "farther away from radius" into that, not the
+// actual wall drawing function.
+
+void	e_mouse(SDL_Event e, t_img *img)
 {
 	t_point	pixel;
 
@@ -32,11 +36,11 @@ void	mouse_click(SDL_Event e, t_img *img)
 		{
 			if (img->edit->redo == TRUE || img->edit->clear == TRUE)
 			{
-				e_del_list(&img->edit->tail);
+				w_del_list(&img->edit->tail);
 				img->edit->redo = FALSE;
 				img->edit->clear = FALSE;
 			}
-			l_clicked(pixel, img, img->edit);
+			e_wall_add(pixel, img, img->edit);
 			e_draw_map(img, img->edit->head);
 		}
 		else if (pixel.x >= BUTTON_X && pixel.x <= BUTTON_X + BUTTON_SIZE)
@@ -47,7 +51,7 @@ void	mouse_click(SDL_Event e, t_img *img)
 				toggle_cnct(img->edit);
 			else if (pixel.y >= BUTTON_UNDO && (pixel.y <= BUTTON_UNDO + BUTTON_SIZE))
 			{
-				e_undo_last(img->edit);
+				e_undo(img, img->edit);
 				e_draw_map(img, img->edit->head);
 			}
 		}

@@ -4,7 +4,7 @@
 ** Draws a square button.
 */
 
-void	draw_button(int y_start, t_img *img, uint32_t colour)
+void	e_draw_button(int y_start, t_img *img, uint32_t colour)
 {
 	int	x;
 	int	x_end;
