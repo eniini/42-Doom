@@ -15,7 +15,7 @@
 # define BUTTON_CNCT 100
 # define BUTTON_UNDO 150
 
-# define RADIUS 3
+# define RADIUS 2
 
 # define W_BUFF_SIZE 1000
 

@@ -31,8 +31,8 @@ void	e_wall_add(t_point pixel, t_img *img, t_editor *edit)
 {
 	t_wlist	*new;
 
-	printf("prev xy %d, %d; new xy %d, %d\n", img->mouse.prev.x, img->mouse.prev.y,
-		img->mouse.new.x, img->mouse.new.y);
+//	printf("prev xy %d, %d; new xy %d, %d\n", img->mouse.prev.x, img->mouse.prev.y,
+//		img->mouse.new.x, img->mouse.new.y);
 	if ((img->mouse.new.x != img->mouse.prev.x
 		|| img->mouse.new.y != img->mouse.prev.y))
 	{
