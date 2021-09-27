@@ -1,7 +1,19 @@
 #ifndef DOOM_H
 # define DOOM_H
 
-# include <stdint.h> //for datatypes
+/*
+*	File/datatype terminology:
+*	hu_ = HUD
+*	m_  = menu
+*	me_ = map editor
+*	l_  = linked list
+*	lv_ = level
+*	r_  = renderer
+*	rf_ = resource file
+*	p_  = gameplay
+*	s_  = sound
+*/
+
 # include <string.h> //for sterror
 # include <errno.h> //for errno macro
 # include <unistd.h> //for write TBD
@@ -33,31 +45,14 @@
 # define BLACK		0XFF000000
 
 # include "boid.h"
-# include "vector.h"
+# include "defines.h"
+# include "mapdefs.h"
+# include "render.h"
 # include "resourcefile.h"
-# include "map.h"
-
-//datatype for handling buffer/array coordinates
-typedef struct s_point {
-	uint32_t	x;
-	uint32_t	y;
-}				t_point;
-
+# include "vector.h"
 
 # define C_BLACK 0x00000000
 # define C_WHITE 0x00FFFFFF
-
-typedef struct s_buffer {
-	uint32_t		*pixels;
-	uint32_t		w;
-	uint32_t		h;
-}					t_buffer;
-
-typedef struct s_imgdata {
-	uint32_t	*data;
-	uint32_t	w;
-	uint32_t	h;
-}				t_imgdata;
 
 typedef struct s_rend
 {
@@ -82,18 +77,8 @@ typedef struct s_sprite {
 
 //place to hold all graphics etc. data we need. Also development stuff
 typedef struct s_assets {
-	t_imgdata	*testimg001;
-	t_imgdata	*testimg002;
-	t_imgdata	*testimg003;
-	t_imgdata	*sprite_tester;
-	t_sprite	*sprite;
-	t_boid		flock[BOID_COUNT];
+	t_imgdata	*dev_skybox;
 }				t_assets;
-
-typedef struct s_f_point {
-	float		x;
-	float		y;
-}				t_f_point;
 
 typedef struct s_audio {
 	Mix_Chunk	*sound;
@@ -118,6 +103,26 @@ typedef struct s_map {
 	t_buffer	*mapbuf;
 }				t_map;
 
+/*
+*	Final map structure collection.
+*	BSP -> binary tree of convex areas (SUBSECTORS)
+*	SEGS -> individual BSP geometry units
+*	SECTORS -> collection of properties for a specific area
+*	LINEDEFS -> general geometry unit
+*	SIDEDEFS -> additional data for LINEDEF texturing
+*	VERTICES -> list of all the vertexes in the map
+*/
+typedef struct s_mapdata
+{
+	t_me_node	*bsp;
+	t_l_segs	*r_segs;
+	t_l_sectors	*lv_sectors;
+	t_l_ldefs	*lv_linedefs;
+	t_l_sdefs	*lv_sidedefs;
+	t_l_things	*lv_things;
+	short		vertices[SHRT_MAX][2];
+}				t_mapdata;
+
 typedef struct s_player {
 	t_f_point		pos;
 }				t_player;
@@ -141,7 +146,9 @@ typedef struct s_doom {
 	t_player	player;
 	t_keys		keys;
 	int			global_fps;
+	double		delta;
 	t_bool		fps_switch;
+	t_mapdata	mapdata;
 }				t_doom;
 
 int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);
@@ -165,7 +172,12 @@ void		init_minimap(t_world *w, t_mmap *mmmap, t_buffer *buf, uint32_t s);
 void		draw_map(t_map *map, t_world *world);
 void		draw_minimap(t_mmap *mm, t_world *world);
 
+void		r_dotests(t_rend *rend, t_world *w);
+
 void		rotate_player(t_world *world, t_mmap *mmap, int r);
+
+void		apply_perspective(t_world *world);
+void		apply_movement(t_world *world, t_vert direction);
 
 t_imgdata	*load_tga(const char *filepath);
 void		add_tga_to_rf(t_rf *rf, const char *filepath);
@@ -181,5 +193,7 @@ void		init_audio(t_audio *audio);
 void		audio_cleanup(t_audio *audio);
 void		audios(t_audio *audio);
 
+void		physics(t_doom *doom);
+void		keyevent(t_doom *doom, SDL_Event *e);
 void		fps_counter(int *global_fps);
 #endif

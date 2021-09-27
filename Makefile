@@ -12,22 +12,28 @@ SRC_LIST =	main.c \
 		draw_pixel.c \
 		draw_line.c \
 		draw_shapes.c \
+		fps_counter.c \
 		load_tga.c \
 		blit.c \
 		spritesheet.c \
 		boids.c \
 		testing.c \
+		m_matrix.c \
 		r_init.c \
 		r_map.c \
 		r_minimap.c \
+		r_movement.c \
+		r_projection.c \
 		r_rotation.c \
+		r_testing.c \
 		r_utility.c \
 		resourcefile.c \
 		rf_lump.c \
 		rf_io.c \
 		vec_math.c \
 		vec_utility.c \
-		audio.c
+		audio.c \
+		moving_things.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))
 
