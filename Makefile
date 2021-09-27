@@ -30,7 +30,8 @@ SRC_LIST =	main.c \
 		rf_io.c \
 		vec_math.c \
 		vec_utility.c \
-		audio.c
+		audio.c \
+		moving_things.c
 SRCS = $(addprefix $(SRC_DIR),$(SRC_LIST))
 OBJS = $(addprefix $(OBJ_DIR),$(SRC_LIST:.c=.o))
 

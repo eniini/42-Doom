@@ -129,6 +129,7 @@ typedef struct s_doom {
 	t_player	player;
 	t_keys		keys;
 	int			global_fps;
+	double		delta;
 	t_bool		fps_switch;
 	t_mapdata	mapdata;
 }				t_doom;
@@ -173,5 +174,7 @@ void		init_audio(t_audio *audio);
 void		audio_cleanup(t_audio *audio);
 void		audios(t_audio *audio);
 
+void		physics(t_doom *doom);
+void		keyevent(t_doom *doom, SDL_Event *e);
 void		fps_counter(int *global_fps);
 #endif
