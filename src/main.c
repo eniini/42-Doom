@@ -61,69 +61,22 @@ static void	cleanup(t_doom *doom)
 	SDL_Quit();
 }
 
-void	physics(t_doom *doom)
-{
-	static int		ticks;
-	static int		prevtics;
-	double			delta;
-	int				velocity = 100;
-	prevtics = ticks;
-	ticks = SDL_GetTicks();
-	delta = (ticks - prevtics) / 1000.0;
+		//PROJECTION STUFF-    Move these in to key events function in moving_things.c
+//		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
+//			rotate_player(&doom->world, &doom->mmap, 1);
+//		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_w)
+//			apply_movement(&doom->world, (t_vert){0, 1});
+//		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_s)
+//			apply_movement(&doom->world, (t_vert){0, -1});
+//		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_a)
+//			apply_movement(&doom->world, (t_vert){1, 0});
+//		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_d)
+//			apply_movement(&doom->world, (t_vert){-1, 0});
+//		cull_vertices(&doom->world);
+//		apply_perspective(&doom->world);
 
-	if (doom->keys.up_pressed == TRUE)
-		doom->player.pos.y -= delta * velocity;
-	if (doom->keys.down_pressed == TRUE)
-		doom->player.pos.y += delta * velocity;
-	if (doom->keys.left_pressed == TRUE)
-		doom->player.pos.x -= delta * velocity;
-	if (doom->keys.right_pressed == TRUE)
-		doom->player.pos.x += delta * velocity;
-}
 
-static void	keyevent(t_doom *doom, SDL_Event *e)
-{
-	while (SDL_PollEvent(e))
-	{
-		if (e->window.event == SDL_WINDOWEVENT_CLOSE)
-			doom->rend.run = FALSE;
-		if (e->key.keysym.sym == SDLK_UP)
-			doom->keys.up_pressed = e->type == SDL_KEYDOWN;
-		if (e->key.keysym.sym == SDLK_DOWN)
-			doom->keys.down_pressed = e->type == SDL_KEYDOWN;
-		if (e->key.keysym.sym == SDLK_LEFT)
-			doom->keys.left_pressed = e->type == SDL_KEYDOWN;
-		if (e->key.keysym.sym == SDLK_RIGHT)
-			doom->keys.right_pressed = e->type == SDL_KEYDOWN;
-		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
-		{
-			rotate_player(&doom->world, &doom->mmap, 1);
-			cull_vertices(&doom->world);
-		}
-		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_t) //fps_swich
-		{
-			ft_printf("CLICK\n");
-			if(doom->fps_switch == FALSE)
-				doom->fps_switch = TRUE;
-			else
-				doom->fps_switch = FALSE;
-		}
-		//PROJECTION STUFF
-		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
-			rotate_player(&doom->world, &doom->mmap, 1);
-		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_w)
-			apply_movement(&doom->world, (t_vert){0, 1});
-		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_s)
-			apply_movement(&doom->world, (t_vert){0, -1});
-		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_a)
-			apply_movement(&doom->world, (t_vert){1, 0});
-		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_d)
-			apply_movement(&doom->world, (t_vert){-1, 0});
-		cull_vertices(&doom->world);
-		apply_perspective(&doom->world);
-		//PROJECTION STUFF
-	}
-}
+
 /*
 *	Note about SDL_LockTexture: void **pixels is 'filled in', meaning that SDL
 *	creates its own allocated pixel buffer thats returned to the given pointer.

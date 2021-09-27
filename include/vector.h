@@ -7,6 +7,13 @@ typedef struct s_vector
 	float	y;
 }			t_vector;
 
+typedef struct s_vector3
+{
+	float	x;
+	float	y;
+	float	z;
+}			t_vector3;
+
 t_vector	vector_add(t_vector v1, t_vector v2);
 t_vector	vector_sub(t_vector v1, t_vector v2);
 t_vector	vector_mul(t_vector v1, float mul);
