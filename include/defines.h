@@ -24,6 +24,13 @@ typedef struct s_vert {
 	int	y;
 }		t_vert;
 
+//Projection/Matrix datatype
+typedef struct s_3dvert {
+	int	x;
+	int	y;
+	int	z;
+}		t_3dvert;
+
 //Memory representation of a line in a map.
 typedef struct s_linedef {
 	t_vert		start;
@@ -62,5 +69,11 @@ typedef struct s_buffer {
 	uint32_t	w;
 	uint32_t	h;
 }				t_buffer;
+
+//its a mistake to handle any math with unsigned values
+//leave <=0 checks to buffer submodule!
+typedef struct s_matrix {
+	double	m[4][4];
+}			t_matrix;
 
 #endif

@@ -34,6 +34,19 @@ static void	init_map(t_doom *doom)
 
 void	init_tests(t_doom *doom)
 {
+	doom->world.cube[0] = (t_3dvert){-50, -50, -50};
+	doom->world.cube[1] = (t_3dvert){50, -50, -50};
+	doom->world.cube[2] = (t_3dvert){50, 50, -50};
+	doom->world.cube[3] = (t_3dvert){-50, 50, -50};
+	doom->world.cube[4] = (t_3dvert){-50, -50, 50};
+	doom->world.cube[5] = (t_3dvert){50, -50, 50};
+	doom->world.cube[6] = (t_3dvert){50, 50, 50};
+	doom->world.cube[7] = (t_3dvert){-50, 50, 50};
+	doom->world.trans_m = combine_matrices(init_matrix(), combine_matrices(init_matrix(), init_matrix()));
+	doom->world.trans_m.m[3][0] = 100;
+	doom->world.trans_m.m[3][1] = 100;
+	doom->world.trans_m.m[3][2] = 100;
+	doom->world.rotation = 0;
 	init_resources(doom);
 	init_map(doom);
 }
@@ -46,6 +59,7 @@ void	cleanup_tests(t_assets *assets)
 
 void	dotests(t_doom *doom)
 {
+	r_dotests(&doom->rend, &doom->world);
 	//draw_visibleverts(&doom->map, &doom->world);
 	//draw_map(&doom->map, &doom->world);
 	//draw_minimap(&doom->mmap, &doom->world);

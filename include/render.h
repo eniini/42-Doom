@@ -40,11 +40,19 @@ typedef struct s_world {
 	int			vertcount;
 	int			v_wallcount;
 	int			w_angle;
+	t_3dvert	cube[8];
+	t_matrix	trans_m;
+	float		rotation;
 }				t_world;
 
 uint32_t	wall_colortable(int i);
 
 long		map_value_to_range(t_range input, t_range output, long value);
 uint32_t	map_value_to_buffer(t_range input, uint32_t limit, long value);
+
+t_matrix	init_matrix(void);
+t_matrix	rotate_matrix(unsigned char dimension, double angle);
+t_matrix	combine_matrices(t_matrix m1, t_matrix m2);
+t_matrix	rot_total_matrix(t_matrix m, double x_a, double y_a, double z_a);
 
 #endif

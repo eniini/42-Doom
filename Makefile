@@ -18,12 +18,14 @@ SRC_LIST =	main.c \
 		spritesheet.c \
 		boids.c \
 		testing.c \
+		m_matrix.c \
 		r_init.c \
 		r_map.c \
 		r_minimap.c \
 		r_movement.c \
 		r_projection.c \
 		r_rotation.c \
+		r_testing.c \
 		r_utility.c \
 		resourcefile.c \
 		rf_lump.c \
