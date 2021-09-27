@@ -1,5 +1,8 @@
 #include "doom.h"
 
+/*
+*	Apply pespective projection to mapdata here!
+*/
 void	apply_perspective(t_world *world)
 {
 	int	i;
@@ -7,7 +10,6 @@ void	apply_perspective(t_world *world)
 	i = 0;
 	while (i < world->v_wallcount)
 	{
-		//do stuff here
 		i++;
 	}
 }

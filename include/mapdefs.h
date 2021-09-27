@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:36:13 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/18 19:19:45 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/27 22:13:45 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 # define MAPDEFS_H
 
 # include "defines.h"
-
-/*************************
-* MAP GEOMETRY DATATYPES *
-*************************/
 
 /*
 *	Thing is loaded into level memory as an instance of [type] object
@@ -121,69 +117,15 @@ typedef struct s_l_sectors {
 	short				boundingbox[4];
 }						t_l_sectors;
 
-/****************
-* BSP DATATYPES *
-****************/
-
-/*
-*	Segment of a linedef created by the geometry splitter tool for
-*	the BSP operations.
-*	[start_vert] & [end_vert] are both indexes of vertexes that
-*	the SEG starts from and ends to. [line_id] points to which linedef
-*	the SEG is a segment of.
-*/
-typedef struct s_me_seg {
-	short	start_vert;
-	short	end_vert;
-	short	line_id;
-	short	seg_id;
-}			t_me_seg;
-# define M_SEG_LUMPSIZE 12
-
-typedef struct s_l_segs {
-	struct s_l_segs	*next;
-	struct s_me_seg	*data;
-}					t_l_segs;
-
-/*
-*	Range of SEGS that form a part of or a single convex SECTOR.
-*	Should be created in a way that no other SEG blocks the view of another
-*	when player is within this subsector.
-*/
-typedef struct s_me_ssector {
-	short	seg_count;
-	short	start_n;
-}			t_me_ssector;
-# define M_SSECT_LUMPSIZE 4
-
-/*
-*	Node is the unit of level geometry's BSP division.
-*	Each node has a partition line that divides its area into two either
-*	new nodes (subnodes) or subsectors (leaves of the generated binary tree).
-*	[partline] consists of {start_x}{start_y}{end_x}{end_y}.
-*	left and right (of the partline's direction) bounding boxes have the data
-*	{top}{bottom}{left}{right} as the upper & lower bounds.
-*/
-typedef struct s_me_node {
-	short				partline[4];
-	short				r_boundingbox[4];
-	short				l_boundingbox[4];
-	struct t_me_node	*left_node;
-	struct t_me_node	*right_node;
-	struct t_me_ssector	*left_ssec;
-	struct t_me_ssector	*right_ssec;
-}						t_me_node;
-# define M_NODE_LUMPSIZE 56
-
 typedef struct s_debug_room {
 	t_vert		*verts;
 	t_linedef	*walls;
 	short		boundingbox[4];
 	short		ceil_h;
 	short		floor_h;
-	t_vert		**subsectors;
-	t_vert		*segs;
 }				t_debug_room;
 
+t_debug_room	*init_convex_room(void);
+t_debug_room	*init_nonconvex_room(void);
 
 #endif

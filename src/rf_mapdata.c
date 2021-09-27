@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 15:41:37 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/09 17:02:45 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/27 22:10:19 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	add_editordata(t_rf *rf, t_debug_room *debugdata)
 {
-	
+	return ;
 }
 
 t_bool	add_mapdata_to_rf(t_rf *rf, t_debug_room *debugdata)
@@ -28,7 +28,9 @@ t_bool	add_mapdata_to_rf(t_rf *rf, t_debug_room *debugdata)
 
 void	load_mapdata_from_rf(t_rf *rf, t_mapdata *mapdata)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (i <= RF_MAPTYPES)
 	{
 		if (!(load_maplump_from_rf(rf, mapdata, i)))
