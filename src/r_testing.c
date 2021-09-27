@@ -17,5 +17,5 @@
 
 void	r_dotests(t_rend *rend, t_world *w)
 {
-	
+	return ;
 }

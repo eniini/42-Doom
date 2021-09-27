@@ -9,19 +9,6 @@
 *			blending is only needed if we work with multiple texture layers
 *			(and if we want to blend them together)
 */
-
-void		init_player(t_doom *doom)
-{
-	doom->player.pos.x = 100;
-	doom->player.pos.y = 100;
-	doom->keys.up_pressed = FALSE;
-	doom->keys.down_pressed = FALSE;
-	doom->keys.left_pressed = FALSE;
-	doom->keys.right_pressed = FALSE;
-	doom->fps_switch = FALSE;
-
-}
-
 static void	init(t_doom *doom)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -45,6 +32,17 @@ static void	init(t_doom *doom)
 	init_player(doom);
 }
 
+void	init_player(t_doom *doom)
+{
+	doom->player.pos.x = 100;
+	doom->player.pos.y = 100;
+	doom->keys.up_pressed = FALSE;
+	doom->keys.down_pressed = FALSE;
+	doom->keys.left_pressed = FALSE;
+	doom->keys.right_pressed = FALSE;
+	doom->fps_switch = FALSE;
+}
+
 static void	cleanup(t_doom *doom)
 {
 	free(doom->world.verts);
@@ -61,22 +59,6 @@ static void	cleanup(t_doom *doom)
 	SDL_Quit();
 }
 
-		//PROJECTION STUFF-    Move these in to key events function in moving_things.c
-//		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
-//			rotate_player(&doom->world, &doom->mmap, 1);
-//		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_w)
-//			apply_movement(&doom->world, (t_vert){0, 1});
-//		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_s)
-//			apply_movement(&doom->world, (t_vert){0, -1});
-//		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_a)
-//			apply_movement(&doom->world, (t_vert){1, 0});
-//		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_d)
-//			apply_movement(&doom->world, (t_vert){-1, 0});
-//		cull_vertices(&doom->world);
-//		apply_perspective(&doom->world);
-
-
-
 /*
 *	Note about SDL_LockTexture: void **pixels is 'filled in', meaning that SDL
 *	creates its own allocated pixel buffer thats returned to the given pointer.
@@ -92,7 +74,8 @@ static void	loop(t_doom	*doom)
 	physics(doom);
 	dotests(doom);
 	audios(&doom->audio);
-	draw_circle(doom->map.mapbuf, (t_point){(int)doom->player.pos.x, (int)doom->player.pos.y}, 10, MMAP_C_PLAYER);
+	draw_circle(doom->map.mapbuf, (t_point){(int)doom->player.pos.x, \
+	(int)doom->player.pos.y}, 10, MMAP_C_PLAYER);
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \
 		&doom->rend.win_pixels, &doom->rend.win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());

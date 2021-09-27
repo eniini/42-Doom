@@ -19,13 +19,14 @@ static void	init_resources(t_doom *doom)
 
 static void	init_map(t_doom *doom)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	init_world(&doom->world, &doom->map, doom->rend.win_buffer);
 	init_minimap(&doom->world, &doom->mmap, doom->rend.win_buffer, 2);
 	while (i < doom->world.vertcount)
 	{
-		ft_printf("[vert %d]=[x:%+.3hd|y:%+.3hd]\n",i, \
+		ft_printf("[vert %d]=[x:%+.3hd|y:%+.3hd]\n", i, \
 			doom->world.p_verts[i].x, doom->world.p_verts[i].y);
 		i++;
 	}
@@ -42,7 +43,8 @@ void	init_tests(t_doom *doom)
 	doom->world.cube[5] = (t_3dvert){50, -50, 50};
 	doom->world.cube[6] = (t_3dvert){50, 50, 50};
 	doom->world.cube[7] = (t_3dvert){-50, 50, 50};
-	doom->world.trans_m = combine_matrices(init_matrix(), combine_matrices(init_matrix(), init_matrix()));
+	doom->world.trans_m = combine_matrices(init_matrix(), \
+	combine_matrices(init_matrix(), init_matrix()));
 	doom->world.trans_m.m[3][0] = 100;
 	doom->world.trans_m.m[3][1] = 100;
 	doom->world.trans_m.m[3][2] = 100;
@@ -57,10 +59,12 @@ void	cleanup_tests(t_assets *assets)
 	free(assets->dev_skybox);
 }
 
+/*
+*	draw_visibleverts(&doom->map, &doom->world);
+*	draw_map(&doom->map, &doom->world);
+*	draw_minimap(&doom->mmap, &doom->world);
+*/
 void	dotests(t_doom *doom)
 {
 	r_dotests(&doom->rend, &doom->world);
-	//draw_visibleverts(&doom->map, &doom->world);
-	//draw_map(&doom->map, &doom->world);
-	//draw_minimap(&doom->mmap, &doom->world);
 }
