@@ -145,7 +145,7 @@ typedef struct s_doom {
 	int			global_fps;
 	double		delta;
 	t_bool		fps_switch;
-	t_mapdata	mapdata;
+	t_dbg_room	*room;
 }				t_doom;
 
 int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);
@@ -169,7 +169,7 @@ void		init_minimap(t_world *w, t_mmap *mmmap, t_buffer *buf, uint32_t s);
 void		draw_map(t_map *map, t_world *world);
 void		draw_minimap(t_mmap *mm, t_world *world);
 
-void		r_dotests(t_rend *rend, t_world *w);
+void		r_dotests(t_rend *rend, t_dbg_room *room);
 
 void		rotate_player(t_world *world, t_mmap *mmap, int r);
 
@@ -184,7 +184,7 @@ t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id);
 void		update_boids(t_boid *flock, t_buffer *buf);
 void		init_tests(t_doom *doom);
 void		dotests(t_doom *doom);
-void		cleanup_tests(t_assets *assets);
+void		cleanup_tests(t_doom *doom);
 
 void		init_audio(t_audio *audio);
 void		audio_cleanup(t_audio *audio);

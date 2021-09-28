@@ -13,11 +13,13 @@ SRC_LIST =	main.c \
 		draw_line.c \
 		draw_shapes.c \
 		fps_counter.c \
+		init_mapdata.c \
 		load_tga.c \
 		blit.c \
 		spritesheet.c \
 		boids.c \
 		testing.c \
+		m_math.c \
 		m_matrix.c \
 		r_init.c \
 		r_map.c \

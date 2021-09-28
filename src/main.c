@@ -45,16 +45,13 @@ static void	init(t_doom *doom)
 
 static void	cleanup(t_doom *doom)
 {
-	free(doom->world.verts);
-	free(doom->world.p_verts);
-	free(doom->world.v_walls);
 	SDL_DestroyTexture(doom->rend.win_tex);
 	SDL_DestroyRenderer(doom->rend.renderer);
 	SDL_DestroyWindow(doom->rend.win);
 	free(doom->rend.win_buffer->pixels);
 	free(doom->rend.win_buffer);
 	audio_cleanup(&doom->audio);
-	cleanup_tests(&doom->assets);
+	cleanup_tests(doom);
 	Mix_Quit();
 	SDL_Quit();
 }
@@ -74,7 +71,7 @@ static void	loop(t_doom	*doom)
 	physics(doom);
 	dotests(doom);
 	audios(&doom->audio);
-	draw_circle(doom->map.mapbuf, (t_point){(int)doom->player.pos.x, \
+	draw_circle(doom->rend.win_buffer, (t_point){(int)doom->player.pos.x, \
 	(int)doom->player.pos.y}, 10, MMAP_C_PLAYER);
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \
 		&doom->rend.win_pixels, &doom->rend.win_pixel_pitch) < 0)
