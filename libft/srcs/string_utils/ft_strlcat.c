@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/25 18:32:10 by eniini            #+#    #+#             */
-/*   Updated: 2020/10/16 09:18:17 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:12:08 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 **	If the return value is >= dstsize, the output string has been truncated.
 **	It is the caller's responsibility to handle this.
 */
-
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;

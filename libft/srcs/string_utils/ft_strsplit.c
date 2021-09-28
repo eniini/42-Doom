@@ -6,16 +6,11 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/26 14:23:57 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:42:10 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:15:53 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-/*
-**	Returns a nul-terminated array of substrings copied from [s]
-**	delimited by char [c].
-*/
 
 static char	*ft_getstring(char const *s, char c, size_t start)
 {
@@ -73,6 +68,10 @@ static char	**ft_dosplit(char const *s, char c, char **ret, size_t wordcount)
 	return (ret);
 }
 
+/*
+**	Returns a nul-terminated array of substrings copied from [s]
+**	delimited by char [c].
+*/
 char	**ft_strsplit(char const *s, char c)
 {
 	char	**ret;

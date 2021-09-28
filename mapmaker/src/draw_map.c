@@ -3,21 +3,20 @@
 /*
 ** Clears the canvas for drawing.
 */
-
-void	e_clear_canvas(t_img *img)
+void	e_clear_canvas(t_e_img *img)
 {
 	int			i;
 	int			j;
 	uint32_t	pixel;
 
 	j = 0;
-	while (j <= WIN_H)
+	while (j < WIN_H)
 	{
 		i = TBAR_W;
-		while (i <= WIN_W)
+		while (i < WIN_W)
 		{
 			pixel = j * WIN_W + i;
-			img->win_buffer->pixels[pixel] = BLACK;
+			img->win_buffer->px[pixel] = C_BLACK;
 			i++;
 		}
 		j++;
@@ -30,7 +29,7 @@ void	e_clear_canvas(t_img *img)
 ** both exist, draws a line between them. Stops as the list ends at NULL.
 */
 
-void	e_draw_map(t_img *img, t_wlist *head)
+void	e_draw_map(t_e_img *img, t_wlist *head)
 {
 	t_wlist	*temp;
 
@@ -40,10 +39,10 @@ void	e_draw_map(t_img *img, t_wlist *head)
 	{
 		if (temp->wall.end.x != 0)
 		{
-			draw_line(img->win_buffer, temp->wall.start, temp->wall.end, GREY);
-			draw_filled_circle(img->win_buffer, temp->wall.end, RADIUS, WHITE);
+			draw_line(img->win_buffer, temp->wall.start, temp->wall.end, C_GREY);
+			draw_filled_circle(img->win_buffer, temp->wall.end, RADIUS, C_WHITE);
 		}
-		draw_filled_circle(img->win_buffer, temp->wall.start, RADIUS, WHITE);
+		draw_filled_circle(img->win_buffer, temp->wall.start, RADIUS, C_WHITE);
 		temp = temp->next;
 	}
 }

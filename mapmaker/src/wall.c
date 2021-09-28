@@ -27,7 +27,7 @@ void	printf_head(t_wlist *head)
 
 // TODO make a check this doesn't grow too big
 
-void	e_wall_add(t_point pixel, t_img *img, t_editor *edit)
+void	e_wall_add(t_point2 pixel, t_e_img *img, t_editor *edit)
 {
 	t_wlist	*new;
 
@@ -40,7 +40,7 @@ void	e_wall_add(t_point pixel, t_img *img, t_editor *edit)
 		{
 			new = w_lstnew();
 			if (!new)
-				die("Malloc failure in linked list.");
+				ft_getout("Malloc failure in linked list.");
 			if (edit->head == NULL)
 				edit->head = new;
 			else

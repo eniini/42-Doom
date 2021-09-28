@@ -1,9 +1,15 @@
 #include "doom.h"
 
+/*
+*	!! WIP !! Need to rethink how the minimap should actually function ingame.
+*	should be a dynamical sliced view of the map instead of scaling the whole
+*	thing. Probably needs Cohen-Sutherland algo to clip map geometry.
+*/
+
 static void	do_minimap_line(t_mmap *mm, t_vert v0, t_vert v1, uint32_t color)
 {
-	t_point	p0;
-	t_point	p1;
+	t_point2	p0;
+	t_point2	p1;
 
 	p0.x = mm->buf_unit.x * (map_value_to_buffer((t_range){mm->min_coord.x, \
 	mm->max_coord.x}, mm->coord_diff.x, v0.x)) / mm->scale + 10;
@@ -18,7 +24,7 @@ static void	do_minimap_line(t_mmap *mm, t_vert v0, t_vert v1, uint32_t color)
 
 static void	do_minimap_circle(t_mmap *mm, t_vert v, int size, uint32_t color)
 {
-	t_point	p;
+	t_point2	p;
 
 	p.x = mm->buf_unit.x * map_value_to_buffer((t_range){mm->min_coord.x, \
 	mm->max_coord.x}, mm->coord_diff.x, v.x) / mm->scale + 10;
@@ -50,12 +56,12 @@ void	draw_minimap(t_mmap *mm, t_world *world)
 	int		i;
 
 	i = 0;
-	draw_square((t_point){0, 0}, \
-		(t_point){((mm->buf_unit.x * mm->coord_diff.x) / mm->scale) + 20, \
+	draw_square((t_point2){0, 0}, \
+		(t_point2){((mm->buf_unit.x * mm->coord_diff.x) / mm->scale) + 20, \
 		((mm->buf_unit.y * mm->coord_diff.y) / mm->scale) + 20}, mm->mmapbuf, \
 		MMAP_C_OUTLINE);
-	draw_square((t_point){5, 5}, \
-		(t_point){((mm->buf_unit.x * mm->coord_diff.x) / mm->scale) + 15, \
+	draw_square((t_point2){5, 5}, \
+		(t_point2){((mm->buf_unit.x * mm->coord_diff.x) / mm->scale) + 15, \
 		((mm->buf_unit.y * mm->coord_diff.y) / mm->scale) + 15}, mm->mmapbuf, \
 		C_BLACK);
 	while (i < world->vertcount - 1)

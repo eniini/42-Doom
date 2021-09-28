@@ -5,7 +5,6 @@
 ** through until all content has been freed. At last, the pointer
 ** to the beginning of the list is set to NULL.
 */
-
 void	w_del_list(t_wlist **list)
 {
 	t_wlist	*temp;

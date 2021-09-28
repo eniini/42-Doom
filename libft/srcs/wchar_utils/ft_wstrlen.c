@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 10:04:11 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/21 11:54:56 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:19:03 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 **	Returns the byte length of a null-terminated wide string array
 **	(not counting the null terminator itself).
 */
-
 size_t	ft_wstrlen(const wchar_t *wstr)
 {
 	size_t	strlen;

@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:53:41 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/10 15:06:50 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 20:53:00 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ void	draw_pixel(uint32_t x, uint32_t y, t_buffer *buf, uint32_t color)
 
 	i = (buf->w * y) + x;
 	if (x < buf->w && y < buf->h)
-		buf->pixels[i] = color;
+		buf->px[i] = color;
 }

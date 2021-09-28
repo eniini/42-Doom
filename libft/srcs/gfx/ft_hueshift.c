@@ -6,9 +6,11 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 17:31:07 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/03 14:27:45 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:55:13 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "ft_gfx.h"
 
 /*
 **	Since RGB values effectively form a cube of color space, we're able to
@@ -21,8 +23,6 @@
 **	Return values are clamped since diagonal of RGB cube and its rotation
 **	result in values outside a 255³.
 */
-
-#include "ft_gfx.h"
 
 int	ft_hueshift(int c, double p)
 {

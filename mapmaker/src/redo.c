@@ -6,7 +6,6 @@
 ** If the tail is empty, the redo flag is set to FALSE,
 ** as no redo actions can be taken.
 */
-
 void	e_redo(t_editor *edit)
 {
 	t_wlist	*save;

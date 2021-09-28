@@ -6,8 +6,7 @@
 ** while the last item gets put at the top of the tail list
 ** pointer.
 */
-
-void	e_undo(t_img *img, t_editor *edit)
+void	e_undo(t_e_img	*img, t_editor *edit)
 {
 	t_wlist	*temp;
 	t_wlist	*last;

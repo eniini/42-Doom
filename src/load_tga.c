@@ -7,7 +7,7 @@
 *	Each 4 bytes is stored into a single hexadecimal (ARGB) value.
 *	Returns TRUE if pixel data loading is successful.
 */
-static t_bool	load_data(t_imgdata *img, int fd)
+static t_bool	load_data(t_img *img, int fd)
 {
 	ssize_t		readbytes;
 	uint32_t	i;
@@ -18,14 +18,14 @@ static t_bool	load_data(t_imgdata *img, int fd)
 	i = 0;
 	img_size = img->w * img->h * 4;
 	rawdata = (char *)malloc(img_size);
-	img->data = (uint32_t *)malloc(sizeof(uint32_t) * img->w * img->h);
-	if (!img->data || !rawdata)
+	img->px = (uint32_t *)malloc(sizeof(uint32_t) * img->w * img->h);
+	if (!img->px || !rawdata)
 		return (FALSE);
 	if (read(fd, rawdata, img_size) != img_size)
 		return (FALSE);
 	while (readbytes < img_size)
 	{
-		img->data[i++] = (rawdata[readbytes + 3] & 255) << 24 | \
+		img->px[i++] = (rawdata[readbytes + 3] & 255) << 24 | \
 		(rawdata[readbytes + 2] & 255) << 16 | \
 		(rawdata[readbytes + 1] & 255) << 8 | (rawdata[readbytes] & 255);
 		readbytes += 4;
@@ -41,18 +41,18 @@ static t_bool	load_data(t_imgdata *img, int fd)
 *	If a wrong type of file or a malloc/IO error is encountered,
 *	function returns NULL. Otherwise a pointer to [t_img] struct is returned.
 */
-t_imgdata 	*load_tga(const char *filepath)
+t_img 	*load_tga(const char *filepath)
 {
 	int				fd;
 	unsigned char	header[18];
-	t_imgdata		*img;
+	t_img		*img;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)
 		return (NULL);
 	if (read(fd, header, 18) != 18)
 		return (NULL);
-	img = malloc(sizeof(t_imgdata));
+	img = malloc(sizeof(t_img));
 	if (!img)
 		return (NULL);
 	img->w = header[0x0C] | header[0x0D] << 8;
@@ -113,12 +113,12 @@ t_bool	rf_load_tga_into_rf(t_rf *rf, const char *filepath)
 *	Loads TGA from a resource file.
 *	Assumes that [fd] points at the first byte of the image header data.
 */
-t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id)
+t_img	*rf_load_tga_lump(t_rf *rf, short lump_id)
 {
 	t_rf_lump		*next;
 	t_rf_lump		*head;
 	unsigned char	header[18];
-	t_imgdata		*img;
+	t_img			*img;
 
 	head = rf->lumplist;
 	next = rf->lumplist->next;
@@ -138,7 +138,7 @@ t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id)
 		ft_getout(strerror(errno));
 		return (NULL);
 	}
-	img = malloc(sizeof(t_imgdata));
+	img = malloc(sizeof(t_img));
 	if (!img)
 	{
 		ft_getout(strerror(errno));

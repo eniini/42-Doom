@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/01 21:58:16 by eniini            #+#    #+#             */
-/*   Updated: 2021/06/03 18:49:15 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:55:59 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 *	Therefore we need to reverse the line order of given data by
 *	swapping each row with its opposite.
 */
-
 static t_gfxinfo	*flip_scanlines(t_gfxinfo *bmp)
 {
 	int	i;
@@ -51,7 +50,6 @@ static t_gfxinfo	*flip_scanlines(t_gfxinfo *bmp)
 *	Previous read() call increments file descriptor pointer past .BMP metadata,
 *	so the next call is assumed to read all of the pixel data insid the file.
 */
-
 static t_gfxinfo	*read_data(t_gfxinfo *bmp, unsigned int imgsize, int fd)
 {
 	bmp->one_d_addr = malloc(sizeof(unsigned char) * imgsize);

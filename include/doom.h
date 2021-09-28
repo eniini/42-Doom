@@ -14,46 +14,38 @@
 *	s_  = sound
 */
 
+//c lib
 # include <string.h> //for sterror
 # include <errno.h> //for errno macro
 # include <unistd.h> //for write TBD
-
+//SDL
 # include "../libSDL2/include/SDL2/SDL_mixer.h"
 # include "../libSDL2/include/SDL2/SDL.h"
-
+//libft
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_gfx.h"
-
-# define WIN_W 800
-# define WIN_H 600
-# define WIN_MAX 480000
-# define WIN_NAME "DOOM-NUKEM @42 BY ESUKAVA/ENIINI/ESORMUNE"
-
-# define TRUE 1
-# define FALSE 0
-
-/*
-** COLOURS
-*/
-
-# define BLUE		0XFF0000FF
-# define GREEN		0XFF00FF00
-# define RED		0XFFFF0000
-# define TEAL		0XFF00FBFF
-# define GREY		0XFF949494
-# define WHITE		0XFFFFFFFF
-# define BLACK		0XFF000000
-
-# include "boid.h"
+//doom
 # include "defines.h"
 # include "mapdefs.h"
 # include "render.h"
 # include "resourcefile.h"
 # include "vector.h"
 
-# define C_BLACK 0x00000000
-# define C_WHITE 0x00FFFFFF
+//temp
+# define WIN_W 800
+# define WIN_H 600
+# define WIN_NAME "DOOM-NUKEM @42 BY ESUKAVA/ENIINI/ESORMUNE"
 
+//COLOURS
+# define C_BLUE		0XFF0000FF
+# define C_GREEN	0XFF00FF00
+# define C_RED		0XFFFF0000
+# define C_TEAL		0XFF00FBFF
+# define C_GREY		0XFF949494
+# define C_BLACK	0xFF000000
+# define C_WHITE	0xFFFFFFFF
+
+//Holds everything related directly to SDL's drawbuffer.
 typedef struct s_rend
 {
 	SDL_Renderer	*renderer;
@@ -64,74 +56,56 @@ typedef struct s_rend
 	int				win_pixel_pitch;
 	t_bool			run;
 }					t_rend;
-
-//sprite in the context of this program refers to struct that 
+//Sprite in the context of this program refers to struct that 
 //holds a spritesheet and from which you can blit individual sprites from.
 typedef struct s_sprite {
-	t_imgdata	*img;
+	t_img		*img;
 	uint32_t	sprite_count;
 	uint32_t	sprite_w;
 	uint32_t	sprite_h;
 	uint32_t	width;
 }				t_sprite;
-
-//place to hold all graphics etc. data we need. Also development stuff
+//Place to hold all graphics etc. data we need. Also development stuff
 typedef struct s_assets {
-	t_imgdata	*dev_skybox;
+	t_img		*dev_skybox;
 }				t_assets;
-
+//Everything audio-related.
 typedef struct s_audio {
 	Mix_Chunk	*sound;
 	t_bool		sound_trigger;
 }				t_audio;
-
+//Minimap constitutes an independent rendition of map data and player's position
+//in it. Therefore it needs its own set of dynamic units.
 typedef struct s_mmap {
-	t_vert		max_coord;
-	t_vert		min_coord;
-	t_vert		coord_diff;
-	t_vert		buf_unit;
-	t_vert		mm_p_angle;
+	t_point2	max_coord;
+	t_point2	min_coord;
+	t_point2	coord_diff;
+	t_point2	buf_unit;
+	t_point2	mm_p_angle;
 	t_buffer	*mmapbuf;
 	int			scale;
 }				t_mmap;
-
+//Holds all the dynamic units related to projecting map geometry into
+//screen space.
 typedef struct s_map {
-	t_vert		max_coord;
-	t_vert		min_coord;
-	t_vert		coord_diff;
-	t_vert		buf_unit;
+	t_point2	max_coord;
+	t_point2	min_coord;
+	t_point2	coord_diff;
+	t_point2	buf_unit;
 	t_buffer	*mapbuf;
 }				t_map;
-
-/*
-*	Final map structure collection.
-*	BSP -> binary tree of convex areas (SUBSECTORS)
-*	SEGS -> individual BSP geometry units
-*	SECTORS -> collection of properties for a specific area
-*	LINEDEFS -> general geometry unit
-*	SIDEDEFS -> additional data for LINEDEF texturing
-*	VERTICES -> list of all the vertexes in the map
-*/
-typedef struct s_mapdata
-{
-	t_l_ldefs	*lv_linedefs;
-	t_l_sdefs	*lv_sidedefs;
-	t_l_things	*lv_things;
-	short		vertices[SHRT_MAX][2];
-}				t_mapdata;
-
+//Data related directly to player.
 typedef struct s_player {
-	t_f_point		pos;
+	t_vector2	pos;
 }				t_player;
-
+//Keyevent handling.
 typedef struct s_keys {
-	t_bool	up_pressed;
-	t_bool	down_pressed;
-	t_bool	left_pressed;
-	t_bool	right_pressed;
+	t_bool		up_pressed;
+	t_bool		down_pressed;
+	t_bool		left_pressed;
+	t_bool		right_pressed;
 }				t_keys;
-
-//superstruct that holds all the subsystem structs
+//superstruct that holds all the subsystem structs.
 typedef struct s_doom {
 	t_rend		rend;
 	t_assets	assets;
@@ -148,19 +122,17 @@ typedef struct s_doom {
 	t_dbg_room	*room;
 }				t_doom;
 
-int			blit_img(t_imgdata *img, t_buffer *buf, t_point start);
-int			blit_img_scaled(t_imgdata *img, t_buffer *buf, \
-t_point offs, float scale);
 
-t_sprite	*create_sprite(t_imgdata *img, uint32_t spr_count, \
-t_point spr_unit);
-t_bool		blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_point pos);
+int			blit_img(t_img *img, t_buffer *buf, t_point2 start);
+int			blit_img_scaled(t_img *img, t_buffer *buf, t_point2 offs, float s);
+t_sprite	*create_sprite(t_img *img, uint32_t count, t_point2 dimensions);
+t_bool		blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_point2 start);
 
 void		draw_pixel(uint32_t x, uint32_t y, t_buffer *buf, uint32_t color);
-void		draw_line(t_buffer *buf, t_point p0, t_point p1, uint32_t color);
-void		draw_circle(t_buffer *buf, t_point p, int r, uint32_t color);
-void		draw_filled_circle(t_buffer *buf, t_point p, int r, uint32_t color);
-void		draw_square(t_point a, t_point b, t_buffer *buf, int color);
+void		draw_line(t_buffer *buf, t_point2 p0, t_point2 p1, uint32_t color);
+void		draw_circle(t_buffer *buf, t_point2 p, int r, uint32_t color);
+void		draw_filled_circle(t_buffer *buf, t_point2 p, int r, uint32_t col);
+void		draw_square(t_point2 a, t_point2 b, t_buffer *buf, int color);
 
 void		cull_vertices(t_world *world);
 void		draw_visibleverts(t_map *map, t_world *world);
@@ -174,14 +146,13 @@ void		r_dotests(t_rend *rend, t_dbg_room *room);
 void		rotate_player(t_world *world, t_mmap *mmap, int r);
 
 void		apply_perspective(t_world *world);
-void		apply_movement(t_world *world, t_vert direction);
+void		apply_movement(t_world *world, t_point2 direction);
 
-t_imgdata	*load_tga(const char *filepath);
+t_img		*load_tga(const char *filepath);
 void		add_tga_to_rf(t_rf *rf, const char *filepath);
-t_imgdata	*load_tga_from_rf(t_rf *rf, short lump_id);
-t_imgdata	*rf_load_tga_lump(t_rf *rf, short lump_id);
+t_img		*load_tga_from_rf(t_rf *rf, short lump_id);
+t_img		*rf_load_tga_lump(t_rf *rf, short lump_id);
 
-void		update_boids(t_boid *flock, t_buffer *buf);
 void		init_tests(t_doom *doom);
 void		dotests(t_doom *doom);
 void		cleanup_tests(t_doom *doom);

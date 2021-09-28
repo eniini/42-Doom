@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/30 18:39:22 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 12:17:26 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:11:47 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 **	returns a pointer to the located character,
 **	or NULL if the character does not appear in the string.
 */
-
 char	*ft_strchr(const char *s, int c)
 {
 	if (c == '\0')

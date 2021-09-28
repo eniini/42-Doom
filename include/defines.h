@@ -18,62 +18,47 @@
 # define ANGLE_S	270
 # define ANGLE_SE	315
 
-//Memory representation of a point in a map.
-typedef struct s_vert {
+typedef struct s_point2 {
 	int	x;
 	int	y;
-}		t_vert;
+}		t_point2;
+typedef t_point2 t_vert;
 
-//Projection/Matrix datatype
-typedef struct s_3dvert {
+typedef struct s_point3 {
 	int	x;
 	int	y;
 	int	z;
-}		t_3dvert;
+}		t_point3;
 
-//Memory representation of a line in a map.
-typedef struct s_linedef {
-	t_vert		start;
-	t_vert		end;
+typedef struct s_line {
+	t_point2	start;
+	t_point2	end;
 	uint32_t	color;
-}				t_linedef;
+}				t_line;
 
-//Handles mapping integer values into a range.
+//Handles mapping signed/unsigned ints into a range.
 typedef struct s_range {
 	long	start;
 	long	end;
 }			t_range;
-
-//Datatype for handling buffer/array coordinates
-typedef struct s_point {
-	uint32_t	x;
-	uint32_t	y;
-}				t_point;
-
-typedef struct s_f_point {
+//floating-point 2d unit. Used to represent velocity & orientation.
+typedef struct s_vector2 {
 	float	x;
 	float	y;
-}			t_f_point;
-
-//datatype to store an ARBG image. Each pixel can be found by calculating
+}			t_vector2;
+//floating-point 3d unit. Used to simulate 3D physics.
+typedef struct s_vector3 {
+	float	x;
+	float	y;
+	float	z;
+}			t_vector3;
+//Datatype to store an ARBG image. Each pixel can be found by calculating
 //[(h * y) + (x % w)]
-typedef struct s_imgdata {
-	uint32_t	*data;
+typedef struct s_img {
+	uint32_t	*px;
 	uint32_t	w;
 	uint32_t	h;
-}				t_imgdata;
-
-//TODO: maybe do typedef s_imgdata t_buffer ?
-typedef struct s_buffer {
-	uint32_t	*pixels;
-	uint32_t	w;
-	uint32_t	h;
-}				t_buffer;
-
-//its a mistake to handle any math with unsigned values
-//leave <=0 checks to buffer submodule!
-typedef struct s_matrix {
-	double	m[4][4];
-}			t_matrix;
+}				t_img;
+typedef t_img	t_buffer;
 
 #endif

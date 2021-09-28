@@ -1,5 +1,4 @@
 #include "doom.h"
-#include <stdio.h> //tbd
 
 /*
 ** Button size refers to the pizels of the square-shaped button.
@@ -19,11 +18,7 @@
 
 # define W_BUFF_SIZE 1000
 
-typedef struct s_wall
-{
-	t_point	start;
-	t_point	end;
-}			t_wall;
+typedef t_line	t_wall;
 
 typedef struct s_wlist
 {
@@ -34,8 +29,8 @@ typedef struct s_wlist
 
 typedef struct s_mouse
 {
-	t_point	prev;
-	t_point	new;
+	t_point2	prev;
+	t_point2	new;
 }				t_mouse;
 
 typedef struct s_editor
@@ -48,7 +43,7 @@ typedef struct s_editor
 	t_bool	clear;
 }			t_editor;
 
-typedef struct s_img
+typedef struct s_e_img
 {
 	SDL_Renderer	*rend;
 	SDL_Window		*win;
@@ -59,15 +54,15 @@ typedef struct s_img
 	t_bool			run;
 	t_mouse			mouse;
 	t_editor		*edit;
-}					t_img;
+}					t_e_img;
 
-void	e_mouse(SDL_Event e, t_img *img);
-void	e_keys(SDL_Event e, t_img *img);
+void	e_mouse(SDL_Event e, t_e_img *img);
+void	e_keys(SDL_Event e, t_e_img *img);
 
-void	e_init_editor(t_img *img);
-void	e_clear_canvas(t_img *img);
-void	e_draw_button(int y_start, t_img *img, uint32_t colour);
-void	die(char *reason);
+void	e_init_editor(t_e_img *img);
+void	e_clear_canvas(t_e_img *img);
+void	e_draw_button(int y_start, t_e_img *img, uint32_t colour);
+//void	die(char *reason);
 
 // lists
 
@@ -79,9 +74,9 @@ void	w_lstpush(t_wlist **alst, t_wlist *new);
 int		w_lstsize(t_wlist *lst);
 void	w_del_list(t_wlist **list);
 
-void	e_wall_add(t_point pixel, t_img *img, t_editor *edit);
-void	e_draw_map(t_img *img, t_wlist *head);
-void	e_undo(t_img *img, t_editor *edit);
+void	e_wall_add(t_point2 pixel, t_e_img *img, t_editor *edit);
+void	e_draw_map(t_e_img *img, t_wlist *head);
+void	e_undo(t_e_img *img, t_editor *edit);
 void	e_printf_head(t_wlist *head);
 void	e_redo(t_editor *edit);
-void	e_clear(t_img *img, t_editor *edit);
+void	e_clear(t_e_img *img, t_editor *edit);

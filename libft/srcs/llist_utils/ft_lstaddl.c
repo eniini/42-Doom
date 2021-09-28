@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 12:59:25 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 13:51:47 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:56:15 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 **	Adds the list element [new] to the end of list.
 **	[alst] is a pointer to the first link of the list.
 */
-
 void	ft_lstaddl(t_list **alst, t_list *new)
 {
 	t_list	**temp;

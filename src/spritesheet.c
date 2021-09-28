@@ -1,12 +1,12 @@
 #include "doom.h"
 
 /*
-*	[spr_count] is the number of sprites generated from the given image.
-*	[spr_unit] is the length and width of each generated sprite.
+*	[count] is the number of sprites generated from the given image.
+*	[dims] is the length and width of each generated sprite.
 *	Creates a struct that stores all the necessary data to blit individual
 *	sprites from the given spritesprite image.
 */
-t_sprite	*create_sprite(t_imgdata *img, uint32_t spr_count, t_point spr_unit)
+t_sprite	*create_sprite(t_img *img, uint32_t count, t_point2 dimensions)
 {
 	t_sprite	*sprite;
 	uint32_t	y;
@@ -17,12 +17,12 @@ t_sprite	*create_sprite(t_imgdata *img, uint32_t spr_count, t_point spr_unit)
 		return (NULL);
 	sprite->img = img;
 	sprite->width = 0;
-	sprite->sprite_count = spr_count;
+	sprite->sprite_count = count;
 	y = 0;
-	while (spr_unit.y * y <= img->h)
+	while (dimensions.y * y <= img->h)
 	{
 		x = 0;
-		while (spr_unit.x * x <= img->w)
+		while (dimensions.x * x <= img->w)
 			x++;
 		if (x > sprite->width)
 			sprite->width = x;
@@ -34,14 +34,18 @@ t_sprite	*create_sprite(t_imgdata *img, uint32_t spr_count, t_point spr_unit)
 	return (sprite);
 }
 
-t_bool	blit_sprite(t_sprite *sprite, t_buffer *buf, int frame, t_point start)
+/*
+*	Blits frame number [i] from the given spritesheet [sprite] onto the
+*	coordinates given as t_point2 [start].
+*/
+t_bool	blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_point2 start)
 {
 	uint32_t	x;
 	uint32_t	y;
 
-	if (!sprite || !sprite->img || !sprite->img->data || !buf)
+	if (!sprite || !sprite->img || !sprite->img->px || !buf)
 		return (FALSE);
-	if (start.x > buf->w || start.y > buf->h)
+	if (start.x > (int)buf->w || start.y > (int)buf->h)
 		return (FALSE);
 	y = 0;
 	while ((y + start.y) <= buf->h && y < sprite->sprite_h)
@@ -49,10 +53,10 @@ t_bool	blit_sprite(t_sprite *sprite, t_buffer *buf, int frame, t_point start)
 		x = 0;
 		while ((x + start.y) <= buf->w && x < sprite->sprite_w)
 		{
-			buf->pixels[((y + start.y) * buf->w) + x + start.x] = \
-			sprite->img->data[(((frame / sprite->width) * \
+			buf->px[((y + start.y) * buf->w) + x + start.x] = \
+			sprite->img->px[(((i / sprite->width) * \
 					sprite->sprite_h + y) * sprite->img->w) + \
-			((frame % sprite->width) * sprite->sprite_w + x)];
+			((i % sprite->width) * sprite->sprite_w + x)];
 			x++;
 		}
 		y++;

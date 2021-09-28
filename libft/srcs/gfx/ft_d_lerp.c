@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 22:04:30 by eniini            #+#    #+#             */
-/*   Updated: 2021/05/14 18:06:38 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:54:50 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 **	Handles precision differences between arguments by dividing
 **	the multiplications between [p] and [a/b] in two parts.
 */
-
 double	ft_d_lerp(double a, double b, double p)
 {
 	if (a == b)

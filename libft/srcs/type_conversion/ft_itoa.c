@@ -6,16 +6,11 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 16:21:30 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 16:49:53 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:19:49 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-/*
-**	Returns a fresh valid string representing the integer [n] given as argument.
-**	If the allocation fails, the function returns NULL.
-*/
 
 static int	get_len(intmax_t n)
 {
@@ -57,6 +52,10 @@ static char	*get_str(intmax_t n, int len)
 	return (s);
 }
 
+/*
+**	Returns a fresh valid string representing the integer [n] given as argument.
+**	If the allocation fails, the function returns NULL.
+*/
 char	*ft_itoa(intmax_t n)
 {
 	char	*s;

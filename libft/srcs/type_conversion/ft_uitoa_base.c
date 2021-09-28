@@ -6,18 +6,13 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 14:15:39 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 16:54:58 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:15:34 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-**	Returns a string representation of unsigned integer [ui] in base[x].
-**	Bases over 36 and under 2 are not supported as they don't utilize
-**	the same format.
-**	s[--i] = ui % base >= 10 ? ui % base - 10 + cval : ui % base + '0';
-*/
+//	RIP s[--i] = ui % base >= 10 ? ui % base - 10 + cval : ui % base + '0';
 
 static char	*get_string(size_t ui, int base, char cval, int i)
 {
@@ -39,6 +34,11 @@ static char	*get_string(size_t ui, int base, char cval, int i)
 	return (s);
 }
 
+/*
+**	Returns a string representation of unsigned integer [ui] in base[x].
+**	Bases over 36 and under 2 are not supported as they don't utilize
+**	the same format.
+*/
 char	*ft_uitoa_base(size_t ui, int base, t_bool lcase)
 {
 	size_t	uix;

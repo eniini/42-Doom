@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/25 12:58:03 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:35:50 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:11:43 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 **	then adds a terminating `\0' and returns a pointer to it.
 **	[a] must have sufficient space to hold the result.
 */
-
 char	*ft_strcat(char *a, const char *b)
 {
 	size_t	a_len;

@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 13:41:43 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:22:34 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:11:54 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 **	Comparison is done with unsigned characters,
 **	so that `\200' is greater than `\0'.
 */
-
 int	ft_strcmp(const char *a, const char *b)
 {
 	size_t	i;

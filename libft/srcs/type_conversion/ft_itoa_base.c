@@ -6,19 +6,11 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 21:34:05 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/21 11:50:35 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:14:11 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-/*
-**	Returns a string representation of integer [i] written in base[x].
-**	Bases over 36 are unsupported, as ones larger are represented with
-**	a different formula. Same goes for bases smaller than 2 (unary coding).
-**
-**	(Note: Specific cases like Base64 should use their own itoa variant.)
-*/
 
 static int	convert_hex(intmax_t n, int base, t_bool lcase)
 {
@@ -74,6 +66,13 @@ static char	*get_str(intmax_t n, int base, t_bool lcase, int len)
 	return (s);
 }
 
+/*
+**	Returns a string representation of integer [i] written in base[x].
+**	Bases over 36 are unsupported, as ones larger are represented with
+**	a different formula. Same goes for bases smaller than 2 (unary coding).
+**
+**	(Note: Specific cases like Base64 should use their own itoa variant.)
+*/
 char	*ft_itoa_base(intmax_t n, int base, t_bool lcase)
 {
 	char	*s;

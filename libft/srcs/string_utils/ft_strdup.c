@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 13:19:21 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:32:19 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:12:01 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 **	allocates sufficient memory for a copy of the string [s1], does the copy,
 **	and returns a pointer to it. If malloc fails, NULL is returned.
 */
-
 char	*ft_strdup(const char *s1)
 {
 	char	*dup;

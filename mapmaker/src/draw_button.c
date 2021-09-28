@@ -3,8 +3,7 @@
 /*
 ** Draws a square button.
 */
-
-void	e_draw_button(int y_start, t_img *img, uint32_t colour)
+void	e_draw_button(int y_start, t_e_img *img, uint32_t colour)
 {
 	int	x;
 	int	x_end;
@@ -20,7 +19,7 @@ void	e_draw_button(int y_start, t_img *img, uint32_t colour)
 		while (x <= x_end)
 		{
 			pixel = y_start * WIN_W + x;
-			img->win_buffer->pixels[pixel] = colour;
+			img->win_buffer->px[pixel] = colour;
 			x++;
 		}
 		y_start++;

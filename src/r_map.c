@@ -26,9 +26,9 @@ uint32_t	wall_colortable(int i)
 static void	draw_buffer_line(t_map *map, t_vert start, t_vert end, uint32_t c)
 {
 	draw_line(map->mapbuf, \
-		(t_point){map->mapbuf->w / 2 + map->buf_unit.x * start.x,
+		(t_point2){map->mapbuf->w / 2 + map->buf_unit.x * start.x,
 		map->mapbuf->h / 2 + map->buf_unit.y * start.y}, \
-		(t_point){map->mapbuf->w / 2 + map->buf_unit.x * end.x, \
+		(t_point2){map->mapbuf->w / 2 + map->buf_unit.x * end.x, \
 		map->mapbuf->h / 2 + map->buf_unit.y * end.y}, c);
 }
 
@@ -66,6 +66,6 @@ void	draw_map(t_map *map, t_world *world)
 		wall_colortable(i));
 	i = 0;
 	draw_buffer_line(map, (t_vert){0, 0}, world->p_angle, MMAP_C_PLAYERLOOK);
-	draw_circle(map->mapbuf, (t_point){map->mapbuf->w / 2, map->mapbuf->h / 2},
+	draw_circle(map->mapbuf, (t_point2){map->mapbuf->w / 2, map->mapbuf->h / 2},
 		10, MMAP_C_PLAYER);
 }

@@ -1,25 +1,12 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
-typedef struct s_vector
-{
-	float	x;
-	float	y;
-}			t_vector;
+t_vector2	vector2_add(t_vector2 v1, t_vector2 v2);
+t_vector2	vector2_sub(t_vector2 v1, t_vector2 v2);
+t_vector2	vector2_mul(t_vector2 v1, float mul);
+t_vector2	vector2_div(t_vector2 v1, float div);
 
-typedef struct s_vector3
-{
-	float	x;
-	float	y;
-	float	z;
-}			t_vector3;
-
-t_vector	vector_add(t_vector v1, t_vector v2);
-t_vector	vector_sub(t_vector v1, t_vector v2);
-t_vector	vector_mul(t_vector v1, float mul);
-t_vector	vector_div(t_vector v1, float div);
-
-float		vector_dist(t_vector v1, t_vector v2);
-t_vector	vector_normalize(t_vector v);
+float		vector2_dist(t_vector2 v1, t_vector2 v2);
+t_vector2	vector2_normalize(t_vector2 v);
 
 #endif

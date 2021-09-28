@@ -6,15 +6,9 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 16:49:11 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 17:53:59 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:17:33 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-**	ANSI C-compliant printf implementation mainly in style of glibc.
-**	Supports writing to file descriptors via ft_fprintf(2).
-**	Has additional locale-agnostic support for wide characters (UTF-8).
-*/
 
 #include "ft_printf.h"
 
@@ -67,9 +61,10 @@ static int	loop(t_printf *f, const char *s)
 }
 
 /*
-**	Writes results to stdout.
+**	ANSI C-compliant printf implementation mainly in style of glibc.
+**	Supports writing to file descriptors via ft_fprintf(2).
+**	Has additional locale-agnostic support for wide characters (UTF-8).
 */
-
 int	ft_printf(const char *s, ...)
 {
 	t_printf	*f;
@@ -93,7 +88,6 @@ int	ft_printf(const char *s, ...)
 /*
 **	Writes results to file descriptor [fd].
 */
-
 int	ft_fprintf(const int fd, const char *s, ...)
 {
 	t_printf	*f;

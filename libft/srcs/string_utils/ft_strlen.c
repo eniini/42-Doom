@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 16:24:51 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:20:58 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:12:13 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 **	Computes the length of the string [s] and returns the number of characters
 **	that precede the terminating NUL character.
 */
-
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;

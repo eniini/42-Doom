@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 13:04:24 by eniini            #+#    #+#             */
-/*   Updated: 2020/10/16 09:11:13 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:56:21 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 **	content using the function [del], then frees the link’s memory.
 **	Finally, the pointer to the link that was just freed is set to NULL.
 */
-
 void	ft_lstdelone(t_list **alst, void (*del)(void*, size_t))
 {
 	if (alst)

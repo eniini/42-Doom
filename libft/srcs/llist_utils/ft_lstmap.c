@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/15 14:19:43 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 13:54:44 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:56:27 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 **	If function fails to allocate memory for a new element and returns NULL,
 **	all previously created lists are freed & deleted.
 */
-
 t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
 	t_list	*head;

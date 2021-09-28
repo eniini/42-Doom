@@ -6,30 +6,14 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/04 12:03:57 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 13:26:37 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:20:10 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-**	get_next_line reads an entire line minus its linebreak character from
-**	given file descriptor (hereafter fd). Similarly to getline(3), program
-**	calling this function is expected to free lines saved to given pointer.
-**
-**	First parameter is the fd that will be used to read.
-**	Second parameter is the address of a pointer that will be used
-**	to save the line read (minus the linebreak character) from fd.
-**
-**	The return value is 1/0/-1 depending on whether a line has been read, when
-**	the reading has been completed, or if an error has happened respectively.
-*/
 
 #include <unistd.h>
 #include "libft.h"
 
-/*
-**	soft FD limit. current system's soft cap can be checked with 'ulimit -n'
-*/
-
+//	soft FD limit. current system's soft cap can be checked with 'ulimit -n'
 #define FD_MAX 4096
 
 /*
@@ -38,7 +22,6 @@
 **	If no line-break is found, all of the bytes saved to *str are
 **	copied into *line.
 */
-
 static int	getlinebreak(char **line, char **str)
 {
 	size_t		len;
@@ -71,7 +54,6 @@ static int	getlinebreak(char **line, char **str)
 /*
 **	Safely combining read buffer with str[fd]
 */
-
 static char	*getstr(const int fd, char **str, char *buffer)
 {
 	char		*temp;
@@ -92,6 +74,18 @@ static char	*getstr(const int fd, char **str, char *buffer)
 **	In case of EOF, all stored buffers are given to getlinebreak function.
 */
 
+/*
+**	get_next_line reads an entire line minus its linebreak character from
+**	given file descriptor (hereafter fd). Similarly to getline(3), program
+**	calling this function is expected to free lines saved to given pointer.
+**
+**	First parameter is the fd that will be used to read.
+**	Second parameter is the address of a pointer that will be used
+**	to save the line read (minus the linebreak character) from fd.
+**
+**	The return value is 1/0/-1 depending on whether a line has been read, when
+**	the reading has been completed, or if an error has happened respectively.
+*/
 int	get_next_line(const int fd, char **line)
 {
 	static char	*str[FD_MAX];

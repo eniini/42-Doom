@@ -6,21 +6,15 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/04 12:51:34 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 15:32:33 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:14:26 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-/*
-**	Returns a string representation of floating point value [f],
-**	with the number of decimals equal to [prec].
-*/
 
 #include "libft.h"
 
 /*
 **	Converts the fractional part of the float into its string representation.
 */
-
 static char	*get_fractional(long double ld, unsigned int p, char *ret)
 {
 	size_t		i;
@@ -46,7 +40,6 @@ static char	*get_fractional(long double ld, unsigned int p, char *ret)
 **	result in a nonzero value due to sign bit being active.
 **	(Endianess shouldnt affect this!)
 */
-
 static t_bool	test_negative(float f)
 {
 	unsigned char	*access;
@@ -80,7 +73,6 @@ static t_bool	test_negative(float f)
 **	If [ld + 0.5] downcast result isn't 1, that means there is no need
 **	for an rounding addition. Same goes for zero-precision calls.
 */
-
 static long double	ftoa_roundup(long double ld, unsigned int prec)
 {
 	long double	rounding;
@@ -101,7 +93,6 @@ static long double	ftoa_roundup(long double ld, unsigned int prec)
 **	Allocates memory for the total result (possible negative sign and decimal
 **	separator included) and calls rest of the functions in order.
 */
-
 static char	*compile(long double f, unsigned int prec, t_bool negative)
 {
 	char		*ret;
@@ -133,6 +124,10 @@ static char	*compile(long double f, unsigned int prec, t_bool negative)
 **	best portable solution would be to write a signbit() function.
 */
 
+/*
+**	Returns a string representation of floating point value [f],
+**	with the number of decimals equal to [prec].
+*/
 char	*ft_ftoa(long double f, unsigned int prec)
 {
 	t_bool		negative;

@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/12 22:01:59 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/26 18:25:26 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:39:12 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	add_tga_to_rf(t_rf *rf, const char *asset)
 *	resource file. Returns an [imgdata] pointer to translated image data
 *	or NULL on failure.
 */
-t_imgdata	*load_tga_from_rf(t_rf *rf, short lump_id)
+t_img	*load_tga_from_rf(t_rf *rf, short lump_id)
 {
 	int				fd;
 	unsigned char	h[RF_HEADERSIZE];

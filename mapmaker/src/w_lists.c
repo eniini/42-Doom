@@ -3,7 +3,6 @@
 /*
 ** Adds the new wlist item to the front of the list.
 */
-
 void	w_lstadd(t_wlist **alst, t_wlist *new)
 {
 	if (!alst || !new)
@@ -16,7 +15,6 @@ void	w_lstadd(t_wlist **alst, t_wlist *new)
 /*
 ** Returns the last wlist item on the list.
 */
-
 t_wlist	*w_lstlast(t_wlist *lst)
 {
 	while (lst)
@@ -31,11 +29,10 @@ t_wlist	*w_lstlast(t_wlist *lst)
 /*
 ** Creates a new, formatted to 0's and NULLs, wlist item.
 */
-
 t_wlist	*w_lstnew(void)
 {
-	t_wlist	*new;
-	t_point	nul;
+	t_wlist		*new;
+	t_point2	nul;
 
 	nul.x = 0;
 	nul.y = 0;
@@ -52,7 +49,6 @@ t_wlist	*w_lstnew(void)
 /*
 ** Adds the new wlist item to the back of the list.
 */
-
 void	w_lstpush(t_wlist **alst, t_wlist *new)
 {
 	t_wlist	*last;
@@ -72,7 +68,6 @@ void	w_lstpush(t_wlist **alst, t_wlist *new)
 /*
 ** Returns the size of a list.
 */
-
 int	w_lstsize(t_wlist *lst)
 {
 	int		count;

@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/15 20:30:56 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:30:54 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:12:53 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 **	Returns a copy of string [s] without the preceding and trailing
 **	whitespace characters.
 */
-
 static char	*ft_trimcpy(char const *s, size_t max, size_t min)
 {
 	size_t	i;

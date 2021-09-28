@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/30 16:25:12 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:33:28 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:12:48 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 **	if [needle] occurs nowhere in [haystack], NULL is returned; Otherwise
 **	a pointer to first character of [needle] in [haystack] is returned.
 */
-
 char	*ft_strstr(const char *haystack, const char *needle)
 {
 	size_t	i;

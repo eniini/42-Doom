@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/20 14:42:12 by eniini            #+#    #+#             */
-/*   Updated: 2021/05/14 18:06:55 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:55:50 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 /*
 **	Calculates the distance of [x] in a vector [ab] as a percentage.
 */
-
 double	ft_inverse_i_lerp(int a, int b, int x)
 {
 	double	placement;

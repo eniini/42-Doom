@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 15:52:11 by eniini            #+#    #+#             */
-/*   Updated: 2020/10/16 09:12:34 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:11:04 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 **
 **	Overlap of [src] and [dst] strings results in undefined behaviour.
 */
-
 void	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
 	size_t				i;

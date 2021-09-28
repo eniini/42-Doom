@@ -4,7 +4,6 @@
 ** Toggles the "connect" flag for the editor, then modifies
 ** the necessary values in order for it to take effect immediately.
 */
-
 static void	toggle_cnct(t_editor *edit)
 {
 	if (edit->cnct == TRUE)
@@ -23,9 +22,9 @@ static void	toggle_cnct(t_editor *edit)
 // the checks for "farther away from radius" into that, not the
 // actual wall drawing function.
 
-void	e_mouse(SDL_Event e, t_img *img)
+void	e_mouse(SDL_Event e, t_e_img *img)
 {
-	t_point	pixel;
+	t_point2	pixel;
 
 	pixel.x = (uint32_t)e.button.x;
 	pixel.y = (uint32_t)e.button.y;

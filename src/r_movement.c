@@ -1,5 +1,8 @@
 #include "doom.h"
 
+/*
+*	Clamps vert position inside the min/max map coordinates.
+*/
 void	check_bounds(t_vert vert)
 {
 	if (vert.x > BOUND_MAX)
@@ -12,6 +15,9 @@ void	check_bounds(t_vert vert)
 		vert.y = BOUND_MIN;
 }
 
+/*
+*	Increments map geometry in relation to player position (origin point).
+*/
 void	apply_movement(t_world *world, t_vert direction)
 {
 	int	i;

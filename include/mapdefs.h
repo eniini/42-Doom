@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:36:13 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/28 13:37:34 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:30:20 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 
 # include "defines.h"
 
+
 /*
+*	!! EXTEREMLY WIP !!
+*
 *	Thing is loaded into level memory as an instance of [type] object
 *	with the unique x/y-position and angle unless [flags] specify otherwise.
 *
@@ -118,13 +121,13 @@ typedef struct s_l_sectors {
 }						t_l_sectors;
 
 typedef struct s_dbg_room {
-	int			wallcount;
-	t_vert		*verts;
-	t_linedef	*walls;
-	short		boundingbox[4];
-	short		ceil_h;
-	short		floor_h;
-}				t_dbg_room;
+	int		wallcount;
+	t_vert	*verts;
+	t_line	*walls;
+	short	boundingbox[4];
+	short	ceil_h;
+	short	floor_h;
+}			t_dbg_room;
 
 t_dbg_room	*init_convex_room(void);
 t_dbg_room	*init_nonconvex_room(void);

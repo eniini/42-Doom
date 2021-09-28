@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/29 10:03:28 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 15:17:02 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:18:55 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 **	Writes the wide string [wstr] into file descriptor [fd].
 **	As wstrings have variable length, we have to write them one at a time.
 */
-
 void	ft_putwstr(wchar_t *wstr, int fd)
 {
 	int		len;

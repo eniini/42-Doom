@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 16:37:48 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/19 21:53:46 by esormune         ###   ########.fr       */
+/*   Updated: 2021/09/28 22:22:50 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ typedef int		t_bool;
 # define FALSE	0
 
 //	Array manipulation/examination
+
 void			ft_free_arr(char **arr);
 size_t			ft_get_arr_size(char **arr);
 
 //	Character manipulation/examination
+
 int				ft_isalnum(int c);
 int				ft_isalpha(int c);
 int				ft_isascii(int c);
@@ -47,6 +49,7 @@ int				ft_toupper(int c);
 int				ft_tolower(int c);
 
 //	File I/O utility
+
 void			ft_putchar(char c);
 void			ft_putstr(char const *s);
 void			ft_putendl(char const *s);
@@ -61,6 +64,7 @@ int				get_next_line(const int fd, char **line);
 
 //	Linked list utility
 //	ft_lstdel(2) & ft_lstdelone(2) should call ft_elemdel(2) by default.
+
 t_list			*ft_lstnew(void const *content, size_t content_size);
 void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
@@ -71,12 +75,14 @@ t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void			ft_elemdel(void *content, size_t size);
 
 //	Math utility
+
 int				ft_abs(int n);
 int				ft_clamp_i(int value, int min, int max);
 double			ft_clamp_d(double value, double min, double max);
 long long int	ft_pow(int i, unsigned int p);
 
 //	Memory utility
+
 void			ft_bzero(void *s, size_t n);
 void			*ft_memalloc(size_t size);
 void			*ft_memchr(const void *s, int c, size_t n);
@@ -90,9 +96,11 @@ void			ft_swap(void *a, void *b, size_t size);
 void			*ft_calloc(size_t count, size_t size);
 
 //	Process control
+
 void			ft_getout(const char *str);
 
 //	String manipulation/examination
+
 char			*ft_strcat(char *a, const char *b);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 char			*ft_strncat(char *a, const char *b, size_t n);
@@ -123,6 +131,7 @@ char			*ft_strtrim(char const *s);
 size_t			ft_wordcount(char const *s, char c);
 
 //	Wide string (UTF-8) I/O and examination
+
 void			ft_putwchar(wint_t wc, int fd);
 void			ft_putwstr(wchar_t *wstr, int fd);
 int				ft_wcharlen(wint_t wc);
@@ -130,6 +139,7 @@ size_t			ft_wstrlen(const wchar_t *wstr);
 size_t			ft_wstrnlen(const wchar_t *wstr, size_t n);
 
 //	Type conversions
+
 int				ft_atoi(const char *str);
 char			*ft_ftoa(long double f, unsigned int prec);
 char			*ft_itoa(intmax_t n);

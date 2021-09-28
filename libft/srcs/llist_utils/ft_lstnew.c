@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/08 16:28:18 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:03:12 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:56:30 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 **	If the [content] is NULL, link's (content) is NULL and its (content_size)
 **	is 0 even if [content_size] isn’t.
 */
-
 t_list	*ft_lstnew(void const *content, size_t content_size)
 {
 	t_list	*new;

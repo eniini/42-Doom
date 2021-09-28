@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/30 12:59:21 by eniini            #+#    #+#             */
-/*   Updated: 2020/10/16 09:19:16 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:12:26 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 **	is filled with `\0' characters. Otherwise, dst is not terminated.
 **	Source and destination should not overlap, as the behavior is undefined.
 */
-
 char	*ft_strncpy(char *dst, const char *src, size_t len)
 {
 	size_t	i;

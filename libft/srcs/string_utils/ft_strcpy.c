@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/30 12:26:32 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:28:55 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:11:57 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 **	and returns [dst].
 **	Source and destination should not overlap, as the behavior is undefined.
 */
-
 char	*ft_strcpy(char *dst, const char *src)
 {
 	size_t	i;

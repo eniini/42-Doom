@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 16:06:56 by eniini            #+#    #+#             */
-/*   Updated: 2020/10/16 09:12:54 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:11:07 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 **	string [s]. Returns a pointer to the byte located, or NULL if no such byte
 **	exists within [n] bytes.
 */
-
 void	*ft_memchr(const void *s, int c, size_t n)
 {
 	size_t		i;

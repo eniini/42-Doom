@@ -3,8 +3,7 @@
 /*
 ** Handles key events for the mapmaker.
 */
-
-void	e_keys(SDL_Event e, t_img *img)
+void	e_keys(SDL_Event e, t_e_img *img)
 {
 	int key;
 
@@ -18,5 +17,4 @@ void	e_keys(SDL_Event e, t_img *img)
 	else if (key == SDLK_r && img->edit->redo == TRUE)
 		e_redo(img->edit);
 	e_draw_map(img, img->edit->head);
-	return ;
 }

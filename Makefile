@@ -17,10 +17,8 @@ SRC_LIST =	main.c \
 		load_tga.c \
 		blit.c \
 		spritesheet.c \
-		boids.c \
 		testing.c \
 		m_math.c \
-		m_matrix.c \
 		r_init.c \
 		r_map.c \
 		r_minimap.c \

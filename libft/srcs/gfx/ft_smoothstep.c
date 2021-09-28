@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/23 11:54:11 by eniini            #+#    #+#             */
-/*   Updated: 2021/05/14 20:02:51 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 21:56:03 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 **
 **	khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.1.40.pdf#page=81
 */
-
 double	ft_smoothstep(double start, double end, double x)
 {
 	if (x < start)

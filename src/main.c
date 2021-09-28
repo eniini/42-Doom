@@ -48,7 +48,7 @@ static void	cleanup(t_doom *doom)
 	SDL_DestroyTexture(doom->rend.win_tex);
 	SDL_DestroyRenderer(doom->rend.renderer);
 	SDL_DestroyWindow(doom->rend.win);
-	free(doom->rend.win_buffer->pixels);
+	free(doom->rend.win_buffer->px);
 	free(doom->rend.win_buffer);
 	audio_cleanup(&doom->audio);
 	cleanup_tests(doom);
@@ -57,7 +57,7 @@ static void	cleanup(t_doom *doom)
 }
 
 /*
-*	Note about SDL_LockTexture: void **pixels is 'filled in', meaning that SDL
+*	Note about SDL_LockTexture: void **px is 'filled in', meaning that SDL
 *	creates its own allocated pixel buffer thats returned to the given pointer.
 *	This is why you need to query for the pixel_pitch too since its the only
 *	way to know the 1-directional pitch of the created buffer.
@@ -66,17 +66,17 @@ static void	loop(t_doom	*doom)
 {
 	SDL_Event	e;
 
-	ft_bzero(doom->rend.win_buffer->pixels, WIN_H * WIN_W * sizeof(uint32_t));
+	ft_bzero(doom->rend.win_buffer->px, WIN_H * WIN_W * sizeof(uint32_t));
 	keyevent(doom, &e);
 	physics(doom);
 	dotests(doom);
 	audios(&doom->audio);
-	draw_circle(doom->rend.win_buffer, (t_point){(int)doom->player.pos.x, \
+	draw_circle(doom->rend.win_buffer, (t_point2){(int)doom->player.pos.x, \
 	(int)doom->player.pos.y}, 10, MMAP_C_PLAYER);
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \
 		&doom->rend.win_pixels, &doom->rend.win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
-	ft_memcpy(doom->rend.win_pixels, doom->rend.win_buffer->pixels, \
+	ft_memcpy(doom->rend.win_pixels, doom->rend.win_buffer->px, \
 	WIN_H * doom->rend.win_pixel_pitch);
 	SDL_UnlockTexture(doom->rend.win_tex);
 	if (SDL_RenderCopy(doom->rend.renderer, doom->rend.win_tex, NULL, NULL) < 0)
@@ -98,7 +98,7 @@ int	main(void)
 		ft_getout("failed to initialize main buffer");
 	doom.rend.win_buffer->w = WIN_W;
 	doom.rend.win_buffer->h = WIN_H;
-	doom.rend.win_buffer->pixels = (uint32_t *)ft_memalloc(WIN_H * WIN_W);
+	doom.rend.win_buffer->px = ft_memalloc(sizeof(uint32_t) * WIN_H * WIN_W);
 	init(&doom);
 	init_tests(&doom);
 	while (doom.rend.run)

@@ -2,7 +2,7 @@
 
 static void	convex_room_setup(t_dbg_room *room)
 {
-	int i;
+	int	i;
 
 	room->verts = (t_vert[5]){
 	{2 * MAP_UNIT, -2 * MAP_UNIT},
@@ -15,17 +15,18 @@ static void	convex_room_setup(t_dbg_room *room)
 	{
 		room->walls[i].start = room->verts[i];
 		room->walls[i].end = room->verts[i + 1];
+		room->walls[i].color = wall_colortable(i);
 		i++;
 	}
 	room->walls[i].start = room->verts[i];
 	room->walls[i].end = room->verts[0];
-	room->walls[0].color = 0x00b93b3b;
-	room->walls[1].color = 0x00b9743b;
-	room->walls[2].color = 0x003bb974;
-	room->walls[3].color = 0x003bb3b9;
-	room->walls[4].color = 0x003b77b9;
+	room->walls[i].color = wall_colortable(i);
 }
 
+/*
+*	Initializes a convex-shaped room data.
+*	Consists of 5 vertices creating 5 walls.
+*/
 t_dbg_room	*init_convex_room(void)
 {
 	t_dbg_room	*room;
@@ -35,7 +36,7 @@ t_dbg_room	*init_convex_room(void)
 		ft_getout("failed to init [t_debug_room]");
 	room->wallcount = 5;
 	room->verts = malloc(sizeof(t_vert) * room->wallcount);
-	room->walls = malloc(sizeof(t_linedef) * room->wallcount);
+	room->walls = malloc(sizeof(t_line) * room->wallcount);
 	if (!room->verts || !room->walls)
 		ft_getout("malloc failed for debug room mapdata init");
 	convex_room_setup(room);
@@ -48,8 +49,13 @@ t_dbg_room	*init_convex_room(void)
 	return (room);
 }
 
+/*
+*****************************************************************************/
+
 static void	nonconvex_room_setup(t_dbg_room *room)
 {
+	int	i;
+
 	room->verts = (t_vert[8]){
 	{2 * MAP_UNIT, -4 * MAP_UNIT},
 	{4 * MAP_UNIT, 1 * MAP_UNIT},
@@ -59,17 +65,22 @@ static void	nonconvex_room_setup(t_dbg_room *room)
 	{-4 * MAP_UNIT, 1 * MAP_UNIT},
 	{-2 * MAP_UNIT, -4 * MAP_UNIT},
 	{0 * MAP_UNIT, -1 * MAP_UNIT}};
-	room->walls = (t_linedef[8]){
-	{room->verts[0], room->verts[1], 0x00b93b3b},
-	{room->verts[1], room->verts[2], 0x00b9743b},
-	{room->verts[2], room->verts[3], 0x003bb974},
-	{room->verts[3], room->verts[4], 0x003bb3b9},
-	{room->verts[4], room->verts[5], 0x003b77b9},
-	{room->verts[5], room->verts[6], 0x003b3cb9},
-	{room->verts[6], room->verts[7], 0x006a3bb9},
-	{room->verts[7], room->verts[0], 0x00b93ba8}};
+	i = 0;
+	while (i < room->wallcount - 1)
+	{
+		room->walls[i].start = room->verts[i];
+		room->walls[i].end = room->verts[i + 1];
+		room->walls[i].color = wall_colortable(i);
+		i++;
+	}
+	room->walls[i].start = room->verts[i];
+	room->walls[i].end = room->verts[0];
+	room->walls[i].color = wall_colortable(i);
 }
 
+/*
+*	Initializes a nonconvex-shaped room with 8 vertices & 8 walls.
+*/
 t_dbg_room	*init_nonconvex_room(void)
 {
 	t_dbg_room	*room;
@@ -79,7 +90,7 @@ t_dbg_room	*init_nonconvex_room(void)
 		ft_getout("failed to init [t_debug_room]");
 	room->wallcount = 8;
 	room->verts = malloc(sizeof(t_vert) * room->wallcount);
-	room->walls = malloc(sizeof(t_linedef) * room->wallcount);
+	room->walls = malloc(sizeof(t_line) * room->wallcount);
 	if (!room->verts || !room->walls)
 		ft_getout("malloc failed for debug room mapdata init");
 	nonconvex_room_setup(room);

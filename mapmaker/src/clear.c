@@ -8,7 +8,7 @@
 ** point spawns. Sets the current pointer to the head.
 */
 
-void	e_clear(t_img *img, t_editor *edit)
+void	e_clear(t_e_img *img, t_editor *edit)
 {
 	img->mouse.prev.x = 0;
 	img->mouse.prev.y = 0;

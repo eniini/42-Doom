@@ -7,9 +7,9 @@
 *	Because our Y-axis points down, this rotates clockwise. Reverse rotation
 *	can be done with negative [angle] values.
 */
-t_point	rotate_point(t_point rot_point, t_point pivot_point, int angle)
+t_vert	rotate_point(t_vert rot_point, t_vert pivot_point, int angle)
 {
-	t_point	o_rot_result;
+	t_vert	o_rot_result;
 	double	c;
 	double	s;
 

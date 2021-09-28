@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 15:56:55 by eniini            #+#    #+#             */
-/*   Updated: 2021/04/20 14:12:49 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:11:13 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 **	Compares byte string [s1] against byte string [s2].
 **	Both strings are assumed to be [n] bytes long.
 */
-
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
 	const char	*str1;

@@ -79,7 +79,7 @@ void	init_world(t_world *world, t_map *map, t_buffer *buf)
 	world->vertcount = 8;
 	world->verts = malloc(sizeof(t_vert) * world->vertcount);
 	world->p_verts = malloc(sizeof(t_vert) * world->vertcount);
-	world->v_walls = malloc(sizeof(t_linedef) * (world->vertcount * 2));
+	world->v_walls = malloc(sizeof(t_line) * (world->vertcount * 2));
 	if (!world->v_walls)
 		ft_getout("failed to malloc visible wall array!");
 	if (!world->verts || !world->p_verts)

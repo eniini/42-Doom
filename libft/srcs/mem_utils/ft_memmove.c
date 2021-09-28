@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/03 16:10:54 by eniini            #+#    #+#             */
-/*   Updated: 2020/10/16 09:14:29 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 22:11:21 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 **	Copies [len] bytes from [src] to [dst] and returns original value of [dst].
 **	Overlapping is ok as copying is always done in a non-destructive manner.
 */
-
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	unsigned char		*dststr;

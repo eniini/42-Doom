@@ -14,13 +14,14 @@
 *	Texture coord [u] is generated for each column,
 *	lerp(screenspace wall width, column x)
 */
+
 /*
 *	Translate coordinates into buffer.
 */
-static void	draw_buffer_line(t_buffer *b, t_linedef wall, short *bbox)
+static void	draw_buffer_line(t_buffer *b, t_line wall, short *bbox)
 {
-	t_point start;
-	t_point end;
+	t_point2 start;
+	t_point2 end;
 
 	start.x = map_value_to_buffer((t_range){bbox[1], bbox[3]}, \
 		b->w, wall.start.x);
@@ -48,7 +49,15 @@ static void	draw_room2d(t_buffer *buf, t_dbg_room *room)
 	}
 }
 
+int	rotation = 0;
+t_vert	sp = (t_vert){WIN_W / 5, WIN_H / 5};
+static t_vert pivot = (t_vert){WIN_W / 6, WIN_H / 6};
+
 void	r_dotests(t_rend *rend, t_dbg_room *room)
 {
-	draw_room2d(rend->win_buffer, room);
+	t_vert	v;
+	rotation++;
+	v = rotate_point(sp, pivot, rotation);
+	draw_filled_circle(rend->win_buffer, (t_point2){v.x, v.y}, 4, 0xffaabbcc);
+	//draw_room2d(rend->win_buffer, room);
 }
