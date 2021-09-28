@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:54:01 by eniini            #+#    #+#             */
-/*   Updated: 2021/08/20 15:30:48 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/28 17:05:49 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,18 @@ static t_bool	init_points(t_point *p0, t_point *p1)
 	return (flip);
 }
 
+static void	clamp_values(t_buffer *buf, t_point *p0, t_point *p1)
+{
+	if (p0->x > buf->w)
+		p0->x = buf->w;
+	if (p0->y > buf->h)
+		p0->y = buf->h;
+	if (p1->x > buf->w)
+		p1->x = buf->w;
+	if (p1->y > buf->h)
+		p1->y = buf->h;
+}
+
 /*
 *	Bresenham's line algorithm.
 */
@@ -72,6 +84,7 @@ void	draw_line(t_buffer *buf, t_point p0, t_point p1, uint32_t color)
 	t_point	crawler;
 	t_bool	flip;
 
+	clamp_values(buf, &p0, &p1);
 	flip = init_points(&p0, &p1);
 	crawler = (t_point){p0.x, p0.y};
 	init_errors(p0, p1, &derror, &error);
