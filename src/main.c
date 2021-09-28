@@ -1,5 +1,16 @@
 #include "doom.h"
 
+static void	init_player(t_doom *doom)
+{
+	doom->player.pos.x = 100;
+	doom->player.pos.y = 100;
+	doom->keys.up_pressed = FALSE;
+	doom->keys.down_pressed = FALSE;
+	doom->keys.left_pressed = FALSE;
+	doom->keys.right_pressed = FALSE;
+	doom->fps_switch = FALSE;
+}
+
 /*
 *	Todo:	read up on windowflags in case we could have additional features
 *			Q:do we need sethint() and should it be to linear or nearest?
@@ -30,17 +41,6 @@ static void	init(t_doom *doom)
 		ft_getout(SDL_GetError());
 	init_audio(&doom->audio);
 	init_player(doom);
-}
-
-void	init_player(t_doom *doom)
-{
-	doom->player.pos.x = 100;
-	doom->player.pos.y = 100;
-	doom->keys.up_pressed = FALSE;
-	doom->keys.down_pressed = FALSE;
-	doom->keys.left_pressed = FALSE;
-	doom->keys.right_pressed = FALSE;
-	doom->fps_switch = FALSE;
 }
 
 static void	cleanup(t_doom *doom)

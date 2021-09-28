@@ -114,9 +114,6 @@ typedef struct s_map {
 */
 typedef struct s_mapdata
 {
-	t_me_node	*bsp;
-	t_l_segs	*r_segs;
-	t_l_sectors	*lv_sectors;
 	t_l_ldefs	*lv_linedefs;
 	t_l_sdefs	*lv_sidedefs;
 	t_l_things	*lv_things;
