@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:54:01 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/28 22:46:10 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/29 20:44:22 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 *
 *	Initial checks swap point data if needed since drawfunc always traverses
 *	from left to right. [flip] checks if we're incrementing through x or y.
-*	After that, drawline() plots a line of pixels from [point0] to [point1].
+*	After that, drawline() plots a line of pixels from [p0] to [p1].
 */
 
-static void	init_errors(t_point2 p0, t_point2 p1, int *derror, int *error)
+static void	init_errors(t_pixel p0, t_pixel p1, int *derror, int *error)
 {
 	uint32_t	ydiff;
 
@@ -33,7 +33,7 @@ static void	init_errors(t_point2 p0, t_point2 p1, int *derror, int *error)
 	*error = 0;
 }
 
-static t_bool	init_points(t_point2 *p0, t_point2 *p1)
+static t_bool	init_points(t_pixel *p0, t_pixel *p1)
 {
 	t_bool		flip;
 	uint32_t	xdiff;
@@ -50,43 +50,48 @@ static t_bool	init_points(t_point2 *p0, t_point2 *p1)
 		ydiff = p1->y - p0->y;
 	if (xdiff < ydiff)
 	{
-		ft_swap(&p0->x, &p0->y, sizeof(int));
-		ft_swap(&p1->x, &p1->y, sizeof(int));
+		ft_swap(&p0->x, &p0->y, sizeof(uint32_t));
+		ft_swap(&p1->x, &p1->y, sizeof(uint32_t));
 		flip = TRUE;
 	}
 	if (p0->x > p1->x)
 	{
-		ft_swap(&p0->x, &p1->x, sizeof(int));
-		ft_swap(&p0->y, &p1->y, sizeof(int));
+		ft_swap(&p0->x, &p1->x, sizeof(uint32_t));
+		ft_swap(&p0->y, &p1->y, sizeof(uint32_t));
 	}
 	return (flip);
 }
 
-static void	clamp_values(t_buffer *buf, t_point2 *p0, t_point2 *p1)
+/*
+*	Values larger than given buffer dimensions are clamped 
+*	to avoid integer overflow related problems.
+*	Crawling from screenspace to UINT_MAX practically kills the program.
+*/
+static void	clamp_values(t_buffer *buf, t_pixel *p0, t_pixel *p1)
 {
-	if (p0->x > (int)buf->w)
-		p0->x = (int)buf->w;
-	if (p0->y > (int)buf->h)
-		p0->y = (int)buf->h;
-	if (p1->x > (int)buf->w)
-		p1->x = (int)buf->w;
-	if (p1->y > (int)buf->h)
-		p1->y = (int)buf->h;
+	if (p0->x > buf->w)
+		p0->x = buf->w;
+	if (p0->y > buf->h)
+		p0->y = buf->h;
+	if (p1->x > buf->w)
+		p1->x = buf->w;
+	if (p1->y > buf->h)
+		p1->y = buf->h;
 }
 
 /*
-*	Bresenham's line algorithm.
+*	Bresenham's line algorithm. Plots a line from [p0] to [p1].
 */
-void	draw_line(t_buffer *buf, t_point2 p0, t_point2 p1, uint32_t color)
+void	draw_line(t_buffer *buf, t_pixel p0, t_pixel p1, uint32_t color)
 {
 	int			derror;
 	int			error;
-	t_point2	crawler;
+	t_pixel		crawler;
 	t_bool		flip;
 
 	clamp_values(buf, &p0, &p1);
 	flip = init_points(&p0, &p1);
-	crawler = (t_point2){p0.x, p0.y};
+	crawler = (t_pixel){p0.x, p0.y};
 	init_errors(p0, p1, &derror, &error);
 	while (crawler.x <= p1.x)
 	{

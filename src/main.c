@@ -71,8 +71,8 @@ static void	loop(t_doom	*doom)
 	physics(doom);
 	dotests(doom);
 	audios(&doom->audio);
-	draw_circle(doom->rend.win_buffer, (t_point2){(int)doom->player.pos.x, \
-	(int)doom->player.pos.y}, 10, MMAP_C_PLAYER);
+	draw_circle(doom->rend.win_buffer, (t_pixel){doom->player.pos.x, \
+	doom->player.pos.y}, 10, MMAP_C_PLAYER);
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \
 		&doom->rend.win_pixels, &doom->rend.win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());

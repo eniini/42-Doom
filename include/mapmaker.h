@@ -29,8 +29,8 @@ typedef struct s_wlist
 
 typedef struct s_mouse
 {
-	t_point2	prev;
-	t_point2	new;
+	t_vector	prev;
+	t_vector	new;
 }				t_mouse;
 
 typedef struct s_editor
@@ -74,7 +74,7 @@ void	w_lstpush(t_wlist **alst, t_wlist *new);
 int		w_lstsize(t_wlist *lst);
 void	w_del_list(t_wlist **list);
 
-void	e_wall_add(t_point2 pixel, t_e_img *img, t_editor *edit);
+void	e_wall_add(t_vector pixel, t_e_img *img, t_editor *edit);
 void	e_draw_map(t_e_img *img, t_wlist *head);
 void	e_undo(t_e_img *img, t_editor *edit);
 void	e_printf_head(t_wlist *head);

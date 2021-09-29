@@ -2,11 +2,11 @@
 
 /*
 *	[count] is the number of sprites generated from the given image.
-*	[dims] is the length and width of each generated sprite.
+*	[dimensions] is the length and width of each generated sprite.
 *	Creates a struct that stores all the necessary data to blit individual
 *	sprites from the given spritesprite image.
 */
-t_sprite	*create_sprite(t_img *img, uint32_t count, t_point2 dimensions)
+t_sprite	*create_sprite(t_img *img, uint32_t count, t_pixel dimensions)
 {
 	t_sprite	*sprite;
 	uint32_t	y;
@@ -35,17 +35,17 @@ t_sprite	*create_sprite(t_img *img, uint32_t count, t_point2 dimensions)
 }
 
 /*
-*	Blits frame number [i] from the given spritesheet [sprite] onto the
-*	coordinates given as t_point2 [start].
+*	Blits frame number [i] from the given spritesheet [sprite] onto the buffer
+*	coordinates given as t_pixel [start].
 */
-t_bool	blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_point2 start)
+t_bool	blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_pixel start)
 {
 	uint32_t	x;
 	uint32_t	y;
 
 	if (!sprite || !sprite->img || !sprite->img->px || !buf)
 		return (FALSE);
-	if (start.x > (int)buf->w || start.y > (int)buf->h)
+	if (start.x > buf->w || start.y > buf->h)
 		return (FALSE);
 	y = 0;
 	while ((y + start.y) <= buf->h && y < sprite->sprite_h)

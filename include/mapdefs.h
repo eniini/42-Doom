@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:36:13 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/28 21:30:20 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/29 20:49:11 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,13 +121,13 @@ typedef struct s_l_sectors {
 }						t_l_sectors;
 
 typedef struct s_dbg_room {
-	int		wallcount;
-	t_vert	*verts;
-	t_line	*walls;
-	short	boundingbox[4];
-	short	ceil_h;
-	short	floor_h;
-}			t_dbg_room;
+	int			wallcount;
+	t_vertex	*vertices;
+	t_line		*walls;
+	short		boundingbox[4];
+	short		ceil_h;
+	short		floor_h;
+}				t_dbg_room;
 
 t_dbg_room	*init_convex_room(void);
 t_dbg_room	*init_nonconvex_room(void);

@@ -1,6 +1,6 @@
 #include "doom.h"
 
-float	DotProduct(t_vector3 v1, t_vector3 v2)
+float	DotProduct(t_fvector v1, t_fvector v2)
 {
 	return(v1.x * v2.x + v1.y * v2.y + v1.z * v2.z);
 }
@@ -8,7 +8,7 @@ float	DotProduct(t_vector3 v1, t_vector3 v2)
 //**
 //This accelerate function is from quake source code.
 //**
-void	accelerate (t_vector3 *velocity, float wishspeed, float sv_accelerate, t_vector3 *wishdir, t_doom *doom)
+void	accelerate (t_fvector *velocity, float wishspeed, float sv_accelerate, t_fvector *wishdir, t_doom *doom)
 {
 	float		addspeed, accelspeed, currentspeed;
 
@@ -31,9 +31,9 @@ void	physics(t_doom *doom)
 {
 	static int		ticks;
 	static int		prevtics;
-	static t_vector3		velocity;
+	static t_fvector		velocity;
 	float			wishspeed = 50;
-	t_vector3		dir = (t_vector3){0, 0, 0};
+	t_fvector		dir = (t_fvector){0, 0, 0};
 	float sv_accelerate = 5;
 	prevtics = ticks;
 	ticks = SDL_GetTicks();
@@ -87,4 +87,3 @@ void	keyevent(t_doom *doom, SDL_Event *e)
 		printf("m_x = %d\tm_y = %d\n", x, y);
 	}
 }
-

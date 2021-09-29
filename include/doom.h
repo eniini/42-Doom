@@ -77,26 +77,26 @@ typedef struct s_audio {
 //Minimap constitutes an independent rendition of map data and player's position
 //in it. Therefore it needs its own set of dynamic units.
 typedef struct s_mmap {
-	t_point2	max_coord;
-	t_point2	min_coord;
-	t_point2	coord_diff;
-	t_point2	buf_unit;
-	t_point2	mm_p_angle;
+	t_vector	max_coord;
+	t_vector	min_coord;
+	t_vector	coord_diff;
+	t_vector	buf_unit;
+	t_vector	mm_p_angle;
 	t_buffer	*mmapbuf;
 	int			scale;
 }				t_mmap;
 //Holds all the dynamic units related to projecting map geometry into
 //screen space.
 typedef struct s_map {
-	t_point2	max_coord;
-	t_point2	min_coord;
-	t_point2	coord_diff;
-	t_point2	buf_unit;
+	t_vector	max_coord;
+	t_vector	min_coord;
+	t_vector	coord_diff;
+	t_vector	buf_unit;
 	t_buffer	*mapbuf;
 }				t_map;
 //Data related directly to player.
 typedef struct s_player {
-	t_vector2	pos;
+	t_vector	pos;
 }				t_player;
 //Keyevent handling.
 typedef struct s_keys {
@@ -123,16 +123,16 @@ typedef struct s_doom {
 }				t_doom;
 
 
-int			blit_img(t_img *img, t_buffer *buf, t_point2 start);
-int			blit_img_scaled(t_img *img, t_buffer *buf, t_point2 offs, float s);
-t_sprite	*create_sprite(t_img *img, uint32_t count, t_point2 dimensions);
-t_bool		blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_point2 start);
+int			blit_img(t_img *img, t_buffer *buf, t_pixel start);
+int			blit_img_scaled(t_img *img, t_buffer *buf, t_pixel offs, float s);
+t_sprite	*create_sprite(t_img *img, uint32_t count, t_pixel dimensions);
+t_bool		blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_pixel start);
 
 void		draw_pixel(uint32_t x, uint32_t y, t_buffer *buf, uint32_t color);
-void		draw_line(t_buffer *buf, t_point2 p0, t_point2 p1, uint32_t color);
-void		draw_circle(t_buffer *buf, t_point2 p, int r, uint32_t color);
-void		draw_filled_circle(t_buffer *buf, t_point2 p, int r, uint32_t col);
-void		draw_square(t_point2 a, t_point2 b, t_buffer *buf, int color);
+void		draw_line(t_buffer *buf, t_pixel p0, t_pixel p1, uint32_t color);
+void		draw_circle(t_buffer *buf, t_pixel p, int r, uint32_t color);
+void		draw_filled_circle(t_buffer *buf, t_pixel p, int r, uint32_t col);
+void		draw_square(t_pixel start, t_pixel end, t_buffer *buf, uint32_t c);
 
 void		cull_vertices(t_world *world);
 void		draw_visibleverts(t_map *map, t_world *world);
@@ -146,7 +146,7 @@ void		r_dotests(t_rend *rend, t_dbg_room *room);
 void		rotate_player(t_world *world, t_mmap *mmap, int r);
 
 void		apply_perspective(t_world *world);
-void		apply_movement(t_world *world, t_point2 direction);
+void		apply_movement(t_world *world, t_vector direction);
 
 t_img		*load_tga(const char *filepath);
 void		add_tga_to_rf(t_rf *rf, const char *filepath);

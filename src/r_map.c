@@ -23,13 +23,13 @@ uint32_t	wall_colortable(int i)
 /*
 *	Translate coordinates into buffer.
 */
-static void	draw_buffer_line(t_map *map, t_vert start, t_vert end, uint32_t c)
+static void	draw_buffer_line(t_map *m, t_vector start, t_vector end, uint32_t c)
 {
-	draw_line(map->mapbuf, \
-		(t_point2){map->mapbuf->w / 2 + map->buf_unit.x * start.x,
-		map->mapbuf->h / 2 + map->buf_unit.y * start.y}, \
-		(t_point2){map->mapbuf->w / 2 + map->buf_unit.x * end.x, \
-		map->mapbuf->h / 2 + map->buf_unit.y * end.y}, c);
+	draw_line(m->mapbuf, \
+		(t_pixel){m->mapbuf->w / 2 + m->buf_unit.x * start.x,
+		m->mapbuf->h / 2 + m->buf_unit.y * start.y}, \
+		(t_pixel){m->mapbuf->w / 2 + m->buf_unit.x * end.x, \
+		m->mapbuf->h / 2 + m->buf_unit.y * end.y}, c);
 }
 
 /*
@@ -65,7 +65,8 @@ void	draw_map(t_map *map, t_world *world)
 	draw_buffer_line(map, world->p_verts[i], world->p_verts[0],
 		wall_colortable(i));
 	i = 0;
-	draw_buffer_line(map, (t_vert){0, 0}, world->p_angle, MMAP_C_PLAYERLOOK);
-	draw_circle(map->mapbuf, (t_point2){map->mapbuf->w / 2, map->mapbuf->h / 2},
+	draw_buffer_line(map, (t_vector){0, 0, 0}, world->p_angle, \
+	MMAP_C_PLAYERLOOK);
+	draw_circle(map->mapbuf, (t_pixel){map->mapbuf->w / 2, map->mapbuf->h / 2},
 		10, MMAP_C_PLAYER);
 }

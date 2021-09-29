@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:54:01 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/28 21:44:21 by eniini           ###   ########.fr       */
+/*   Updated: 2021/09/29 21:36:32 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 *	After that, drawline() plots a line of pixels from [point0] to [point1].
 */
 
-static void	init_errors(t_point2 p0, t_point2 p1, int *derror, int *error)
+static void	init_errors(t_pixel p0, t_pixel p1, int *derror, int *error)
 {
 	uint32_t	ydiff;
 
@@ -33,7 +33,7 @@ static void	init_errors(t_point2 p0, t_point2 p1, int *derror, int *error)
 	*error = 0;
 }
 
-static t_bool	init_points(t_point2 *p0, t_point2 *p1)
+static t_bool	init_points(t_pixel *p0, t_pixel *p1)
 {
 	t_bool		flip;
 	uint32_t	xdiff;
@@ -66,17 +66,17 @@ static t_bool	init_points(t_point2 *p0, t_point2 *p1)
 *	Bresenham's line algorithm.
 */
 
-void	draw_line(t_buffer *buf, t_point2 p0, t_point2 p1, uint32_t color)
+void	draw_line(t_buffer *buf, t_pixel p0, t_pixel p1, uint32_t color)
 {
 	int		derror;
 	int		error;
-	t_point2	crawler;
+	t_vector	crawler;
 	t_bool	flip;
 
 	flip = init_points(&p0, &p1);
-	crawler = (t_point2){p0.x, p0.y};
+	crawler = (t_vector){p0.x, p0.y, 0};
 	init_errors(p0, p1, &derror, &error);
-	while (crawler.x <= p1.x)
+	while (crawler.x <= (int)p1.x)
 	{
 		if (!flip)
 			draw_pixel(crawler.x++, crawler.y, buf, color);

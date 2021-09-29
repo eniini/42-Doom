@@ -32,6 +32,8 @@ void	e_clear_canvas(t_e_img *img)
 void	e_draw_map(t_e_img *img, t_wlist *head)
 {
 	t_wlist	*temp;
+	t_pixel	px_start;
+	t_pixel px_end;
 
 	temp = head;
 	e_clear_canvas(img);
@@ -39,10 +41,12 @@ void	e_draw_map(t_e_img *img, t_wlist *head)
 	{
 		if (temp->wall.end.x != 0)
 		{
-			draw_line(img->win_buffer, temp->wall.start, temp->wall.end, C_GREY);
-			draw_filled_circle(img->win_buffer, temp->wall.end, RADIUS, C_WHITE);
+			px_start = (t_pixel){temp->wall.start.x, temp->wall.start.y};
+			px_end = (t_pixel){temp->wall.end.x, temp->wall.end.y};
+			draw_line(img->win_buffer, px_start, px_end, C_GREY);
+			draw_filled_circle(img->win_buffer, px_end, RADIUS, C_WHITE);
 		}
-		draw_filled_circle(img->win_buffer, temp->wall.start, RADIUS, C_WHITE);
+		draw_filled_circle(img->win_buffer, px_start, RADIUS, C_WHITE);
 		temp = temp->next;
 	}
 }

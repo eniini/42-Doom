@@ -32,7 +32,7 @@ t_wlist	*w_lstlast(t_wlist *lst)
 t_wlist	*w_lstnew(void)
 {
 	t_wlist		*new;
-	t_point2	nul;
+	t_vector	nul;
 
 	nul.x = 0;
 	nul.y = 0;

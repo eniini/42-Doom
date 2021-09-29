@@ -24,7 +24,7 @@ static void	toggle_cnct(t_editor *edit)
 
 void	e_mouse(SDL_Event e, t_e_img *img)
 {
-	t_point2	pixel;
+	t_vector	pixel;
 
 	pixel.x = (uint32_t)e.button.x;
 	pixel.y = (uint32_t)e.button.y;

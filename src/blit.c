@@ -4,14 +4,14 @@
 *	Copy [img->px] into [buf->px] starting the from given x/y coordinates.
 *	Returns -1 on error.
 */
-int	blit_img(t_img *img, t_buffer *buf, t_point2 start)
+int	blit_img(t_img *img, t_buffer *buf, t_pixel start)
 {
 	uint32_t	x;
 	uint32_t	y;
 
 	if (!img || !buf)
 		return (-1);
-	if (start.x > (int)buf->w || start.y > (int)buf->h)
+	if (start.x > buf->w || start.y > buf->h)
 		return (-1);
 	y = 0;
 	while ((y + start.y) <= buf->h && y < img->h)
@@ -59,13 +59,13 @@ static void	copy_loop(t_img *old, t_img *new, float step_x, float step_y)
 *	nearest-neighbor technique. [s] must be a positive (>=0.1f) scalar.
 *	Returns -1 on error.
 */
-int	blit_img_scaled(t_img *img, t_buffer *buf, t_point2 offs, float s)
+int	blit_img_scaled(t_img *img, t_buffer *buf, t_pixel offs, float s)
 {
 	t_img	s_img;
 
 	if (!img || !buf || s < 0.1f)
 		return (-1);
-	if (offs.x > (int)buf->w || offs.y > (int)buf->h)
+	if (offs.x > buf->w || offs.y > buf->h)
 		return (-1);
 	s_img.w = (uint32_t)(img->w * s);
 	s_img.h = (uint32_t)(img->h * s);

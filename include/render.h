@@ -30,21 +30,21 @@
 # define MMAP_C_PLAYERLOOK	0XFFD598D2
 
 typedef struct s_world {
-	t_vert	*verts;
-	t_vert	*p_verts;
-	t_line	*v_walls;
-	t_vert	player;
-	t_vert	p_angle;
-	int		vertcount;
-	int		v_wallcount;
-	int		w_angle;
-}			t_world;
+	t_vertex	*verts;
+	t_vertex	*p_verts;
+	t_line		*v_walls;
+	t_vector	player;
+	t_vector	p_angle;
+	int			vertcount;
+	int			v_wallcount;
+	int			w_angle;
+}				t_world;
 
 uint32_t	wall_colortable(int i);
 
 long		map_value_to_range(t_range input, t_range output, long value);
 uint32_t	map_value_to_buffer(t_range input, uint32_t limit, long value);
 
-t_vert		rotate_point(t_vert rot_point, t_vert pivot_point, int angle);
+t_vector	vector2_rotate(t_vector rot_point, t_vector pivot_point, int angle);
 
 #endif

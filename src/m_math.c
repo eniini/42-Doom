@@ -7,11 +7,11 @@
 *	Because our Y-axis points down, this rotates clockwise. Reverse rotation
 *	can be done with negative [angle] values.
 */
-t_vert	rotate_point(t_vert rot_point, t_vert pivot_point, int angle)
+t_vector	vector2_rotate(t_vector rot_point, t_vector pivot_point, int angle)
 {
-	t_vert	o_rot_result;
-	double	c;
-	double	s;
+	t_vector	o_rot_result;
+	double		c;
+	double		s;
 
 	angle = angle % 360;
 	c = cos(angle * DEG_TO_RAD);
