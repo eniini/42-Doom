@@ -25,7 +25,7 @@ void	accelerate (t_fvector *velocity, float wishspeed, float sv_accelerate, t_fv
 	velocity->z += accelspeed * wishdir->z;	
 }
 
-void	rotate(t_doom *doom)
+void	dir_arrow(t_doom *doom)
 {
 	static t_vector	result;
 	static t_vector	orbiter;
@@ -59,35 +59,34 @@ void	physics(t_doom *doom)
 	doom->delta = (ticks - prevtics) / 1000.0;
 	
 	doom->player.yaw = doom->player.yaw + (doom->mouse.x - WIN_W / 2);
-	doom->player.yaw_sin = sin(doom->player.yaw);
-	doom->player.yaw_cos = cos(doom->player.yaw);
-	rotate(doom);
+//	doom->player.yaw_sin = sin(doom->player.yaw);
+//	doom->player.yaw_cos = cos(doom->player.yaw);
 	if (doom->keys.up_pressed == TRUE)
 	{	
-		dir.x = (dir.x + cos(doom->player.yaw * 0.01745329252)) * doom->delta;
-		dir.y = (dir.y + sin(doom->player.yaw * 0.01745329252)) * doom->delta;
+		dir.x = (dir.x + cos(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.y = (dir.y + sin(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
 	}
 	if (doom->keys.down_pressed == TRUE)
 	{
-		dir.x = (dir.x - cos(doom->player.yaw * 0.01745329252)) * doom->delta;
-		dir.y = (dir.y - sin(doom->player.yaw * 0.01745329252)) * doom->delta;
+		dir.x = (dir.x - cos(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.y = (dir.y - sin(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
 	}
 	if (doom->keys.left_pressed == TRUE)	
 	{
-		dir.x = (dir.x + sin(doom->player.yaw * 0.01745329252)) * doom->delta;
-		dir.y = (dir.y - cos(doom->player.yaw * 0.01745329252)) * doom->delta;
+		dir.x = (dir.x + sin(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.y = (dir.y - cos(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
 	}
 	if (doom->keys.right_pressed == TRUE)
 	{
-		dir.x = (dir.x - sin(doom->player.yaw * 0.01745329252)) * doom->delta;
-		dir.y = (dir.y + cos(doom->player.yaw * 0.01745329252)) * doom->delta;
+		dir.x = (dir.x - sin(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.y = (dir.y + cos(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
 	}
 //	wishspeed = sqrt(dir.x * dir.x + dir.y * dir.y);
 	accelerate(&velocity, wishspeed, sv_accelerate, &dir, doom);
 	//collision detection comes here
 	doom->player.pos.x += velocity.x;
 	doom->player.pos.y += velocity.y;
-
+	dir_arrow(doom);
 }
 
 void	mouse_movement(t_doom *doom)
