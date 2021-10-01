@@ -50,24 +50,28 @@ static void	draw_room2d(t_buffer *buf, t_dbg_room *room)
 }
 
 int	rotation = 0;
-t_vertex	sp = (t_vertex){WIN_W / 5, WIN_H / 5, 0};
-static t_vertex pivot = (t_vertex){WIN_W / 6, WIN_H / 6, 0};
+t_vertex	sp = (t_vertex){-WIN_W, -WIN_H, 0};
+static t_vertex pivot = (t_vertex){WIN_W / 2, WIN_H / 2, 0};
 
 void	r_dotests(t_rend *rend, t_dbg_room *room)
 {
 	t_vertex	v;
-	t_pixel		px;
+	t_pixel		px1;
+	t_pixel		px2;
+	t_line		line;
 
 	rotation++;
 	v = vector2_rotate(sp, pivot, rotation);
-	if (v.x < 0) //we need a func for this stuff!
-		px.x = 0;
-	else
-		px.x = v.x;
-	if (v.y < 0)
-		px.y = 0;
-	else
-		px.y = v.y;
-	draw_filled_circle(rend->win_buffer, px, 4, 0xffaabbcc);
+	line.start = v;
+	line.end = pivot;
+	line.color = 0xff66a644;
+	draw_vector_line(rend->win_buffer, line, 0xffaabbcc);
+	/*
+	px1.x = v.x;
+	px1.y = v.y;
+	px2.x = pivot.x;
+	px2.y = pivot.y;
+	draw_line(rend->win_buffer, px2, px1, 0xffaabbcc);
+	*/
 	//draw_room2d(rend->win_buffer, room);
 }

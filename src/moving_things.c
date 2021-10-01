@@ -120,11 +120,11 @@ void	keyevent(t_doom *doom, SDL_Event *e)
 			doom->keys.left_pressed = e->type == SDL_KEYDOWN;
 		if (e->key.keysym.sym == SDLK_RIGHT)
 			doom->keys.right_pressed = e->type == SDL_KEYDOWN;
-		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
+		/*if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
 		{
 			rotate_player(&doom->world, &doom->mmap, 1);
 			cull_vertices(&doom->world);
-		}
+		}*/
 		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_m) //mouse_swich
 		{
 			ft_printf("CLICK\n");

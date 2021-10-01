@@ -138,6 +138,7 @@ void		draw_line(t_buffer *buf, t_pixel p0, t_pixel p1, uint32_t color);
 void		draw_circle(t_buffer *buf, t_pixel p, int r, uint32_t color);
 void		draw_filled_circle(t_buffer *buf, t_pixel p, int r, uint32_t col);
 void		draw_square(t_pixel start, t_pixel end, t_buffer *buf, uint32_t c);
+void		draw_vector_line(t_buffer *buf, t_line line, uint32_t c);
 
 void		cull_vertices(t_world *world);
 void		draw_visibleverts(t_map *map, t_world *world);

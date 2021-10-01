@@ -12,6 +12,7 @@ SRC_LIST =	main.c \
 		draw_pixel.c \
 		draw_line.c \
 		draw_shapes.c \
+		draw_vector_line.c \
 		fps_counter.c \
 		init_mapdata.c \
 		load_tga.c \
