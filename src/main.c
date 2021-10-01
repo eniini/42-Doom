@@ -4,11 +4,13 @@ static void	init_player(t_doom *doom)
 {
 	doom->player.pos.x = 100;
 	doom->player.pos.y = 100;
+	doom->player.yaw = 0.0;
 	doom->keys.up_pressed = FALSE;
 	doom->keys.down_pressed = FALSE;
 	doom->keys.left_pressed = FALSE;
 	doom->keys.right_pressed = FALSE;
 	doom->fps_switch = FALSE;
+	doom->mouse_switch = TRUE;
 }
 
 /*
@@ -56,6 +58,7 @@ static void	cleanup(t_doom *doom)
 	SDL_Quit();
 }
 
+
 /*
 *	Note about SDL_LockTexture: void **px is 'filled in', meaning that SDL
 *	creates its own allocated pixel buffer thats returned to the given pointer.
@@ -68,6 +71,7 @@ static void	loop(t_doom	*doom)
 
 	ft_bzero(doom->rend.win_buffer->px, WIN_H * WIN_W * sizeof(uint32_t));
 	keyevent(doom, &e);
+	mouse_movement(doom);
 	physics(doom);
 	dotests(doom);
 	audios(&doom->audio);

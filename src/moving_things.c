@@ -25,6 +25,25 @@ void	accelerate (t_fvector *velocity, float wishspeed, float sv_accelerate, t_fv
 	velocity->z += accelspeed * wishdir->z;	
 }
 
+void	rotate(t_doom *doom)
+{
+	static t_vector	result;
+	static t_vector	orbiter;
+	static t_pixel	pixel;
+	
+	orbiter.x = doom->player.pos.x + 40;
+	orbiter.y = doom->player.pos.y;
+	result = vector2_rotate(orbiter, (t_vector){doom->player.pos.x, doom->player.pos.y}, doom->player.yaw);
+	if (result.x < 0) //we need a func for this stuff!
+		pixel.x = 0;
+	else
+		pixel.x = result.x;
+	if (result.y < 0)
+		pixel.y = 0;
+	else
+		pixel.y = result.y;	
+	draw_line(doom->rend.win_buffer, (t_pixel){doom->player.pos.x, doom->player.pos.y}, pixel, 0xFFFFFFFF);
+}
 
 // sv_accelerate is constant
 void	physics(t_doom *doom)
@@ -38,21 +57,54 @@ void	physics(t_doom *doom)
 	prevtics = ticks;
 	ticks = SDL_GetTicks();
 	doom->delta = (ticks - prevtics) / 1000.0;
-
+	
+	doom->player.yaw = doom->player.yaw + (doom->mouse.x - WIN_W / 2);
+	doom->player.yaw_sin = sin(doom->player.yaw);
+	doom->player.yaw_cos = cos(doom->player.yaw);
+	rotate(doom);
 	if (doom->keys.up_pressed == TRUE)
-		dir.y -= doom->delta * 1;
+	{	
+		dir.x = (dir.x + cos(doom->player.yaw * 0.01745329252)) * doom->delta;
+		dir.y = (dir.y + sin(doom->player.yaw * 0.01745329252)) * doom->delta;
+	}
 	if (doom->keys.down_pressed == TRUE)
-		dir.y += doom->delta * 1;
+	{
+		dir.x = (dir.x - cos(doom->player.yaw * 0.01745329252)) * doom->delta;
+		dir.y = (dir.y - sin(doom->player.yaw * 0.01745329252)) * doom->delta;
+	}
 	if (doom->keys.left_pressed == TRUE)	
-		dir.x -= doom->delta * 1;
+	{
+		dir.x = (dir.x + sin(doom->player.yaw * 0.01745329252)) * doom->delta;
+		dir.y = (dir.y - cos(doom->player.yaw * 0.01745329252)) * doom->delta;
+	}
 	if (doom->keys.right_pressed == TRUE)
-		dir.x += doom->delta * 1;
+	{
+		dir.x = (dir.x - sin(doom->player.yaw * 0.01745329252)) * doom->delta;
+		dir.y = (dir.y + cos(doom->player.yaw * 0.01745329252)) * doom->delta;
+	}
 //	wishspeed = sqrt(dir.x * dir.x + dir.y * dir.y);
 	accelerate(&velocity, wishspeed, sv_accelerate, &dir, doom);
 	//collision detection comes here
 	doom->player.pos.x += velocity.x;
 	doom->player.pos.y += velocity.y;
 
+}
+
+void	mouse_movement(t_doom *doom)
+{
+		int x, y;
+
+		if(doom->mouse_switch == TRUE)
+		{
+			SDL_GetMouseState(&x, &y);
+			doom->mouse.x = x;
+			doom->mouse.y = y;
+			SDL_WarpMouseInWindow(doom->rend.win, WIN_W / 2, WIN_H /2);
+			SDL_ShowCursor( SDL_DISABLE );
+	//		printf("m_x = %d\tm_y = %d\n", doom->mouse.x, doom->mouse.y);
+		}
+		else
+			SDL_ShowCursor(SDL_ENABLE);
 }
 
 void	keyevent(t_doom *doom, SDL_Event *e)
@@ -74,6 +126,14 @@ void	keyevent(t_doom *doom, SDL_Event *e)
 			rotate_player(&doom->world, &doom->mmap, 1);
 			cull_vertices(&doom->world);
 		}
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_m) //mouse_swich
+		{
+			ft_printf("CLICK\n");
+			if(doom->mouse_switch == FALSE)
+				doom->mouse_switch = TRUE;
+			else
+				doom->mouse_switch = FALSE;
+		}
 		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_t) //fps_swich
 		{
 			ft_printf("CLICK\n");
@@ -82,8 +142,5 @@ void	keyevent(t_doom *doom, SDL_Event *e)
 			else
 				doom->fps_switch = FALSE;
 		}
-		int x, y;
-		SDL_GetMouseState(&x, &y);
-		printf("m_x = %d\tm_y = %d\n", x, y);
 	}
 }

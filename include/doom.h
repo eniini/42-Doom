@@ -96,7 +96,10 @@ typedef struct s_map {
 }				t_map;
 //Data related directly to player.
 typedef struct s_player {
-	t_vector	pos;
+	t_fvector	pos;
+	float		yaw;
+	float		yaw_sin;
+	float		yaw_cos;
 }				t_player;
 //Keyevent handling.
 typedef struct s_keys {
@@ -115,10 +118,12 @@ typedef struct s_doom {
 	t_map		map;
 	t_mmap		mmap;
 	t_player	player;
+	t_vector	mouse;
 	t_keys		keys;
 	int			global_fps;
 	double		delta;
 	t_bool		fps_switch;
+	t_bool		mouse_switch;
 	t_dbg_room	*room;
 }				t_doom;
 
@@ -164,4 +169,5 @@ void		audios(t_audio *audio);
 void		physics(t_doom *doom);
 void		keyevent(t_doom *doom, SDL_Event *e);
 void		fps_counter(int *global_fps);
+void		mouse_movement(t_doom *doom);
 #endif
