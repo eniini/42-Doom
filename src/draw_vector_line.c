@@ -3,6 +3,7 @@
 /*
 *	Initializes outcodes for Cohen-Sutherland-styled clipping of an
 *	integer vector into unsigned buffer space.
+*	Bitwise OR adds the applicable outcodes together.
 *	INSIDE	0	[0000]
 *	LEFT	1	[0001]
 *	RIGHT	2	[0010]
@@ -33,6 +34,8 @@ static int	get_ocode(t_buffer *buf, t_vector v)
 
 /*
 *	Finds the screen-space intersection point between [o] and [e].
+*	Depending on outcode, point coordinates are scaled in relation to
+*	(distance to screen edge from p0) / (distance to p1 from p0).
 */
 static t_vector	line_clip(t_buffer *buf, t_vector v0, t_vector v1, int ocode)
 {
@@ -55,7 +58,6 @@ static t_vector	line_clip(t_buffer *buf, t_vector v0, t_vector v1, int ocode)
 	}
 	else if (ocode & 1)
 	{
-		ft_printf("%d | %d\n", v1.x, v0.x);
 		rv.y = v0.y + (v1.y - v0.y) * -v0.x / (v1.x - v0.x);
 		rv.x = 0;
 	}
@@ -67,12 +69,14 @@ static t_vector	line_clip(t_buffer *buf, t_vector v0, t_vector v1, int ocode)
 *	[ocodes.x] = start,
 *	[ocodes.y] = end,
 *	[ocodes.z] = out.
+*	[ocode.x & ocode.y] checks if both points share an outside region, therefore
+*	existing out of bounds.
+*	(!(ocode.x | ocode.y)) if both points are in screenspace (outcode 0), exit
 */
 
 /*
-*	Handling line clipping in unsigned buffer space  using Cohen-Sutherland alg.
-*	Lines with both vectors outside the drawing area are ignored - other
-*	functions should handle that.
+*	Handling line clipping and drawing in the given unsigned buffer space [buf]
+*	using the Cohen-Sutherland algorithm.
 */
 void	draw_vector_line(t_buffer *buf, t_line line, uint32_t c)
 {

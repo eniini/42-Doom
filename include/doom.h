@@ -34,6 +34,8 @@
 //temp
 # define WIN_W 800
 # define WIN_H 600
+# define WIN_HW 400
+# define WIN_HH 300
 # define WIN_NAME "DOOM-NUKEM @42 BY ESUKAVA/ENIINI/ESORMUNE"
 
 //COLOURS
@@ -124,6 +126,7 @@ typedef struct s_doom {
 	double		delta;
 	t_bool		fps_switch;
 	t_bool		mouse_switch;
+	t_debug		debug;
 	t_dbg_room	*room;
 }				t_doom;
 
@@ -147,7 +150,7 @@ void		init_minimap(t_world *w, t_mmap *mmmap, t_buffer *buf, uint32_t s);
 void		draw_map(t_map *map, t_world *world);
 void		draw_minimap(t_mmap *mm, t_world *world);
 
-void		r_dotests(t_rend *rend, t_dbg_room *room);
+void		r_dotests(t_rend *rend, t_dbg_room *room, t_debug *debug);
 
 void		rotate_player(t_world *world, t_mmap *mmap, int r);
 
