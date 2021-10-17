@@ -16,7 +16,7 @@ typedef struct s_vector {
 	int	z;
 }		t_vector;
 
-typedef struct s_vec3 {
+typedef struct s_vec {
 	float	x;
 	float	y;
 	float	z;
@@ -57,6 +57,7 @@ typedef struct s_doom {
 	t_rend		rend;
 	t_tri		*cube;
 	t_mat4		m_proj;
+	t_vec		camera;
 	int			tricount;
 	float		x_rot;
 	float		z_rot;
@@ -65,6 +66,23 @@ typedef struct s_doom {
 
 void	drawtriangle(t_buffer *buf, t_vector v1, t_vector v2, t_vector v3);
 
+//	MATH
+/******************************************************************************/
+
+float	dot_product(t_vec va, t_vec vb)
+{
+	return (va.x * vb.x + va.y * vb.y + va.z * vb.z);
+}
+
+t_vec	cross_product(t_vec va, t_vec vb)
+{
+	t_vec	result;
+
+	result.x = va.y * vb.z - va.z * vb.y;
+	result.y = va.z * vb.x - va.x * vb.z;
+	result.z = va.x * vb.y - va.y * vb.x;
+	return (result);
+}
 
 static void	mul_matrixvector(t_vec i, t_vec *o, t_mat4 m)
 {
@@ -81,6 +99,9 @@ static void	mul_matrixvector(t_vec i, t_vec *o, t_mat4 m)
 		o->z /= w;
 	}
 }
+
+//	PROGRAM LOGIC
+/******************************************************************************/
 
 static void	init(t_doom *doom)
 {
@@ -103,6 +124,7 @@ static void	init(t_doom *doom)
 	doom->tricount = 12;
 	doom->x_rot = 0;
 	doom->z_rot = 0;
+	doom->camera = (t_vec){0, 0, 0};
 	doom->cube = (t_tri *)malloc(sizeof(t_tri) * doom->tricount);
 	if (!doom->cube)
 		ft_getout("failed to malloc cube!");
@@ -238,27 +260,49 @@ static void	drawlogic (t_doom *doom)
 		tri_trans.p[0].z = tri_zxyrot.p[0].z + 3.0f;
 		tri_trans.p[1].z = tri_zxyrot.p[1].z + 3.0f;
 		tri_trans.p[2].z = tri_zxyrot.p[2].z + 3.0f;
-		//project to 2D view
-		mul_matrixvector(tri_trans.p[0], &tri_proj.p[0], doom->m_proj);
-		mul_matrixvector(tri_trans.p[1], &tri_proj.p[1], doom->m_proj);
-		mul_matrixvector(tri_trans.p[2], &tri_proj.p[2], doom->m_proj);
-		//scale into view
-		tri_proj.p[0].x += 1.0f;
-		tri_proj.p[0].y += 1.0f;
-		tri_proj.p[1].x += 1.0f;
-		tri_proj.p[1].y += 1.0f;
-		tri_proj.p[2].x += 1.0f;
-		tri_proj.p[2].y += 1.0f;
-		tri_proj.p[0].x *= 0.5f * (float)WIN_W;
-		tri_proj.p[0].y *= 0.5f * (float)WIN_H;
-		tri_proj.p[1].x *= 0.5f * (float)WIN_W;
-		tri_proj.p[1].y *= 0.5f * (float)WIN_H;
-		tri_proj.p[2].x *= 0.5f * (float)WIN_W;
-		tri_proj.p[2].y *= 0.5f * (float)WIN_H;
-		drawtriangle(doom->rend.win_buffer, \
-		(t_vector){tri_proj.p[0].x, tri_proj.p[0].y, 0},
-		(t_vector){tri_proj.p[1].x, tri_proj.p[1].y, 0},
-		(t_vector){tri_proj.p[2].x, tri_proj.p[2].y, 0});
+		//calculate triangle normal with the crossproduct of the first and last
+		//lines that make up the triangle. Also the normal is normalized.
+		t_vec	normal;
+		t_vec	line1;
+		t_vec	line2;
+		line1.x = tri_trans.p[1].x - tri_trans.p[0].x;
+		line1.y = tri_trans.p[1].y - tri_trans.p[0].y;
+		line1.z = tri_trans.p[1].z - tri_trans.p[0].z;
+		line2.x = tri_trans.p[2].x - tri_trans.p[0].x;
+		line2.y = tri_trans.p[2].y - tri_trans.p[0].y;
+		line2.z = tri_trans.p[2].z - tri_trans.p[0].z;
+		normal = cross_product(line1, line2);
+		float	normal_len;
+		normal_len = sqrtf(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
+		normal.x /= normal_len;
+		normal.y /= normal_len;
+		normal.z /= normal_len;
+
+		//if (normal.z < 0) //negative z-value for normal means that the triangle is facing the camera!
+		if (dot_product(normal, tri_trans.p[0]) < 0) //negative dot-product is a more accurate way of solving the above.
+		{	//if our camera would move, dot_product's second argument should be (tri_trans.p[0] - cameravector)
+			//project to 2D view
+			mul_matrixvector(tri_trans.p[0], &tri_proj.p[0], doom->m_proj);
+			mul_matrixvector(tri_trans.p[1], &tri_proj.p[1], doom->m_proj);
+			mul_matrixvector(tri_trans.p[2], &tri_proj.p[2], doom->m_proj);
+			//scale into view
+			tri_proj.p[0].x += 1.0f;
+			tri_proj.p[0].y += 1.0f;
+			tri_proj.p[1].x += 1.0f;
+			tri_proj.p[1].y += 1.0f;
+			tri_proj.p[2].x += 1.0f;
+			tri_proj.p[2].y += 1.0f;
+			tri_proj.p[0].x *= 0.5f * (float)WIN_W;
+			tri_proj.p[0].y *= 0.5f * (float)WIN_H;
+			tri_proj.p[1].x *= 0.5f * (float)WIN_W;
+			tri_proj.p[1].y *= 0.5f * (float)WIN_H;
+			tri_proj.p[2].x *= 0.5f * (float)WIN_W;
+			tri_proj.p[2].y *= 0.5f * (float)WIN_H;
+			drawtriangle(doom->rend.win_buffer, \
+			(t_vector){tri_proj.p[0].x, tri_proj.p[0].y, 0},
+			(t_vector){tri_proj.p[1].x, tri_proj.p[1].y, 0},
+			(t_vector){tri_proj.p[2].x, tri_proj.p[2].y, 0});
+		}
 	}
 }
 
@@ -266,8 +310,8 @@ static void	loop(t_doom	*doom)
 {
 	SDL_Event	e;
 
-	doom->x_rot += 0.01;
-	doom->z_rot += 0.01;
+	doom->x_rot += 0.001;
+	doom->z_rot += 0.001;
 
 	ft_bzero(doom->rend.win_buffer->px, WIN_H * WIN_W * sizeof(uint32_t));
 	drawlogic(doom);
