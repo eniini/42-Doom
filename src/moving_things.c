@@ -33,7 +33,7 @@ void	dir_arrow(t_doom *doom)
 	
 	orbiter.x = doom->player.pos.x + 40;
 	orbiter.y = doom->player.pos.y;
-	result = vector2_rotate(orbiter, (t_vector){doom->player.pos.x, doom->player.pos.y}, doom->player.yaw);
+	result = vector2_rotate(orbiter, (t_vector){doom->player.pos.x, doom->player.pos.y, 0}, doom->player.yaw);
 	if (result.x < 0) //we need a func for this stuff!
 		pixel.x = 0;
 	else
@@ -106,6 +106,29 @@ void	mouse_movement(t_doom *doom)
 			SDL_ShowCursor(SDL_ENABLE);
 }
 
+static void	rotate_room(t_dbg_room *room, t_debug *debug)
+{
+	int		i;
+	double	c;
+	double	s;
+	int		angle;
+
+	i = 0;
+	angle = (debug->p_angle + debug->rotation) % 360;
+	c = cos(angle * DEG_TO_RAD);
+	s = sin(angle * DEG_TO_RAD);
+	while (i < room->wallcount)
+	{
+		room->proj_walls[i].start.x = (int)round(room->walls[i].start.x * c - room->walls[i].start.y * s);
+		room->proj_walls[i].start.y = (int)round(room->walls[i].start.x * s + room->walls[i].start.y * c);
+		room->proj_walls[i].end.x = (int)round(room->walls[i].end.x * c + room->walls[i].end.y * s);
+		room->proj_walls[i].end.y = (int)round(room->walls[i].end.x * -s + room->walls[i].end.y * c);
+		//ft_printf("start:[%d|%d]\tend[%d|%d]\n", room->proj_walls[i].start.x, room->proj_walls[i].start.y, room->proj_walls[i].end.x, room->proj_walls[i].end.y);
+		//ft_printf("angle:[%d]\n", angle);
+		i++;
+	}
+}
+
 void	keyevent(t_doom *doom, SDL_Event *e)
 {
 	while (SDL_PollEvent(e))
@@ -120,11 +143,13 @@ void	keyevent(t_doom *doom, SDL_Event *e)
 			doom->keys.left_pressed = e->type == SDL_KEYDOWN;
 		if (e->key.keysym.sym == SDLK_RIGHT)
 			doom->keys.right_pressed = e->type == SDL_KEYDOWN;
-		/*if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
+		if (e->key.keysym.sym == SDLK_r) //testing map/player rotation
 		{
-			rotate_player(&doom->world, &doom->mmap, 1);
-			cull_vertices(&doom->world);
-		}*/
+			 doom->debug.rotation++;
+			 rotate_room(doom->room, &doom->debug);
+			//rotate_player(&doom->world, &doom->mmap, 1);
+			//cull_vertices(&doom->world);
+		}
 		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_m) //mouse_swich
 		{
 			ft_printf("CLICK\n");

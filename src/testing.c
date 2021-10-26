@@ -35,6 +35,8 @@ static void	init_map(t_doom *doom)
 
 void	init_tests(t_doom *doom)
 {
+	doom->debug.p_angle = 0;
+	doom->debug.p_fov = 60;
 	doom->room = init_convex_room();
 	//init_resources(doom);
 	//init_map(doom);
@@ -60,5 +62,5 @@ void	cleanup_tests(t_doom *doom)
 */
 void	dotests(t_doom *doom)
 {
-	r_dotests(&doom->rend, doom->room);
+	r_dotests(&doom->rend, doom->room, &doom->debug);
 }

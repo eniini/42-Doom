@@ -1,77 +1,66 @@
 #include "doom.h"
 
-/*
-*	Render wall segments, sorted front to back from player's POV.
-*	Both wall ends are projected into screen-space x-axis. Based
-*	on distance and floor/ceiling height, calculate each column
-*	y-offset and height. (same kind of column drawing as with wolf3d).
-*/
-
-//func to check which side of the wall is visible
-
-/*
-*	Project wall verts into screen space coords
-*	Texture coord [u] is generated for each column,
-*	lerp(screenspace wall width, column x)
-*/
-
-/*
-*	Translate coordinates into buffer.
-*/
-static void	draw_buffer_line(t_buffer *b, t_line wall, short *bbox)
+static void	draw_rays(t_buffer *buf, t_vector start, t_vector end, uint32_t c)
 {
-	t_pixel start;
-	t_pixel end;
+	int		ray_start;
+	int		ray_i;
+	int		wall_h;
+	int		wall_len;
+	t_line	ray;
 
-	start.x = map_value_to_buffer((t_range){bbox[1], bbox[3]}, \
-		b->w, wall.start.x);
-	start.y = map_value_to_buffer((t_range){bbox[0], bbox[2]}, \
-		b->h, wall.start.y);
-	end.x = map_value_to_buffer((t_range){bbox[1], bbox[3]}, \
-		b->w, wall.end.x);
-	end.y = map_value_to_buffer((t_range){bbox[0], bbox[2]}, \
-		b->h, wall.end.y);
-	draw_line(b, start, end, wall.color);
+	wall_len = ft_abs(end.x - start.x);
+	ray_i = 0;
+	if (end.x < start.x)
+		ray_start = end.x;
+	else
+		ray_start = start.x;
+	while (ray_i < wall_len)
+	{
+		wall_h = ft_i_lerp(start.y, end.y, ray_i / (double)wall_len);
+		ray.start = (t_vector){(ray_start + ray_i) + WIN_HW, WIN_HH - wall_h, 0};
+		ray.end = (t_vector){(ray_start + ray_i) + WIN_HW, WIN_HH + wall_h, 0};
+		draw_vector_line(buf, ray, c);
+		ray_i++;
+	}
 }
 
-/*
-*	Draws only what is visible to the player of the currently loaded mapdata.
-*/
-static void	draw_room2d(t_buffer *buf, t_dbg_room *room)
+static void	draw_room3d(t_buffer *buf, t_dbg_room *room, t_debug *debug)
 {
-	int		i;
+	int			i = 0;
+	t_vector	uv_start = (t_vector){0, 0, 0};
+	t_vector	uv_end = (t_vector){0, 0, 0};
+	int distance = 100;
 
-	i = 0;
+	int		fov = 60;
+	float	d = 1 / tan(fov / 2);
+
+	draw_line(buf, (t_pixel){WIN_W / 2, 0}, (t_pixel){WIN_W / 2, WIN_H}, C_RED);
 	while (i < room->wallcount)
 	{
-		draw_buffer_line(buf, room->walls[i], room->boundingbox);
+		if (room->proj_walls[i].start.y > 0 && room->proj_walls[i].end.y > 0)
+		{
+			//t_range xinput = (t_range){room->boundingbox[1], room->boundingbox[3]};
+			//t_range yinput = (t_range){room->boundingbox[0], room->boundingbox[2]};
+			//t_range xoutput = (t_range){WIN_W / 2,  WIN_W};
+			//t_range youtput = (t_range){0, WIN_H};
+			//uv_start.x = map_value_to_range(xinput, xoutput, room->proj_walls[i].start.x);
+			//uv_start.y = map_value_to_range(yinput, youtput, room->proj_walls[i].start.y);
+			//uv_end.x = map_value_to_range(xinput, xoutput, room->proj_walls[i].end.x);
+			//uv_end.y = map_value_to_range(yinput, youtput, room->proj_walls[i].end.y);
+			uv_start.x = (room->proj_walls[i].start.x * distance) / room->proj_walls[i].start.y;
+			uv_start.y = (room->ceil_h * distance) / room->proj_walls[i].start.y;
+			uv_end.x = (room->proj_walls[i].end.x * distance) / room->proj_walls[i].end.y;
+			uv_end.y = (room->ceil_h * distance) / room->proj_walls[i].end.y;
+			ft_printf("start:%d|%d, end:%d|%d\n", uv_start.x, uv_start.y, uv_end.x, uv_end.y);
+			draw_rays(buf, uv_start, uv_end, room->walls[i].color);
+			//draw_pixel(uv_start.x, uv_start.y, buf, room->walls[i].color);
+		//	draw_pixel(uv_end.x, uv_end.y, buf, room->walls[i].color);
+		}
 		i++;
 	}
 }
 
-int	rotation = 0;
-t_vertex	sp = (t_vertex){-WIN_W, -WIN_H, 0};
-static t_vertex pivot = (t_vertex){WIN_W / 2, WIN_H / 2, 0};
-
-void	r_dotests(t_rend *rend, t_dbg_room *room)
+void	r_dotests(t_rend *rend, t_dbg_room *room, t_debug *debug)
 {
-	t_vertex	v;
-	t_pixel		px1;
-	t_pixel		px2;
-	t_line		line;
-
-	rotation++;
-	v = vector2_rotate(sp, pivot, rotation);
-	line.start = v;
-	line.end = pivot;
-	line.color = 0xff66a644;
-	draw_vector_line(rend->win_buffer, line, 0xffaabbcc);
-	/*
-	px1.x = v.x;
-	px1.y = v.y;
-	px2.x = pivot.x;
-	px2.y = pivot.y;
-	draw_line(rend->win_buffer, px2, px1, 0xffaabbcc);
-	*/
-	//draw_room2d(rend->win_buffer, room);
+	draw_room3d(rend->win_buffer, room, debug);
 }

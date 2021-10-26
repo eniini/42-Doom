@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:36:13 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/29 20:49:11 by eniini           ###   ########.fr       */
+/*   Updated: 2021/10/04 17:34:53 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,24 @@ typedef struct s_l_sectors {
 	short				boundingbox[4];
 }						t_l_sectors;
 
+/*
+*	Bounding box data is [ymin, xmin, ymax, xmax]
+*/
 typedef struct s_dbg_room {
 	int			wallcount;
 	t_vertex	*vertices;
 	t_line		*walls;
+	t_line		*proj_walls;
 	short		boundingbox[4];
 	short		ceil_h;
 	short		floor_h;
 }				t_dbg_room;
+
+typedef struct s_debug {
+	int			p_angle;
+	int			rotation;
+	int			p_fov;
+}				t_debug;
 
 t_dbg_room	*init_convex_room(void);
 t_dbg_room	*init_nonconvex_room(void);
