@@ -20,6 +20,7 @@ typedef struct s_vec {
 	float	x;
 	float	y;
 	float	z;
+	float	w;
 }			t_vec;
 
 typedef struct s_tri {
@@ -62,6 +63,8 @@ typedef struct s_doom {
 	float		x_rot;
 	float		z_rot;
 	float		y_rot;
+	float		distance;
+	int			cam_fov;
 }				t_doom;
 
 void	drawtriangle(t_buffer *buf, t_vector v1, t_vector v2, t_vector v3);
@@ -69,12 +72,12 @@ void	drawtriangle(t_buffer *buf, t_vector v1, t_vector v2, t_vector v3);
 //	MATH
 /******************************************************************************/
 
-float	dot_product(t_vec va, t_vec vb)
+float	vector_dot_product(t_vec va, t_vec vb)
 {
 	return (va.x * vb.x + va.y * vb.y + va.z * vb.z);
 }
 
-t_vec	cross_product(t_vec va, t_vec vb)
+t_vec	vector_cross_product(t_vec va, t_vec vb)
 {
 	t_vec	result;
 
@@ -84,21 +87,199 @@ t_vec	cross_product(t_vec va, t_vec vb)
 	return (result);
 }
 
-static void	mul_matrixvector(t_vec i, t_vec *o, t_mat4 m)
+/*
+*	Matrix multiply vector [i] with [m], applying the result into vector [o].
+*/
+t_vec	matrix_multiplyvector(t_vec i, t_mat4 m)
 {
-	float w;
+	t_vec	ret;
 
-	o->x = i.x * m.m[0][0] + i.y * m.m[1][0] + i.z * m.m[2][0] + m.m[3][0];
-	o->y = i.x * m.m[0][1] + i.y * m.m[1][1] + i.z * m.m[2][1] + m.m[3][1];
-	o->z = i.x * m.m[0][2] + i.y * m.m[1][2] + i.z * m.m[2][2] + m.m[3][2];
-	w = i.x * m.m[0][3] + i.y * m.m[1][3] + i.z * m.m[2][3] + m.m[3][3];
-	if (w != 0.0f)
-	{
-		o->x /= w;
-		o->y /= w;
-		o->z /= w;
-	}
+	ret.x = i.x * m.m[0][0] + i.y * m.m[1][0] + i.z * m.m[2][0] \
+	+ i.w * m.m[3][0];
+	ret.y = i.x * m.m[0][1] + i.y * m.m[1][1] + i.z * m.m[2][1] \
+	+ i.w * m.m[3][1];
+	ret.z = i.x * m.m[0][2] + i.y * m.m[1][2] + i.z * m.m[2][2] \
+	+ i.w * m.m[3][2];
+	ret.w = i.x * m.m[0][3] + i.y * m.m[1][3] + i.z * m.m[2][3] \
+	+ i.w * m.m[3][3];
+	return (ret);
 }
+
+t_mat4	matrix_init_unitmatrix(void)
+{
+	t_mat4 matrix;
+
+	ft_bzero(&matrix, sizeof(t_mat4));
+	matrix.m[0][0] = 1.0f;
+	matrix.m[1][1] = 1.0f;
+	matrix.m[2][2] = 1.0f;
+	matrix.m[3][3] = 1.0f;
+	return (matrix);
+}
+
+t_mat4 matrix_init_x_rotationmatrix(float rad_angle)
+{
+	t_mat4	matrix;
+
+	ft_bzero(&matrix, sizeof(t_mat4));
+	matrix.m[0][0] = 1.0f;
+	matrix.m[1][1] = cosf(rad_angle);
+	matrix.m[1][2] = sinf(rad_angle);
+	matrix.m[2][1] = -sinf(rad_angle);
+	matrix.m[2][2] = cosf(rad_angle);
+	matrix.m[3][3] = 1.0f;
+	return (matrix);
+}
+
+t_mat4 matrix_init_y_rotationmatrix(float rad_angle)
+{
+	t_mat4	matrix;
+	ft_bzero(&matrix, sizeof(t_mat4));
+	matrix.m[0][0] = cosf(rad_angle);
+	matrix.m[0][2] = sinf(rad_angle);
+	matrix.m[2][0] = -sinf(rad_angle);
+	matrix.m[1][1] = 1.0f;
+	matrix.m[2][2] = cosf(rad_angle);
+	matrix.m[3][3] = 1.0f;
+	return (matrix);
+}
+
+t_mat4 matrix_init_z_rotationmatrix(float rad_angle)
+{
+	t_mat4	matrix;
+	ft_bzero(&matrix, sizeof(t_mat4));
+	matrix.m[0][0] = cosf(rad_angle);
+	matrix.m[0][1] = sinf(rad_angle);
+	matrix.m[1][0] = -sinf(rad_angle);
+	matrix.m[1][1] = cosf(rad_angle);
+	matrix.m[2][2] = 1.0f;
+	matrix.m[3][3] = 1.0f;
+	return (matrix);
+}
+
+t_mat4 matrix_init_translation(float x, float y, float z)
+{
+	t_mat4	matrix;
+
+	ft_bzero(&matrix, sizeof(t_mat4));
+	matrix.m[0][0] = 1.0f;
+	matrix.m[1][1] = 1.0f;
+	matrix.m[2][2] = 1.0f;
+	matrix.m[3][3] = 1.0f;
+	matrix.m[3][0] = x;
+	matrix.m[3][1] = y;
+	matrix.m[3][2] = z;
+	return (matrix);
+}
+
+/*
+*	Initializes projection matrix for a 3d camera projection.
+*	[fov] is camera field of vision in degrees,
+*	[ar] is the projection's aspect ratio and
+*	near/far are the clipping dimensions of the projection camera.
+*/
+t_mat4	matrix_init_projectionmatrix(float fov, float ar, float near, float far)
+{
+	t_mat4	matrix;
+	float	fov_rad;
+	
+	fov_rad = 1.0f / tanf(fov * 0.5f / 180.f * M_PI);
+
+	ft_bzero(&matrix, sizeof(t_mat4));
+	matrix.m[0][0] = ar * fov_rad;
+	matrix.m[1][1] = fov_rad;
+	matrix.m[2][2] = far / (far - near);
+	matrix.m[3][2] = (-far * near) / (far - near);
+	matrix.m[2][3] = 1.0f;
+	matrix.m[3][3] = 0.0f;
+	return (matrix);
+}
+
+/*
+*	Combining two matrices means that each cell equals the sum of rows
+*	multiplied by columns.
+*/
+t_mat4	matrix_multiplymatrix(t_mat4 m1, t_mat4 m2)
+{
+	t_mat4	matrix;
+	int		column;
+	int		row;
+
+	column = 0;
+	while (column < 4)
+	{
+		row = 0;
+		while (row < 4)
+		{
+			matrix.m[row][column] = \
+			m1.m[row][0] * m2.m[0][column] + \
+			m1.m[row][1] * m2.m[1][column] + \
+			m1.m[row][2] * m2.m[2][column] + \
+			m1.m[row][3] * m2.m[3][column];
+			row++;
+		}
+		column++;
+	}
+	return (matrix);
+}
+
+t_vec	vector_add(t_vec v1, t_vec v2)
+{
+	t_vec ret;
+
+	ret.x = v1.x + v2.x;
+	ret.y = v1.y + v2.y;
+	ret.z = v1.z + v2.z;
+	return (ret);
+}
+
+t_vec	vector_sub(t_vec v1, t_vec v2)
+{
+	t_vec ret;
+
+	ret.x = v1.x - v2.x;
+	ret.y = v1.y - v2.y;
+	ret.z = v1.z - v2.z;
+	return (ret);
+}
+
+t_vec	vector_mul(t_vec v, float multiplier)
+{
+	t_vec ret;
+
+	ret.x = v.x * multiplier;
+	ret.y = v.y * multiplier;
+	ret.z = v.z * multiplier;
+	return (ret);
+}
+
+t_vec	vector_div(t_vec v, float divisor)
+{
+	t_vec ret;
+
+	ret.x = v.x / divisor;
+	ret.y = v.y / divisor;
+	ret.z = v.z / divisor;
+	return (ret);
+}
+
+float	vector_length(t_vec v)
+{
+	return (sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
+}
+
+t_vec	vector_normalize(t_vec v)
+{
+	t_vec	ret;
+	float	l;
+
+	l = vector_length(v);
+	ret.x = v.x / l;
+	ret.y = v.y / l;
+	ret.z = v.z / l;
+	return (ret);
+}
+
 
 //	PROGRAM LOGIC
 /******************************************************************************/
@@ -124,67 +305,59 @@ static void	init(t_doom *doom)
 	doom->tricount = 12;
 	doom->x_rot = 0;
 	doom->z_rot = 0;
-	doom->camera = (t_vec){0, 0, 0};
+	doom->camera = (t_vec){0, 0, 0, 1};
+	doom->cam_fov = 90;
 	doom->cube = (t_tri *)malloc(sizeof(t_tri) * doom->tricount);
 	if (!doom->cube)
 		ft_getout("failed to malloc cube!");
 	//south
-	doom->cube[0].p[0] = (t_vec){0.0f, 0.0f, 0.0f};
-	doom->cube[0].p[1] = (t_vec){0.0f, 1.0f, 0.0f};
-	doom->cube[0].p[2] = (t_vec){1.0f, 1.0f, 0.0f};
-	doom->cube[1].p[0] = (t_vec){0.0f, 0.0f, 0.0f};
-	doom->cube[1].p[1] = (t_vec){1.0f, 1.0f, 0.0f};
-	doom->cube[1].p[2] = (t_vec){1.0f, 0.0f, 0.0f};
+	doom->cube[0].p[0] = (t_vec){0.0f, 0.0f, 0.0f, 1};
+	doom->cube[0].p[1] = (t_vec){0.0f, 1.0f, 0.0f, 1};
+	doom->cube[0].p[2] = (t_vec){1.0f, 1.0f, 0.0f, 1};
+	doom->cube[1].p[0] = (t_vec){0.0f, 0.0f, 0.0f, 1};
+	doom->cube[1].p[1] = (t_vec){1.0f, 1.0f, 0.0f, 1};
+	doom->cube[1].p[2] = (t_vec){1.0f, 0.0f, 0.0f, 1};
 	//east
-	doom->cube[2].p[0] = (t_vec){1.0f, 0.0f, 0.0f};
-	doom->cube[2].p[1] = (t_vec){1.0f, 1.0f, 0.0f};
-	doom->cube[2].p[2] = (t_vec){1.0f, 1.0f, 1.0f};
-	doom->cube[3].p[0] = (t_vec){1.0f, 0.0f, 0.0f};
-	doom->cube[3].p[1] = (t_vec){1.0f, 1.0f, 1.0f};
-	doom->cube[3].p[2] = (t_vec){1.0f, 0.0f, 1.0f};
+	doom->cube[2].p[0] = (t_vec){1.0f, 0.0f, 0.0f, 1};
+	doom->cube[2].p[1] = (t_vec){1.0f, 1.0f, 0.0f, 1};
+	doom->cube[2].p[2] = (t_vec){1.0f, 1.0f, 1.0f, 1};
+	doom->cube[3].p[0] = (t_vec){1.0f, 0.0f, 0.0f, 1};
+	doom->cube[3].p[1] = (t_vec){1.0f, 1.0f, 1.0f, 1};
+	doom->cube[3].p[2] = (t_vec){1.0f, 0.0f, 1.0f, 1};
 	//north
-	doom->cube[4].p[0] = (t_vec){1.0f, 0.0f, 1.0f};
-	doom->cube[4].p[1] = (t_vec){1.0f, 1.0f, 1.0f};
-	doom->cube[4].p[2] = (t_vec){0.0f, 1.0f, 1.0f};
-	doom->cube[5].p[0] = (t_vec){1.0f, 0.0f, 1.0f};
-	doom->cube[5].p[1] = (t_vec){0.0f, 1.0f, 1.0f};
-	doom->cube[5].p[2] = (t_vec){0.0f, 0.0f, 1.0f};
+	doom->cube[4].p[0] = (t_vec){1.0f, 0.0f, 1.0f, 1};
+	doom->cube[4].p[1] = (t_vec){1.0f, 1.0f, 1.0f, 1};
+	doom->cube[4].p[2] = (t_vec){0.0f, 1.0f, 1.0f, 1};
+	doom->cube[5].p[0] = (t_vec){1.0f, 0.0f, 1.0f, 1};
+	doom->cube[5].p[1] = (t_vec){0.0f, 1.0f, 1.0f, 1};
+	doom->cube[5].p[2] = (t_vec){0.0f, 0.0f, 1.0f, 1};
 	//west
-	doom->cube[6].p[0] = (t_vec){0.0f, 0.0f, 1.0f};
-	doom->cube[6].p[1] = (t_vec){0.0f, 1.0f, 1.0f};
-	doom->cube[6].p[2] = (t_vec){0.0f, 1.0f, 0.0f};
-	doom->cube[7].p[0] = (t_vec){0.0f, 0.0f, 1.0f};
-	doom->cube[7].p[1] = (t_vec){0.0f, 1.0f, 0.0f};
-	doom->cube[7].p[2] = (t_vec){0.0f, 0.0f, 0.0f};
+	doom->cube[6].p[0] = (t_vec){0.0f, 0.0f, 1.0f, 1};
+	doom->cube[6].p[1] = (t_vec){0.0f, 1.0f, 1.0f, 1};
+	doom->cube[6].p[2] = (t_vec){0.0f, 1.0f, 0.0f, 1};
+	doom->cube[7].p[0] = (t_vec){0.0f, 0.0f, 1.0f, 1};
+	doom->cube[7].p[1] = (t_vec){0.0f, 1.0f, 0.0f, 1};
+	doom->cube[7].p[2] = (t_vec){0.0f, 0.0f, 0.0f, 1};
 	//top
-	doom->cube[8].p[0] = (t_vec){0.0f, 1.0f, 0.0f};
-	doom->cube[8].p[1] = (t_vec){0.0f, 1.0f, 1.0f};
-	doom->cube[8].p[2] = (t_vec){1.0f, 1.0f, 1.0f};
-	doom->cube[9].p[0] = (t_vec){0.0f, 1.0f, 0.0f};
-	doom->cube[9].p[1] = (t_vec){1.0f, 1.0f, 1.0f};
-	doom->cube[9].p[2] = (t_vec){1.0f, 1.0f, 0.0f};
+	doom->cube[8].p[0] = (t_vec){0.0f, 1.0f, 0.0f, 1};
+	doom->cube[8].p[1] = (t_vec){0.0f, 1.0f, 1.0f, 1};
+	doom->cube[8].p[2] = (t_vec){1.0f, 1.0f, 1.0f, 1};
+	doom->cube[9].p[0] = (t_vec){0.0f, 1.0f, 0.0f, 1};
+	doom->cube[9].p[1] = (t_vec){1.0f, 1.0f, 1.0f, 1};
+	doom->cube[9].p[2] = (t_vec){1.0f, 1.0f, 0.0f, 1};
 	//bottom
-	doom->cube[10].p[0] = (t_vec){1.0f, 0.0f, 1.0f};
-	doom->cube[10].p[1] = (t_vec){0.0f, 0.0f, 1.0f};
-	doom->cube[10].p[2] = (t_vec){0.0f, 0.0f, 0.0f};
-	doom->cube[11].p[0] = (t_vec){1.0f, 0.0f, 1.0f};
-	doom->cube[11].p[1] = (t_vec){0.0f, 0.0f, 0.0f};
-	doom->cube[11].p[2] = (t_vec){1.0f, 0.0f, 0.0f};
+	doom->cube[10].p[0] = (t_vec){1.0f, 0.0f, 1.0f, 1};
+	doom->cube[10].p[1] = (t_vec){0.0f, 0.0f, 1.0f, 1};
+	doom->cube[10].p[2] = (t_vec){0.0f, 0.0f, 0.0f, 1};
+	doom->cube[11].p[0] = (t_vec){1.0f, 0.0f, 1.0f, 1};
+	doom->cube[11].p[1] = (t_vec){0.0f, 0.0f, 0.0f, 1};
+	doom->cube[11].p[2] = (t_vec){1.0f, 0.0f, 0.0f, 1};
 
-	//projection matrix
-	float fnear = 0.1f;
-	float ffar = 1000.f;
-	float ffov = 90.f;
-	float fratio = (float)WIN_H / (float)WIN_W;
-	float ffov_rad = 1.0f / tanf(ffov * 0.5f / 180.f * M_PI);
+	doom->distance = 16;
 
-	ft_bzero(&doom->m_proj, sizeof(t_mat4));
-	doom->m_proj.m[0][0] = fratio * ffov_rad;
-	doom->m_proj.m[1][1] = ffov_rad;
-	doom->m_proj.m[2][2] = ffar / (ffar - fnear);
-	doom->m_proj.m[3][2] = (-ffar * fnear) / (ffar - fnear);
-	doom->m_proj.m[2][3] = 1.0f;
-	doom->m_proj.m[3][3] = 0.0f;
+	doom->m_proj = matrix_init_projectionmatrix(doom->cam_fov, \
+	(float)WIN_H / (float)WIN_W, 0.1f, 1000.f);
+
 }
 
 static void	cleanup(t_doom *doom)
@@ -203,75 +376,65 @@ static void	keyevent(t_doom *doom, SDL_Event *e)
 	{
 		if (e->window.event == SDL_WINDOWEVENT_CLOSE)
 			doom->rend.run = FALSE;
-		if (e->key.keysym.sym == SDLK_y)
+		if (e->key.keysym.sym == SDLK_q && doom->cam_fov > 1)
 		{
-			doom->y_rot += 0.01;
+			doom->cam_fov--;
+			doom->m_proj = matrix_init_projectionmatrix(doom->cam_fov, \
+			(float)WIN_H / (float)WIN_W, 0.1f, 1000.f);
+		}
+		if (e->key.keysym.sym == SDLK_e && doom->cam_fov < 180)
+		{
+			doom->cam_fov++;
+			doom->m_proj = matrix_init_projectionmatrix(doom->cam_fov, \
+			(float)WIN_H / (float)WIN_W, 0.1f, 1000.f);
+		}
+		if (e->key.keysym.sym == SDLK_UP)
+		{
+			doom->distance += 0.1f;
+		}
+		if (e->key.keysym.sym == SDLK_DOWN && doom->distance > 1.0f)
+		{
+			doom->distance -= 0.1f;
 		}
 	}
 }
 
 static void	drawlogic (t_doom *doom)
 {
-	t_tri	tri_proj;
-	t_tri	tri_trans;
-	t_tri	tri_zrot;
-	t_tri	tri_zxrot;
-	t_tri	tri_zxyrot;
+	t_tri	tri_projected;
+	t_tri	tri_transformed;
+
 	t_mat4	mrot_z;
 	t_mat4	mrot_x;
-	t_mat4	mrot_y;
+	mrot_x = matrix_init_x_rotationmatrix(doom->x_rot * 0.5);
+	mrot_z = matrix_init_z_rotationmatrix(doom->z_rot * 0.25);
 
-	ft_bzero(&mrot_z, sizeof(t_mat4));
-	mrot_z.m[0][0] = cosf(doom->z_rot);
-	mrot_z.m[0][1] = sinf(doom->z_rot);
-	mrot_z.m[1][0] = -sinf(doom->z_rot);
-	mrot_z.m[1][1] = cosf(doom->z_rot);
-	mrot_z.m[2][2] = 1;
-	mrot_z.m[3][3] = 1;
-	ft_bzero(&mrot_x, sizeof(t_mat4));
-	mrot_x.m[0][0] = 1;
-	mrot_x.m[1][1] = cosf(doom->x_rot * 0.5f);
-	mrot_x.m[1][2] = sinf(doom->x_rot * 0.5f);
-	mrot_x.m[2][1] = -sinf(doom->x_rot * 0.5f);
-	mrot_x.m[2][2] = cosf(doom->x_rot * 0.5f);
-	mrot_x.m[3][3] = 1;
-	ft_bzero(&mrot_y, sizeof(t_mat4));
-	mrot_y.m[0][0] = 1;
-	mrot_y.m[1][1] = cosf(doom->y_rot * 0.25f);
-	mrot_y.m[1][2] = sinf(doom->y_rot * 0.25f);
-	mrot_y.m[2][1] = -sinf(doom->y_rot * 0.25f);
-	mrot_y.m[2][2] = cosf(doom->y_rot * 0.25f);
-	mrot_y.m[3][3] = 1;
+	t_mat4 	mat_translation;
+	t_mat4	mat_world;
+	mat_translation = matrix_init_translation(0.0f, 0.0f, doom->distance);
+	//world space rotation, then translation
+	mat_world = matrix_init_unitmatrix();
+	mat_world = matrix_multiplymatrix(mrot_z, mrot_x);
+	mat_world = matrix_multiplymatrix(mat_world, mat_translation);
 
 	for (int i = 0; i < doom->tricount; i++)
 	{
-		//rotate in z and then x axis
-		mul_matrixvector(doom->cube[i].p[0], &tri_zrot.p[0], mrot_z);
-		mul_matrixvector(doom->cube[i].p[1], &tri_zrot.p[1], mrot_z);
-		mul_matrixvector(doom->cube[i].p[2], &tri_zrot.p[2], mrot_z);
-		mul_matrixvector(tri_zrot.p[0], &tri_zxrot.p[0], mrot_x);
-		mul_matrixvector(tri_zrot.p[1], &tri_zxrot.p[1], mrot_x);
-		mul_matrixvector(tri_zrot.p[2], &tri_zxrot.p[2], mrot_x);
-		mul_matrixvector(tri_zxrot.p[0], &tri_zxyrot.p[0], mrot_y);
-		mul_matrixvector(tri_zxrot.p[1], &tri_zxyrot.p[1], mrot_y);
-		mul_matrixvector(tri_zxrot.p[2], &tri_zxyrot.p[2], mrot_y);
-		//offset to screen
-		tri_trans = tri_zxyrot;
-		tri_trans.p[0].z = tri_zxyrot.p[0].z + 3.0f;
-		tri_trans.p[1].z = tri_zxyrot.p[1].z + 3.0f;
-		tri_trans.p[2].z = tri_zxyrot.p[2].z + 3.0f;
+		//multiply each triangle with the world matrix (all transformations combined)
+		tri_transformed.p[0] = matrix_multiplyvector(doom->cube[i].p[0], mat_world);
+		tri_transformed.p[1] = matrix_multiplyvector(doom->cube[i].p[1], mat_world);
+		tri_transformed.p[2] = matrix_multiplyvector(doom->cube[i].p[2], mat_world);
+
 		//calculate triangle normal with the crossproduct of the first and last
 		//lines that make up the triangle. Also the normal is normalized.
 		t_vec	normal;
 		t_vec	line1;
 		t_vec	line2;
-		line1.x = tri_trans.p[1].x - tri_trans.p[0].x;
-		line1.y = tri_trans.p[1].y - tri_trans.p[0].y;
-		line1.z = tri_trans.p[1].z - tri_trans.p[0].z;
-		line2.x = tri_trans.p[2].x - tri_trans.p[0].x;
-		line2.y = tri_trans.p[2].y - tri_trans.p[0].y;
-		line2.z = tri_trans.p[2].z - tri_trans.p[0].z;
-		normal = cross_product(line1, line2);
+		//get both lines from the first point on the triangle
+		line1 = vector_sub(tri_transformed.p[1], tri_transformed.p[0]);
+		line2 = vector_sub(tri_transformed.p[2], tri_transformed.p[0]);
+		//crossproduct to find normal
+		normal = vector_normalize(vector_cross_product(line1, line2));
+		//i honestly dont know why we normalize the normalized normal at this point lmao
 		float	normal_len;
 		normal_len = sqrtf(normal.x * normal.x + normal.y * normal.y + normal.z * normal.z);
 		normal.x /= normal_len;
@@ -279,29 +442,31 @@ static void	drawlogic (t_doom *doom)
 		normal.z /= normal_len;
 
 		//if (normal.z < 0) //negative z-value for normal means that the triangle is facing the camera!
-		if (dot_product(normal, tri_trans.p[0]) < 0) //negative dot-product is a more accurate way of solving the above.
+		if (vector_dot_product(normal, tri_transformed.p[0]) < 0) //negative dot-product is a more accurate way of solving the above.
 		{	//if our camera would move, dot_product's second argument should be (tri_trans.p[0] - cameravector)
 			//project to 2D view
-			mul_matrixvector(tri_trans.p[0], &tri_proj.p[0], doom->m_proj);
-			mul_matrixvector(tri_trans.p[1], &tri_proj.p[1], doom->m_proj);
-			mul_matrixvector(tri_trans.p[2], &tri_proj.p[2], doom->m_proj);
-			//scale into view
-			tri_proj.p[0].x += 1.0f;
-			tri_proj.p[0].y += 1.0f;
-			tri_proj.p[1].x += 1.0f;
-			tri_proj.p[1].y += 1.0f;
-			tri_proj.p[2].x += 1.0f;
-			tri_proj.p[2].y += 1.0f;
-			tri_proj.p[0].x *= 0.5f * (float)WIN_W;
-			tri_proj.p[0].y *= 0.5f * (float)WIN_H;
-			tri_proj.p[1].x *= 0.5f * (float)WIN_W;
-			tri_proj.p[1].y *= 0.5f * (float)WIN_H;
-			tri_proj.p[2].x *= 0.5f * (float)WIN_W;
-			tri_proj.p[2].y *= 0.5f * (float)WIN_H;
+			tri_projected.p[0] = matrix_multiplyvector(tri_transformed.p[0], doom->m_proj);
+			tri_projected.p[1] = matrix_multiplyvector(tri_transformed.p[1], doom->m_proj);
+			tri_projected.p[2] = matrix_multiplyvector(tri_transformed.p[2], doom->m_proj);
+			//to scale projected coordinates into view, we need to normalize it
+			tri_projected.p[0] = vector_div(tri_projected.p[0], tri_projected.p[0].w);
+			tri_projected.p[1] = vector_div(tri_projected.p[1], tri_projected.p[1].w);
+			tri_projected.p[2] = vector_div(tri_projected.p[2], tri_projected.p[2].w);
+			//offset into visible screen space
+			t_vec	viewoffset = (t_vec){1.0f, 1.0f, 0, 1};
+			tri_projected.p[0] = vector_add(tri_projected.p[0], viewoffset);
+			tri_projected.p[1] = vector_add(tri_projected.p[1], viewoffset);
+			tri_projected.p[2] = vector_add(tri_projected.p[2], viewoffset);
+			tri_projected.p[0].x *= 0.5f * (float)WIN_W;
+			tri_projected.p[0].y *= 0.5f * (float)WIN_H;
+			tri_projected.p[1].x *= 0.5f * (float)WIN_W;
+			tri_projected.p[1].y *= 0.5f * (float)WIN_H;
+			tri_projected.p[2].x *= 0.5f * (float)WIN_W;
+			tri_projected.p[2].y *= 0.5f * (float)WIN_H;
 			drawtriangle(doom->rend.win_buffer, \
-			(t_vector){tri_proj.p[0].x, tri_proj.p[0].y, 0},
-			(t_vector){tri_proj.p[1].x, tri_proj.p[1].y, 0},
-			(t_vector){tri_proj.p[2].x, tri_proj.p[2].y, 0});
+			(t_vector){tri_projected.p[0].x, tri_projected.p[0].y, 0},
+			(t_vector){tri_projected.p[1].x, tri_projected.p[1].y, 0},
+			(t_vector){tri_projected.p[2].x, tri_projected.p[2].y, 0});
 		}
 	}
 }

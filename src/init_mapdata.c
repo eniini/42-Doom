@@ -1,15 +1,15 @@
 #include "doom.h"
 
-static void	convex_room_setup(t_dbg_room *room)
+static void	convex_room_setup(t_room *room)
 {
 	int	i;
 
 	room->vertices = (t_vertex[5]){
-	{2 * MAP_UNIT, -2 * MAP_UNIT, 0},
-	{2 * MAP_UNIT, 2 * MAP_UNIT, 0},
-	{-2 * MAP_UNIT, 3 * MAP_UNIT, 0},
-	{-4 * MAP_UNIT, 0 * MAP_UNIT, 0},
-	{-2 * MAP_UNIT, -3 * MAP_UNIT, 0}};
+	{2 * MAP_UNIT, -2 * MAP_UNIT, 0, 1},
+	{2 * MAP_UNIT, 2 * MAP_UNIT, 0, 1},
+	{-2 * MAP_UNIT, 3 * MAP_UNIT, 0, 1},
+	{-4 * MAP_UNIT, 0 * MAP_UNIT, 0, 1},
+	{-2 * MAP_UNIT, -3 * MAP_UNIT, 0, 1}};
 	i = 0;
 	while (i < room->wallcount - 1)
 	{
@@ -30,17 +30,17 @@ static void	convex_room_setup(t_dbg_room *room)
 *	Initializes a convex-shaped room data.
 *	Consists of 5 vertices creating 5 walls.
 */
-t_dbg_room	*init_convex_room(void)
+t_room	*init_convex_room(void)
 {
-	t_dbg_room	*room;
+	t_room	*room;
 
-	room = malloc(sizeof(t_dbg_room));
+	room = malloc(sizeof(t_room));
 	if (!room)
 		ft_getout("failed to init [t_debug_room]");
 	room->wallcount = 5;
 	room->vertices = malloc(sizeof(t_vertex) * room->wallcount);
-	room->walls = malloc(sizeof(t_line) * room->wallcount);
-	room->proj_walls = malloc(sizeof(t_line) * room->wallcount);
+	room->walls = malloc(sizeof(t_wall) * room->wallcount);
+	room->proj_walls = malloc(sizeof(t_wall) * room->wallcount);
 	if (!room->vertices || !room->walls || !room->proj_walls)
 		ft_getout("malloc failed for debug room mapdata init");
 	convex_room_setup(room);
@@ -56,19 +56,19 @@ t_dbg_room	*init_convex_room(void)
 /*
 *****************************************************************************/
 
-static void	nonconvex_room_setup(t_dbg_room *room)
+static void	nonconvex_room_setup(t_room *room)
 {
 	int	i;
 
 	room->vertices = (t_vertex[8]){
-	{2 * MAP_UNIT, -4 * MAP_UNIT, 0},
-	{4 * MAP_UNIT, 1 * MAP_UNIT, 0},
-	{1 * MAP_UNIT, 1 * MAP_UNIT, 0},
-	{0 * MAP_UNIT, 4 * MAP_UNIT, 0},
-	{-1 * MAP_UNIT, 1 * MAP_UNIT, 0},
-	{-4 * MAP_UNIT, 1 * MAP_UNIT, 0},
-	{-2 * MAP_UNIT, -4 * MAP_UNIT, 0},
-	{0 * MAP_UNIT, -1 * MAP_UNIT, 0}};
+	{2 * MAP_UNIT, -4 * MAP_UNIT, 0, 1},
+	{4 * MAP_UNIT, 1 * MAP_UNIT, 0, 1},
+	{1 * MAP_UNIT, 1 * MAP_UNIT, 0, 1},
+	{0 * MAP_UNIT, 4 * MAP_UNIT, 0, 1},
+	{-1 * MAP_UNIT, 1 * MAP_UNIT, 0, 1},
+	{-4 * MAP_UNIT, 1 * MAP_UNIT, 0, 1},
+	{-2 * MAP_UNIT, -4 * MAP_UNIT, 0, 1},
+	{0 * MAP_UNIT, -1 * MAP_UNIT, 0, 1}};
 	i = 0;
 	while (i < room->wallcount - 1)
 	{
@@ -87,17 +87,17 @@ static void	nonconvex_room_setup(t_dbg_room *room)
 /*
 *	Initializes a nonconvex-shaped room with 8 vertices & 8 walls.
 */
-t_dbg_room	*init_nonconvex_room(void)
+t_room	*init_nonconvex_room(void)
 {
-	t_dbg_room	*room;
+	t_room	*room;
 
-	room = malloc(sizeof(t_dbg_room));
+	room = malloc(sizeof(t_room));
 	if (!room)
 		ft_getout("failed to init [t_debug_room]");
 	room->wallcount = 8;
 	room->vertices = malloc(sizeof(t_vertex) * room->wallcount);
-	room->walls = malloc(sizeof(t_line) * room->wallcount);
-	room->proj_walls = malloc(sizeof(t_line) * room->wallcount);
+	room->walls = malloc(sizeof(t_wall) * room->wallcount);
+	room->proj_walls = malloc(sizeof(t_wall) * room->wallcount);
 	if (!room->vertices || !room->walls || !room->proj_walls)
 		ft_getout("malloc failed for debug room mapdata init");
 	nonconvex_room_setup(room);

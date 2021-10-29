@@ -19,26 +19,43 @@
 # define ANGLE_SE	315
 
 typedef struct s_vector {
-	int	x;
-	int	y;
-	int	z;
-}		t_vector;
-typedef t_vector t_vertex;
-
-typedef struct s_fvector {
 	float	x;
 	float	y;
 	float	z;
-}			t_fvector;
+	float	w;
+}			t_vector;
+typedef t_vector t_vertex;
+typedef t_vector t_fvector;
+
+//base unit for 3d projection
+typedef struct s_tri {
+	t_vector	p[3];
+}				t_tri;
+//base unit for map geometry
+typedef struct s_wall {
+	t_vector	start;
+	t_vector	end;
+	uint32_t	color;
+}				t_wall;
+//4 x 4 matrix
+typedef struct s_mat4 {
+	float	m[4][4];
+}			t_mat4;
 
 typedef struct s_pixel {
 	uint32_t	x;
 	uint32_t	y;
 }				t_pixel;
 
+typedef struct s_ivec3 {
+	int		x;
+	int		y;
+	int		z;
+}			t_ivec3;
+//integer-based line drawing stuct
 typedef struct s_line {
-	t_vector	start;
-	t_vector	end;
+	t_ivec3		start;
+	t_ivec3		end;
 	uint32_t	color;
 }				t_line;
 //Handles mapping signed/unsigned ints into a range.

@@ -65,7 +65,7 @@ void	draw_map(t_map *map, t_world *world)
 	draw_buffer_line(map, world->p_verts[i], world->p_verts[0],
 		wall_colortable(i));
 	i = 0;
-	draw_buffer_line(map, (t_vector){0, 0, 0}, world->p_angle, \
+	draw_buffer_line(map, (t_vector){0, 0, 0, 1}, world->p_angle, \
 	MMAP_C_PLAYERLOOK);
 	draw_circle(map->mapbuf, (t_pixel){map->mapbuf->w / 2, map->mapbuf->h / 2},
 		10, MMAP_C_PLAYER);

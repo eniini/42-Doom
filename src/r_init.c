@@ -15,8 +15,8 @@ static t_vector	get_mapdimensions(t_world *world, t_bool getmax)
 	int				i;
 
 	i = 0;
-	max = (t_vector){1, 1, 0};
-	min = (t_vector){-1, -1, 0};
+	max = (t_vector){1, 1, 0, 1};
+	min = (t_vector){-1, -1, 0, 1};
 	crawler = world->verts;
 	while (i < world->vertcount)
 	{
@@ -74,8 +74,8 @@ static void	init_world_cont(t_world *world, t_map *map, t_buffer *buf)
 void	init_world(t_world *world, t_map *map, t_buffer *buf)
 {
 	world->w_angle = 0;
-	world->player = (t_vector){0, 0, 0};
-	world->p_angle = (t_vector){0 * MAP_UNIT, 1 * MAP_UNIT, 0};
+	world->player = (t_vector){0, 0, 0, 1};
+	world->p_angle = (t_vector){0 * MAP_UNIT, 1 * MAP_UNIT, 0, 1};
 	world->vertcount = 8;
 	world->verts = malloc(sizeof(t_vertex) * world->vertcount);
 	world->p_verts = malloc(sizeof(t_vertex) * world->vertcount);
@@ -84,14 +84,14 @@ void	init_world(t_world *world, t_map *map, t_buffer *buf)
 		ft_getout("failed to malloc visible wall array!");
 	if (!world->verts || !world->p_verts)
 		ft_getout("failed to malloc world.verts[]!");
-	world->verts[0] = (t_vertex){2 * MAP_UNIT, -4 * MAP_UNIT, 0},
-		world->verts[1] = (t_vertex){4 * MAP_UNIT, 1 * MAP_UNIT, 0},
-		world->verts[2] = (t_vertex){1 * MAP_UNIT, 1 * MAP_UNIT, 0},
-		world->verts[3] = (t_vertex){0 * MAP_UNIT, 4 * MAP_UNIT, 0},
-		world->verts[4] = (t_vertex){-1 * MAP_UNIT, 1 * MAP_UNIT, 0},
-		world->verts[5] = (t_vertex){-4 * MAP_UNIT, 1 * MAP_UNIT, 0},
-		world->verts[6] = (t_vertex){-2 * MAP_UNIT, -4 * MAP_UNIT, 0},
-		world->verts[7] = (t_vertex){0 * MAP_UNIT, -1 * MAP_UNIT, 0};
+	world->verts[0] = (t_vertex){2 * MAP_UNIT, -4 * MAP_UNIT, 0, 1},
+		world->verts[1] = (t_vertex){4 * MAP_UNIT, 1 * MAP_UNIT, 0, 1},
+		world->verts[2] = (t_vertex){1 * MAP_UNIT, 1 * MAP_UNIT, 0, 1},
+		world->verts[3] = (t_vertex){0 * MAP_UNIT, 4 * MAP_UNIT, 0, 1},
+		world->verts[4] = (t_vertex){-1 * MAP_UNIT, 1 * MAP_UNIT, 0, 1},
+		world->verts[5] = (t_vertex){-4 * MAP_UNIT, 1 * MAP_UNIT, 0, 1},
+		world->verts[6] = (t_vertex){-2 * MAP_UNIT, -4 * MAP_UNIT, 0, 1},
+		world->verts[7] = (t_vertex){0 * MAP_UNIT, -1 * MAP_UNIT, 0, 1};
 	init_world_cont(world, map, buf);
 }
 

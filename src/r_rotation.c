@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 17:56:50 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/29 21:17:44 by eniini           ###   ########.fr       */
+/*   Updated: 2021/10/29 16:57:34 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ static t_vector	project_line_to_axis(t_vector p, t_vector n)
 	double		a_tan;
 
 	result.y = 0;
-	side = abs(p.y) + abs(n.y);
+	side = fabs(p.y) + fabs(n.y);
 	if (p.x <= 0)
 	{
-		a_tan = RAD_TO_DEG * atan((abs(n.x - p.x) / (double)side));
+		a_tan = RAD_TO_DEG * atan((fabs(n.x - p.x) / (double)side));
 		result.x = (int)round(tan(a_tan * DEG_TO_RAD) * p.y);
 		if (p.x > n.x)
 			result.x = p.x - result.x;
@@ -54,7 +54,7 @@ static t_vector	project_line_to_axis(t_vector p, t_vector n)
 	}
 	else
 	{
-		a_tan = RAD_TO_DEG * atan((abs(p.x - n.x) / (double)side));
+		a_tan = RAD_TO_DEG * atan((fabs(p.x - n.x) / (double)side));
 		result.x = (int)round(tan(a_tan * DEG_TO_RAD) * p.y);
 		result.x = p.x - result.x;
 	}

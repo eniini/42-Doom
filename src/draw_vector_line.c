@@ -16,7 +16,7 @@
 *	-----+------+-----
 *	0101 | 0100 | 0110
 */
-static int	get_ocode(t_buffer *buf, t_vector v)
+static int	get_ocode(t_buffer *buf, t_ivec3 v)
 {
 	int	outcode;
 
@@ -37,9 +37,9 @@ static int	get_ocode(t_buffer *buf, t_vector v)
 *	Depending on outcode, point coordinates are scaled in relation to
 *	(distance to screen edge from p0) / (distance to p1 from p0).
 */
-static t_vector	line_clip(t_buffer *buf, t_vector v0, t_vector v1, int ocode)
+static t_ivec3	line_clip(t_buffer *buf, t_ivec3 v0, t_ivec3 v1, int ocode)
 {
-	t_vector	rv;
+	t_ivec3	rv;
 
 	if (ocode & 8)
 	{
@@ -80,9 +80,9 @@ static t_vector	line_clip(t_buffer *buf, t_vector v0, t_vector v1, int ocode)
 */
 void	draw_vector_line(t_buffer *buf, t_line line, uint32_t c)
 {
-	t_vector	ocode;
+	t_ivec3	ocode;
 
-	ocode = (t_vector){get_ocode(buf, line.start), get_ocode(buf, line.end), 0};
+	ocode = (t_ivec3){get_ocode(buf, line.start), get_ocode(buf, line.end), 0};
 	while (TRUE)
 	{
 		if (ocode.x & ocode.y)

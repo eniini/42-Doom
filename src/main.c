@@ -10,7 +10,7 @@ static void	init_player(t_doom *doom)
 	doom->keys.left_pressed = FALSE;
 	doom->keys.right_pressed = FALSE;
 	doom->fps_switch = FALSE;
-	doom->mouse_switch = TRUE;
+	doom->mouse_switch = FALSE;
 }
 
 /*

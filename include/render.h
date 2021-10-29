@@ -29,15 +29,44 @@
 # define MMAP_C_PLAYER		0xFFFF6981
 # define MMAP_C_PLAYERLOOK	0XFFD598D2
 
+/*
+*	Bounding box data is [ymin, xmin, ymax, xmax]
+*/
+typedef struct s_room {
+	int			wallcount;
+	t_vertex	*vertices;
+	t_wall		*walls;
+	t_wall		*proj_walls;
+	short		boundingbox[4];
+	short		ceil_h;
+	short		floor_h;
+}				t_room;
+
+t_room	*init_convex_room(void);
+t_room	*init_nonconvex_room(void);
+
 typedef struct s_world {
+	//legacy stuff
 	t_vertex	*verts;
 	t_vertex	*p_verts;
-	t_line		*v_walls;
+	t_wall		*v_walls;
 	t_vector	player;
 	t_vector	p_angle;
 	int			vertcount;
 	int			v_wallcount;
 	int			w_angle;
+	//active stuff below!
+	t_tri		*cube;
+	t_mat4		m_proj;
+	t_vector	camera;
+	int			tricount;
+	t_vector	cube_rotation;
+	float		cam_distance;
+	float		cam_fov;
+	//current version of the active room (which walls are drawn)
+	t_room		*room;
+	int			player_angle;
+	int			player_rotation;
 }				t_world;
 
 uint32_t	wall_colortable(int i);

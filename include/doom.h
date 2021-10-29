@@ -26,10 +26,9 @@
 # include "../libft/includes/ft_gfx.h"
 //doom
 # include "defines.h"
-# include "mapdefs.h"
 # include "render.h"
 # include "resourcefile.h"
-# include "vector.h"
+# include "m_utils.h"
 
 //temp
 # define WIN_W 800
@@ -126,8 +125,6 @@ typedef struct s_doom {
 	double		delta;
 	t_bool		fps_switch;
 	t_bool		mouse_switch;
-	t_debug		debug;
-	t_dbg_room	*room;
 }				t_doom;
 
 
@@ -150,7 +147,8 @@ void		init_minimap(t_world *w, t_mmap *mmmap, t_buffer *buf, uint32_t s);
 void		draw_map(t_map *map, t_world *world);
 void		draw_minimap(t_mmap *mm, t_world *world);
 
-void		r_dotests(t_rend *rend, t_dbg_room *room, t_debug *debug);
+void		r_dotests(t_doom *doom);
+void		draw_cube(t_doom *doom);
 
 void		rotate_player(t_world *world, t_mmap *mmap, int r);
 
