@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_putnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/17 15:55:19 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 02:37:13 by esormune         ###   ########.fr       */
+/*   Created: 2021/02/15 15:51:55 by esormune          #+#    #+#             */
+/*   Updated: 2021/11/01 18:40:01 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+void	ft_putnstr(char *str, size_t size)
 {
-	char	*str;
-
-	str = ft_itoa_base(n, 10);
-	if (!(str))
-		return (NULL);
-	return (str);
+	write(1, str, size);
 }

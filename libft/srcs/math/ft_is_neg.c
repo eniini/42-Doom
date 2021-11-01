@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_is_neg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/17 15:55:19 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 02:37:13 by esormune         ###   ########.fr       */
+/*   Created: 2021/02/19 17:21:59 by esormune          #+#    #+#             */
+/*   Updated: 2021/04/29 01:54:42 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+int	ft_is_neg(double nb)
 {
-	char	*str;
+	unsigned long long	*x;
+	int					ret;
 
-	str = ft_itoa_base(n, 10);
-	if (!(str))
-		return (NULL);
-	return (str);
+	x = (unsigned long long *)&nb;
+	ret = (*x >> 63);
+	if (ret == 1)
+		return (1);
+	return (0);
 }

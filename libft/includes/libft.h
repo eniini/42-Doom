@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 16:37:48 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/28 22:22:50 by eniini           ###   ########.fr       */
+/*   Updated: 2021/11/01 18:45:47 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <stdlib.h>
 # include <stdint.h>
 # include <wchar.h>
+# include <unistd.h>
 # include "defs.h"
 
 typedef int		t_bool;
@@ -80,6 +81,18 @@ int				ft_abs(int n);
 int				ft_clamp_i(int value, int min, int max);
 double			ft_clamp_d(double value, double min, double max);
 long long int	ft_pow(int i, unsigned int p);
+int				ft_numlength(int nb);
+int				ft_numlength_neg(intmax_t nb);
+long double		ft_neg_pow_ten(long double nb, int pow);
+long double		ft_brounding(long double nb, int prec);
+long double		ft_brounding_ld(long double nb, int prec);
+int				ft_atoi_max(const char *str);
+uintmax_t		ft_uintmax_pow(uintmax_t nb, int pow);
+int				ft_is_neg(double nb);
+int				ft_is_neg_minus(double nb);
+int				ft_max(int a, int b);
+int				ft_min(int a, int b);
+long double		ft_neg_pow_ten(long double nb, int pow);
 
 //	Memory utility
 
@@ -94,6 +107,7 @@ void			*ft_memmove(void *dst, const void *src, size_t len);
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_swap(void *a, void *b, size_t size);
 void			*ft_calloc(size_t count, size_t size);
+void			ft_free_array(char **arr);
 
 //	Process control
 
@@ -129,6 +143,10 @@ char			*ft_strnstr(const char *stack, const char *ndl, size_t len);
 char			*ft_strsub(char const *s, unsigned int start, size_t len);
 char			*ft_strtrim(char const *s);
 size_t			ft_wordcount(char const *s, char c);
+void			ft_putnstr_fd(char *str, size_t size, int fd);
+char			*ft_tolower_str(char *str);
+char			*ft_toupper_str(char *str);
+void			ft_putnstr(char *str, size_t size);
 
 //	Wide string (UTF-8) I/O and examination
 
@@ -142,9 +160,18 @@ size_t			ft_wstrnlen(const wchar_t *wstr, size_t n);
 
 int				ft_atoi(const char *str);
 char			*ft_ftoa(long double f, unsigned int prec);
-char			*ft_itoa(intmax_t n);
-char			*ft_itoa_base(intmax_t n, int base, t_bool lcase);
+char			*ft_itoa_base(int value, int base);
+char			*ft_itoa_llong_base(long long nb, int base);
+char			*ft_itoa_ulong_base(unsigned long long nb, int base);
+char			*ft_itoa_intmax_base(intmax_t nb, int base);
+char			*ft_itoa_size_t_base(size_t nb, int base);
+char			*ft_itoa_uintmax_base(uintmax_t nb, int base);
+char			*ft_flitoa(double nb, int prec);
+char			*ft_flitoa_ldouble(long double nb, int prec);
+char			*ft_itoa_exp(long double nb, int prec);
+char			*ft_itoa(int n);
+int				ft_atoi_max(const char *str);
+char			*ft_uitoa_base(size_t ui, int base, t_bool lcase);
 char			*ft_uitoa(size_t ui);
-char			*ft_uitoa_base(size_t unb, int base, t_bool lcase);
 
 #endif

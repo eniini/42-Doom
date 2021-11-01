@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa_base.c                                     :+:      :+:    :+:   */
+/*   ft_itoa_size_t_base.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/17 14:48:20 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 03:21:56 by esormune         ###   ########.fr       */
+/*   Created: 2020/11/02 16:39:55 by esormune          #+#    #+#             */
+/*   Updated: 2021/04/29 03:22:30 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*ft_save(long nb, int neg, int base, int i)
+static char	*ft_save(size_t nb, int base, int i)
 {
 	char	*str;
 	char	*save;
-	char	temp[32 + 1];
+	char	temp[64 + 1];
 	int		x;
 
 	x = 0;
@@ -27,8 +27,6 @@ static char	*ft_save(long nb, int neg, int base, int i)
 		nb = nb / base;
 		i++;
 	}
-	if (neg == -1 && base == 10)
-		temp[i++] = '-';
 	temp[i] = '\0';
 	save = (char *)malloc(sizeof(char) * i + 1);
 	if (!(save))
@@ -40,18 +38,12 @@ static char	*ft_save(long nb, int neg, int base, int i)
 	return (save);
 }
 
-char	*ft_itoa_base(int value, int base)
+char	*ft_itoa_size_t_base(size_t nb, int base)
 {
-	char	*save;
-	long	nb;
-	int		neg;
+	char		*save;
 
 	if (base < 2 || base > 16)
 		return (NULL);
-	nb = value;
-	neg = ft_is_neg_minus(nb);
-	if (nb < 0)
-		nb = nb * (-1);
 	if (nb == 0)
 	{
 		save = (char *)malloc(sizeof(char) * 2);
@@ -61,5 +53,5 @@ char	*ft_itoa_base(int value, int base)
 		save[1] = '\0';
 		return (save);
 	}
-	return (ft_save(nb, neg, base, 0));
+	return (ft_save(nb, base, 0));
 }

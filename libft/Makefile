@@ -6,7 +6,7 @@
 #    By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/11 10:42:46 by eniini            #+#    #+#              #
-#    Updated: 2021/08/19 21:53:11 by esormune         ###   ########.fr        #
+#    Updated: 2021/11/01 18:45:01 by esormune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -113,25 +113,68 @@ SRCS	=	ft_free_arr.c \
 		ft_wordcount.c \
 		ft_atoi.c \
 		ft_ftoa.c \
-		ft_itoa_base.c \
-		ft_itoa.c \
-		ft_uitoa_base.c \
-		ft_uitoa.c \
 		ft_putwchar.c \
 		ft_putwstr.c \
 		ft_wcharlen.c \
 		ft_wstrlen.c \
 		ft_wstrnlen.c \
-		ft_calloc.c
-PFTSRCS	=	ft_printf.c \
-		ftprintf_c.c \
-		ftprintf_convert.c \
-		ftprintf_float.c \
-		ftprintf_integer.c \
-		ftprintf_read_args.c \
-		ftprintf_sign.c \
-		ftprintf_str.c \
-		ftprintf_typecheck.c
+		ft_calloc.c \
+		ft_uitoa.c \
+		ft_uitoa_base.c \
+		ft_numlength.c \
+		ft_brounding.c \
+		ft_brounding_ld.c \
+		ft_flitoa.c \
+		ft_flitoa_ldouble.c \
+		ft_itoa.c \
+		ft_itoa_base.c \
+		ft_itoa_exp.c \
+		ft_itoa_intmax_base.c \
+		ft_itoa_llong_base.c \
+		ft_itoa_size_t_base.c \
+		ft_itoa_uintmax_base.c \
+		ft_itoa_ulong_base.c \
+		ft_itoa.c \
+		ft_max.c \
+		ft_min.c \
+		ft_neg_pow_ten.c \
+		ft_numlength.c \
+		ft_numlength_neg.c \
+		ft_pow.c \
+		ft_uintmax_pow.c \
+		ft_atoi_max.c \
+		ft_is_neg_minus.c \
+		ft_is_neg.c \
+		ft_putnstr_fd.c \
+		ft_tolower_str.c \
+		ft_toupper_str.c \
+		ft_free_arr.c \
+		ft_putnstr.c
+PFTSRCS	=	ft_parser.c \
+		ft_printf.c \
+		ft_split.c \
+		ft_convert.c \
+		ft_specs.c \
+		ft_next.c \
+		ft_sprintf.c \
+		ft_dprintf.c \
+		ft_conflicts.c \
+		ft_char.c \
+		ft_string.c \
+		ft_octal.c \
+		ft_hex.c \
+		ft_int.c \
+		ft_exp.c \
+		ft_u_int.c \
+		ft_pointer.c \
+		ft_binary.c \
+		ft_float.c \
+		ft_percent.c \
+		ft_null_string.c \
+		ft_init.c \
+		ft_rev_split.c \
+		ft_width.c \
+		ft_nb.c
 GFXSRCS	=	ft_argb_grayscale.c \
 		ft_argb_lerp.c \
 		ft_color_lerp.c \

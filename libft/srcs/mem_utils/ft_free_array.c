@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_free_array.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/17 15:55:19 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 02:37:13 by esormune         ###   ########.fr       */
+/*   Created: 2021/02/18 01:33:25 by esormune          #+#    #+#             */
+/*   Updated: 2021/03/25 23:49:32 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+void	ft_free_array(char **arr)
 {
-	char	*str;
+	int	i;
 
-	str = ft_itoa_base(n, 10);
-	if (!(str))
-		return (NULL);
-	return (str);
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }

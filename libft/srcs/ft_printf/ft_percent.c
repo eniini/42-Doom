@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_percent.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/17 15:55:19 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 02:37:13 by esormune         ###   ########.fr       */
+/*   Created: 2021/01/20 10:05:36 by esormune          #+#    #+#             */
+/*   Updated: 2021/02/18 22:58:17 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-char	*ft_itoa(int n)
+/*
+** Returns a string with the percent specifier. Very similar to string
+** and therefore uses its function here.
+*/
+
+char	*ft_percent(t_flags *data)
 {
-	char	*str;
+	char	*new;
+	char	*prec_str;
+	size_t	size;
 
-	str = ft_itoa_base(n, 10);
-	if (!(str))
-		return (NULL);
-	return (str);
+	prec_str = ft_prec_str("%", data->nprecis);
+	size = ft_strlen(prec_str);
+	new = ft_string_cont(data, prec_str, size);
+	return (new);
 }

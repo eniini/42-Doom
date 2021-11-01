@@ -3,107 +3,58 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/29 16:49:11 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/28 22:17:33 by eniini           ###   ########.fr       */
+/*   Created: 2020/10/12 12:17:48 by esormune          #+#    #+#             */
+/*   Updated: 2021/02/19 23:11:19 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	printf_reset(t_printf *f)
-{
-	f->data.s = NULL;
-	f->data.ws = NULL;
-	f->conversion = NULL;
-	f->info = (t_info){0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-}
+/*
+** Resets the struct for further use.
+*/
 
-static t_printf	*printf_init(const int fd)
+void	ft_reset(t_flags *data)
 {
-	t_printf	*f;
-
-	f = (t_printf *)malloc(sizeof(t_printf));
-	if (!f)
-		return (NULL);
-	f->writecount = 0;
-	f->fd = fd;
-	return (f);
+	data->plus = 0;
+	data->minus = 0;
+	data->space = 0;
+	data->hash = 0;
+	data->zero = 0;
+	data->nwidth = 0;
+	data->swidth = 0;
+	data->nprecis = 0;
+	data->sprecis = 0;
+	data->length = '0';
+	data->spec = '0';
+	data->index = 0;
+	data->len = 0;
 }
 
 /*
-**	Returns 0 if any subfunctions return an error.
+** Allocates memory for struct. Frees it in the end.
+** Begins parsing call. Has output call.
 */
 
-static int	loop(t_printf *f, const char *s)
+int		ft_printf(const char *str, ...)
 {
-	while (*s && *s != '\0')
-	{
-		if (*s == '%')
-		{
-			s++;
-			printf_reset(f);
-			s = ftprintf_read_args(s, f);
-			if (!s)
-				return (0);
-			if (ftprintf_typecheck(f, s) == -1)
-				return (0);
-			s++;
-		}
-		else
-			f->writecount += write(f->fd, s++, 1);
-	}
-	if (s == NULL)
-		return (0);
-	return (1);
-}
+	t_flags		*data;
+	t_printf	*res;
+	va_list		list;
+	int			ret;
 
-/*
-**	ANSI C-compliant printf implementation mainly in style of glibc.
-**	Supports writing to file descriptors via ft_fprintf(2).
-**	Has additional locale-agnostic support for wide characters (UTF-8).
-*/
-int	ft_printf(const char *s, ...)
-{
-	t_printf	*f;
-	int			ret_count;
-
-	f = printf_init(1);
-	if (!f)
+	if (!(data = (t_flags *)malloc(sizeof(t_flags))))
 		return (-1);
-	va_start(f->args, s);
-	if (!(loop(f, s)))
-	{
-		free(f);
+	ft_reset(data);
+	if (!(res = ft_init((char*)str)))
 		return (-1);
-	}
-	va_end(f->args);
-	ret_count = (int)f->writecount;
-	free(f);
-	return (ret_count);
-}
-
-/*
-**	Writes results to file descriptor [fd].
-*/
-int	ft_fprintf(const int fd, const char *s, ...)
-{
-	t_printf	*f;
-	int			ret_count;
-
-	f = printf_init(fd);
-	if (!f)
-		return (-1);
-	va_start(f->args, s);
-	if (!(loop(f, s)))
-	{
-		free(f);
-		return (-1);
-	}
-	va_end(f->args);
-	ret_count = (int)f->writecount;
-	free(f);
-	return (ret_count);
+	va_start(list, str);
+	res->strings = ft_next(res, data, list);
+	ret = ft_rev_split(res);
+	ft_rev_init(res);
+	va_end(list);
+	free(data);
+	return (ret);
 }

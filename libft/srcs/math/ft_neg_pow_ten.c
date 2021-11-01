@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_neg_pow_ten.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/17 15:55:19 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 02:37:13 by esormune         ###   ########.fr       */
+/*   Created: 2021/02/01 15:56:21 by esormune          #+#    #+#             */
+/*   Updated: 2021/03/25 23:49:32 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+long double	ft_neg_pow_ten(long double nb, int pow)
 {
-	char	*str;
+	int			i;
+	long double	res;
 
-	str = ft_itoa_base(n, 10);
-	if (!(str))
-		return (NULL);
-	return (str);
+	i = pow;
+	res = nb;
+	while (i > 0)
+	{
+		res = res * 0.1;
+		i--;
+	}
+	return (res);
 }

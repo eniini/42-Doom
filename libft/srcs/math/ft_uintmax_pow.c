@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_uintmax_pow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/17 15:55:19 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 02:37:13 by esormune         ###   ########.fr       */
+/*   Created: 2021/03/01 19:30:11 by esormune          #+#    #+#             */
+/*   Updated: 2021/11/01 18:24:25 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_itoa(int n)
+uintmax_t	ft_uintmax_pow(uintmax_t nb, int pow)
 {
-	char	*str;
+	int			i;
+	uintmax_t	res;
 
-	str = ft_itoa_base(n, 10);
-	if (!(str))
-		return (NULL);
-	return (str);
+	if (pow == 0)
+		return (1);
+	i = pow;
+	res = nb;
+	while (i > 1)
+	{
+		res = res * nb;
+		i--;
+	}
+	return (res);
 }

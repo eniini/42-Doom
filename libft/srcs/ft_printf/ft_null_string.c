@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_itoa.c                                          :+:      :+:    :+:   */
+/*   ft_null_string.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/17 15:55:19 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 02:37:13 by esormune         ###   ########.fr       */
+/*   Created: 2021/02/05 14:00:32 by esormune          #+#    #+#             */
+/*   Updated: 2021/02/18 20:02:44 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-char	*ft_itoa(int n)
+/*
+** Deals with the instance of a NULL string.
+*/
+
+char	*ft_null_string(t_flags *data)
 {
+	char	*new;
 	char	*str;
+	char	*prec_str;
+	size_t	size;
 
-	str = ft_itoa_base(n, 10);
-	if (!(str))
-		return (NULL);
-	return (str);
+	str = ft_strdup("(null)");
+	if (data->nprecis == -1)
+		prec_str = ft_strdup("");
+	else
+		prec_str = ft_prec_str(str, data->nprecis);
+	free(str);
+	size = ft_strlen(prec_str);
+	new = ft_string_cont(data, prec_str, size);
+	return (new);
 }
