@@ -47,6 +47,11 @@ typedef struct s_pixel {
 	uint32_t	y;
 }				t_pixel;
 
+typedef struct s_square {
+	t_pixel	start;
+	t_pixel	end;
+}			t_square;
+
 typedef struct s_ivec3 {
 	int		x;
 	int		y;
@@ -71,5 +76,12 @@ typedef struct s_img {
 	uint32_t	h;
 }				t_img;
 typedef t_img	t_buffer;
+//symbol datatype created from font atlas. Assumes that all subimages are of
+//the same size.
+typedef struct s_sym {
+	char	value;
+	int		xpos;
+	int		ypos;
+}				t_sym;
 
 #endif

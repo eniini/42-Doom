@@ -71,8 +71,8 @@ static void	loop(t_doom	*doom)
 
 	ft_bzero(doom->rend.win_buffer->px, WIN_H * WIN_W * sizeof(uint32_t));
 	keyevent(doom, &e);
-	mouse_movement(doom);
-	physics(doom);
+	//mouse_movement(doom);
+	//physics(doom);
 	dotests(doom);
 	audios(&doom->audio);
 	draw_circle(doom->rend.win_buffer, (t_pixel){doom->player.pos.x, \

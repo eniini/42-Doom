@@ -15,6 +15,7 @@ SRC_LIST =	array_value_manip.c \
 		draw_shapes.c \
 		draw_vector_line.c \
 		fps_counter.c \
+		font_atlas.c \
 		init_mapdata.c \
 		keyevents.c \
 		load_tga.c \

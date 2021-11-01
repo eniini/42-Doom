@@ -8,12 +8,17 @@ static void	init_resources(t_doom *doom)
 {
 	doom->rf.fd = rf_open_resourcefile('w', "DATA");
 	add_tga_to_rf(&doom->rf, "resources/dev_skybox.tga");
+	add_tga_to_rf(&doom->rf, "resources/freemono_atlas.tga");
 	rf_write_lumplist(&doom->rf);
 	rf_close_fd(&doom->rf);
 	doom->assets.dev_skybox = load_tga_from_rf(&doom->rf, 1);
+	doom->font.atlas = load_tga_from_rf(&doom->rf, 2);
 	if (!doom->assets.dev_skybox)
 		ft_getout("failed to load [dev_skybox]");
 	ft_printf("asset [dev_skybox.tga] loaded successfully!\n");
+	if (!doom->font.atlas)
+		ft_getout("failed to load font atlas!");
+	ft_printf("font atlas loaded successfully!\n");
 	rf_free_lumplist(doom->rf.lumplist);
 }
 
@@ -36,7 +41,8 @@ static void	init_map(t_doom *doom)
 void	init_tests(t_doom *doom)
 {
 	doom->world.room = init_convex_room();
-	//init_resources(doom);
+	init_resources(doom);
+	init_font_atlas(doom);
 	//init_map(doom);
 	doom->world.tricount = 12;
 	doom->world.cube_rotation = (t_vector){1, 1, 1, 1};
@@ -112,5 +118,12 @@ void	cleanup_tests(t_doom *doom)
 */
 void	dotests(t_doom *doom)
 {
+	//write_onto_buffer(doom->rend.win_buffer, &doom->font, " !\"#$%&'()*+,-./", (t_pixel){25, 25});
+	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "0123456789:;<=>?@", (t_pixel){25, 50});
+	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", (t_pixel){25, 75});
+	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "[\\]^_`", (t_pixel){25, 100});
+	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "abcdefghijklmnopqrstuvwxyz{|}~", (t_pixel){25, 125});
+	write_onto_buffer(doom->rend.win_buffer, &doom->font, "Hello World!", (t_pixel){25, 25});
+	write_onto_buffer(doom->rend.win_buffer, &doom->font, "lorem ipsum 420 QUICK BROWN FOX and all that stuff", (t_pixel){25, 50});
 	r_dotests(doom);
 }

@@ -109,6 +109,13 @@ typedef struct s_keys {
 	t_bool		left_pressed;
 	t_bool		right_pressed;
 }				t_keys;
+//font created with texture atlas funcs
+typedef struct s_font {
+	t_img		*atlas;
+	t_sym		*symlist;
+	int			size;
+	int			pitch;
+}				t_font;
 //superstruct that holds all the subsystem structs.
 typedef struct s_doom {
 	t_rend		rend;
@@ -121,17 +128,21 @@ typedef struct s_doom {
 	t_player	player;
 	t_vector	mouse;
 	t_keys		keys;
+	t_font		font;
 	int			global_fps;
 	double		delta;
 	t_bool		fps_switch;
 	t_bool		mouse_switch;
 }				t_doom;
 
-
+int			blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start);
 int			blit_img(t_img *img, t_buffer *buf, t_pixel start);
 int			blit_img_scaled(t_img *img, t_buffer *buf, t_pixel offs, float s);
 t_sprite	*create_sprite(t_img *img, uint32_t count, t_pixel dimensions);
 t_bool		blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_pixel start);
+
+void		init_font_atlas(t_doom *doom);
+void		write_onto_buffer(t_buffer *buf, t_font	*font, char	*msg, t_pixel pos);
 
 void		draw_pixel(uint32_t x, uint32_t y, t_buffer *buf, uint32_t color);
 void		draw_line(t_buffer *buf, t_pixel p0, t_pixel p1, uint32_t color);

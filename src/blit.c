@@ -1,6 +1,40 @@
 #include "doom.h"
 
 /*
+*	Copies the data inside [crop] from [img] into [buf], which is
+*	offset by [start].
+*/
+int	blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start)
+{
+	uint32_t	x;
+	uint32_t	y;
+	int	i = 0;
+
+	if (!img || !buf)
+		return (-1);
+	if (start.x > buf->w || start.y > buf->h)
+		return (-1);
+	y = 0;
+	while ((y + start.y) < buf->h && (y + s.start.y) < s.end.y)
+	{
+		x = 0;
+		while ((x + start.x) < buf->w && (x + s.start.x) < s.end.x)
+		{
+			if (img->px[y * img->w + (x + s.start.x)] != 0)
+			{
+				buf->px[((y + start.y) * buf->w) + x + start.x] \
+				= img->px[(y + s.start.y) * img->w + (s.start.x + x)];
+				i++;
+			}
+			x++;
+		}
+		y++;
+	}
+	//ft_printf("copied %d pixels\n", i);
+	return (0);
+}
+
+/*
 *	Copy [img->px] into [buf->px] starting the from given x/y coordinates.
 *	Returns -1 on error.
 */
@@ -14,10 +48,10 @@ int	blit_img(t_img *img, t_buffer *buf, t_pixel start)
 	if (start.x > buf->w || start.y > buf->h)
 		return (-1);
 	y = 0;
-	while ((y + start.y) <= buf->h && y < img->h)
+	while ((y + start.y) < buf->h && y < img->h)
 	{
 		x = 0;
-		while ((x + start.x) <= buf->w && x < img->w)
+		while ((x + start.x) < buf->w && x < img->w)
 		{
 			if (img->px[y * img->w + x] != 0)
 			{

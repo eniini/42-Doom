@@ -3,22 +3,6 @@
 
 # include <stdint.h>
 
-/*
-*	Each of these are only included once per resource file
-*	as the whole map is loaded and de-loaded from memory in one process.
-*	As such, they are packed in and loaded as linked lists.
-*	(Unless its upgraded to a more fitting data structure!)
-*/
-# define RF_TYPE_THING 1
-# define RF_TYPE_LINEDEFS 2
-# define RF_TYPE_SIDEDEFS 3
-# define RF_TYPE_VERTICES 4
-# define RF_TYPE_SECTORS 5
-# define RF_TYPE_SEGS 6
-# define RF_TYPE_SSECTORS 7
-# define RF_TYPE_NODES 8
-# define RF_MAPTYPES 8
-
 //	Unique lumps which are fetched individually
 # define RF_TYPE_TGA 10
 
