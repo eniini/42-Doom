@@ -123,7 +123,7 @@ void	dotests(t_doom *doom)
 	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", (t_pixel){25, 75});
 	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "[\\]^_`", (t_pixel){25, 100});
 	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "abcdefghijklmnopqrstuvwxyz{|}~", (t_pixel){25, 125});
-	write_onto_buffer(doom->rend.win_buffer, &doom->font, "Hello World!", (t_pixel){25, 25});
-	write_onto_buffer(doom->rend.win_buffer, &doom->font, "lorem ipsum 420 QUICK BROWN FOX and all that stuff", (t_pixel){25, 50});
+	ft_sprintf(doom->ui_str, "FOV: [%1.1f] | cube distance [%1.1f]", doom->world.cam_fov, doom->world.cam_distance);
+	write_onto_buffer(doom->rend.win_buffer, &doom->font, doom->ui_str, (t_pixel){25, 25});
 	r_dotests(doom);
 }

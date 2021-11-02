@@ -43,6 +43,7 @@ static void	init(t_doom *doom)
 		ft_getout(SDL_GetError());
 	init_audio(&doom->audio);
 	init_player(doom);
+	ft_bzero(doom->ui_str, 256);
 }
 
 static void	cleanup(t_doom *doom)

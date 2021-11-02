@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+         #
+#    By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/11 10:42:46 by eniini            #+#    #+#              #
-#    Updated: 2021/11/01 18:45:01 by esormune         ###   ########.fr        #
+#    Updated: 2021/11/02 15:17:16 by eniini           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -149,6 +149,7 @@ SRCS	=	ft_free_arr.c \
 		ft_tolower_str.c \
 		ft_toupper_str.c \
 		ft_free_arr.c \
+		ft_free_array.c \
 		ft_putnstr.c
 PFTSRCS	=	ft_parser.c \
 		ft_printf.c \

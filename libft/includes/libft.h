@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 16:37:48 by eniini            #+#    #+#             */
-/*   Updated: 2021/11/01 18:45:47 by esormune         ###   ########.fr       */
+/*   Updated: 2021/11/02 15:17:42 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ void			ft_putchar_fd(char c, int fd);
 void			ft_putstr_fd(char const *s, int fd);
 void			ft_putendl_fd(char const *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
-int				ft_printf(const char *s, ...);
-int				ft_fprintf(const int fd, const char *s, ...);
+int				ft_printf(const char *str, ...);
+int				ft_sprintf(char *str, const char *format, ...);
+int				ft_dprintf(int fd, const char *format, ...);
 int				get_next_line(const int fd, char **line);
 
 //	Linked list utility

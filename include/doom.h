@@ -133,6 +133,7 @@ typedef struct s_doom {
 	double		delta;
 	t_bool		fps_switch;
 	t_bool		mouse_switch;
+	char		ui_str[256];
 }				t_doom;
 
 int			blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start);
