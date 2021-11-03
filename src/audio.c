@@ -1,5 +1,9 @@
 #include "doom.h"
 
+
+//THIS IS TEST EDIT FOR GIT TESTIN PURPOSES!!
+//
+
 void	init_audio(t_audio *audio)
 {
 	ft_bzero(audio, sizeof(t_audio));
