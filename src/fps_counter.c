@@ -13,7 +13,7 @@ void	fps_counter(int *global_fps)
 	}
 	else
 	{
-		ft_printf("[fps:%d]\n", i);
+		//ft_printf("[fps:%d]\n", i);
 		presec = sec;
 		*global_fps = i;
 		i = 0;

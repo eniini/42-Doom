@@ -30,7 +30,6 @@ int	blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start)
 		}
 		y++;
 	}
-	//ft_printf("copied %d pixels\n", i);
 	return (0);
 }
 

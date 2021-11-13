@@ -43,7 +43,7 @@ static void	init(t_doom *doom)
 		ft_getout(SDL_GetError());
 	init_audio(&doom->audio);
 	init_player(doom);
-	ft_bzero(doom->ui_str, 256);
+	init_ui(&doom->ui);
 }
 
 static void	cleanup(t_doom *doom)
@@ -76,18 +76,19 @@ static void	loop(t_doom	*doom)
 	//physics(doom);
 	dotests(doom);
 	audios(&doom->audio);
+	fps_counter(&doom->global_fps);
 	draw_circle(doom->rend.win_buffer, (t_pixel){doom->player.pos.x, \
 	doom->player.pos.y}, 10, MMAP_C_PLAYER);
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \
 		&doom->rend.win_pixels, &doom->rend.win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
+	blit_debug_ui(doom);
 	ft_memcpy(doom->rend.win_pixels, doom->rend.win_buffer->px, \
 	WIN_H * doom->rend.win_pixel_pitch);
 	SDL_UnlockTexture(doom->rend.win_tex);
 	if (SDL_RenderCopy(doom->rend.renderer, doom->rend.win_tex, NULL, NULL) < 0)
 		ft_getout(SDL_GetError());
 	SDL_RenderPresent(doom->rend.renderer);
-	fps_counter(&doom->global_fps);
 	if (doom->fps_switch == TRUE)
 		SDL_Delay(40);
 }

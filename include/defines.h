@@ -18,6 +18,11 @@
 # define ANGLE_S	270
 # define ANGLE_SE	315
 
+//as our font atlases only include printable characters, we need to offset
+//actual char value accordingly for indexes to match.
+#define PRINTABLE_CHAR_OFFSET 0x20
+#define PRINTABLE_CHAR_COUNT 95
+
 typedef struct s_vector {
 	float	x;
 	float	y;
@@ -76,12 +81,25 @@ typedef struct s_img {
 	uint32_t	h;
 }				t_img;
 typedef t_img	t_buffer;
-//symbol datatype created from font atlas. Assumes that all subimages are of
-//the same size.
+//symbol datatype created from font atlas. Essentially ties a certain character
+//to a specific x/y offset.
 typedef struct s_sym {
 	char	value;
 	int		xpos;
 	int		ypos;
 }				t_sym;
-
+//basic struct for handling messages to be written into buffer.
+typedef struct s_msg {
+	char		*str;
+	uint32_t	color;
+	t_pixel		pos;
+}				t_msg;
+//font created with texture atlas funcs
+typedef struct s_font {
+	t_img		*atlas;
+	t_sym		*symlist;
+	int			size;
+	int			stride;
+	uint32_t	color;
+}				t_font;
 #endif

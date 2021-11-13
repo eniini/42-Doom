@@ -69,6 +69,8 @@ typedef struct s_sprite {
 //Place to hold all graphics etc. data we need. Also development stuff
 typedef struct s_assets {
 	t_img		*dev_skybox;
+	t_font		ui_text_s;
+	t_font		ui_text_m;
 }				t_assets;
 //Everything audio-related.
 typedef struct s_audio {
@@ -109,13 +111,12 @@ typedef struct s_keys {
 	t_bool		left_pressed;
 	t_bool		right_pressed;
 }				t_keys;
-//font created with texture atlas funcs
-typedef struct s_font {
-	t_img		*atlas;
-	t_sym		*symlist;
-	int			size;
-	int			pitch;
-}				t_font;
+//Includes separate framebuffers for static and per-frame generated data.
+typedef struct s_ui {
+	t_buffer	*db_buf_stat;
+	t_buffer	*db_buf_dyn;
+	char		ui_str[256];
+}				t_ui;
 //superstruct that holds all the subsystem structs.
 typedef struct s_doom {
 	t_rend		rend;
@@ -128,12 +129,11 @@ typedef struct s_doom {
 	t_player	player;
 	t_vector	mouse;
 	t_keys		keys;
-	t_font		font;
+	t_ui		ui;
 	int			global_fps;
 	double		delta;
 	t_bool		fps_switch;
 	t_bool		mouse_switch;
-	char		ui_str[256];
 }				t_doom;
 
 int			blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start);
@@ -142,8 +142,14 @@ int			blit_img_scaled(t_img *img, t_buffer *buf, t_pixel offs, float s);
 t_sprite	*create_sprite(t_img *img, uint32_t count, t_pixel dimensions);
 t_bool		blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_pixel start);
 
-void		init_font_atlas(t_doom *doom);
-void		write_onto_buffer(t_buffer *buf, t_font	*font, char	*msg, t_pixel pos);
+void		init_font_atlas(t_font *f, uint fsize, uint atlas_w, uint s_rowc);
+t_msg		*create_msg(char *str, uint32_t color, t_pixel pos);
+void		delete_msg(t_msg *msg);
+void		write_to_buffer(t_buffer *buf, t_font *f, t_msg *msg);
+
+void		init_ui(t_ui *ui);
+void		init_debug_elements(t_ui *ui, t_assets *assets);
+void		blit_debug_ui(t_doom *doom);
 
 void		draw_pixel(uint32_t x, uint32_t y, t_buffer *buf, uint32_t color);
 void		draw_line(t_buffer *buf, t_pixel p0, t_pixel p1, uint32_t color);

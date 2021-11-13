@@ -10,6 +10,7 @@ OBJ_DIR =	./build/
 SRC_LIST =	array_value_manip.c \
 		audio.c \
 		blit.c \
+		debug.c \
 		draw_pixel.c \
 		draw_line.c \
 		draw_shapes.c \
