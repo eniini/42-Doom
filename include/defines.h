@@ -20,8 +20,8 @@
 
 //as our font atlases only include printable characters, we need to offset
 //actual char value accordingly for indexes to match.
-#define PRINTABLE_CHAR_OFFSET 0x20
-#define PRINTABLE_CHAR_COUNT 95
+# define PRINTABLE_CHAR_OFFSET 0x20
+# define PRINTABLE_CHAR_COUNT 95
 
 typedef struct s_vector {
 	float	x;
@@ -29,8 +29,8 @@ typedef struct s_vector {
 	float	z;
 	float	w;
 }			t_vector;
-typedef t_vector t_vertex;
-typedef t_vector t_fvector;
+typedef t_vector	t_vertex;
+typedef t_vector	t_fvector;
 
 //base unit for 3d projection
 typedef struct s_tri {
@@ -80,7 +80,7 @@ typedef struct s_img {
 	uint32_t	w;
 	uint32_t	h;
 }				t_img;
-typedef t_img	t_buffer;
+typedef t_img		t_buffer;
 //symbol datatype created from font atlas. Essentially ties a certain character
 //to a specific x/y offset.
 typedef struct s_sym {

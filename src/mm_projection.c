@@ -10,9 +10,8 @@ t_mat4	mm_init_3d_projection(float fov, float ar, float near, float far)
 {
 	t_mat4	matrix;
 	float	fov_rad;
-	
-	fov_rad = 1.0f / tanf(fov * 0.5f / 180.f * M_PI);
 
+	fov_rad = 1.0f / tanf(fov * 0.5f / 180.f * M_PI);
 	ft_bzero(&matrix, sizeof(t_mat4));
 	matrix.m[0][0] = ar * fov_rad;
 	matrix.m[1][1] = fov_rad;

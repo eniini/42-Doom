@@ -13,7 +13,6 @@ static void	convex_room_setup(t_room *room)
 	i = 0;
 	while (i < room->wallcount - 1)
 	{
-		//ft_printf("%d|%d|%d\n", room->vertices[i].x, room->vertices[i].y, room->vertices[i].z);
 		room->walls[i].start = room->vertices[i];
 		room->walls[i].end = room->vertices[i + 1];
 		room->walls[i].color = wall_colortable(i);

@@ -12,6 +12,7 @@
 *	rf_ = resource file
 *	p_  = gameplay
 *	s_  = sound
+*	ui_ = interface
 */
 
 //c lib
@@ -71,6 +72,7 @@ typedef struct s_assets {
 	t_img		*dev_skybox;
 	t_font		ui_text_s;
 	t_font		ui_text_m;
+	t_font		ui_text_ss;
 }				t_assets;
 //Everything audio-related.
 typedef struct s_audio {

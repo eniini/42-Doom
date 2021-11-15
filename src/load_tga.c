@@ -45,7 +45,7 @@ t_img 	*load_tga(const char *filepath)
 {
 	int				fd;
 	unsigned char	header[18];
-	t_img		*img;
+	t_img			*img;
 
 	fd = open(filepath, O_RDONLY);
 	if (fd < 0)

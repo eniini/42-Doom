@@ -10,11 +10,13 @@ static void	init_resources(t_doom *doom)
 	add_tga_to_rf(&doom->rf, "resources/dev_skybox.tga");
 	add_tga_to_rf(&doom->rf, "resources/freemono_atlas_m.tga");
 	add_tga_to_rf(&doom->rf, "resources/freemono_atlas_s.tga");
+	add_tga_to_rf(&doom->rf, "resources/freemono_atlas_ss.tga");
 	rf_write_lumplist(&doom->rf);
 	rf_close_fd(&doom->rf);
 	doom->assets.dev_skybox = load_tga_from_rf(&doom->rf, 1);
 	doom->assets.ui_text_m.atlas = load_tga_from_rf(&doom->rf, 2);
 	doom->assets.ui_text_s.atlas = load_tga_from_rf(&doom->rf, 3);
+	doom->assets.ui_text_ss.atlas = load_tga_from_rf(&doom->rf, 4);
 	if (!doom->assets.dev_skybox)
 		ft_getout("failed to load [dev_skybox]");
 	ft_printf("asset [dev_skybox.tga] loaded successfully!\n");
@@ -22,7 +24,8 @@ static void	init_resources(t_doom *doom)
 		ft_getout("failed to load (ui_text_medium) atlas!");
 	if (!doom->assets.ui_text_s.atlas)
 		ft_getout("failed to load (ui_text_small) atlas!");
-	ft_printf("font atlas loaded successfully!\n");
+	if (!doom->assets.ui_text_ss.atlas)
+		ft_getout("failed to load (ui_text_small) atlas!");
 	rf_free_lumplist(doom->rf.lumplist);
 }
 
@@ -47,8 +50,9 @@ void	init_tests(t_doom *doom)
 	doom->world.room = init_convex_room();
 	init_resources(doom);
 	//these are hardcoded values, do not mess with them!
-	init_font_atlas(&doom->assets.ui_text_m, 20, 256, 16);
-	init_font_atlas(&doom->assets.ui_text_s, 16, 160, 10);
+	init_font_atlas(&doom->assets.ui_text_m, 25, 240, 16);
+	init_font_atlas(&doom->assets.ui_text_s, 17, 160, 16);
+	init_font_atlas(&doom->assets.ui_text_ss, 13, 160, 20);
 	//init_map(doom);
 	doom->world.tricount = 12;
 	doom->world.cube_rotation = (t_vector){1, 1, 1, 1};
@@ -127,13 +131,26 @@ void	cleanup_tests(t_doom *doom)
 */
 void	dotests(t_doom *doom)
 {
-	//write_onto_buffer(doom->rend.win_buffer, &doom->font, " !\"#$%&'()*+,-./", (t_pixel){25, 25});
-	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "0123456789:;<=>?@", (t_pixel){25, 50});
-	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", (t_pixel){25, 75});
-	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "[\\]^_`", (t_pixel){25, 100});
-	//write_onto_buffer(doom->rend.win_buffer, &doom->font, "abcdefghijklmnopqrstuvwxyz{|}~", (t_pixel){25, 125});
+	//ft_printf("super small font:\n");
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_ss, create_msg(" !\"#$%&'()*+,-./", 0xFF50b9c4, (t_pixel){5, 25}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_ss, create_msg("0123456789:;<=>?@", 0xFF50b9c4, (t_pixel){5, 50}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_ss, create_msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0xFF50b9c4, (t_pixel){5, 75}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_ss, create_msg("[\\]^_`", 0xFF50b9c4, (t_pixel){5, 100}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_ss, create_msg("abcdefghijklmnopqrstuvwxyz{|}~", 0xFF50b9c4, (t_pixel){5, 125}));
+	//ft_printf("small font:\n");
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_s, create_msg(" !\"#$%&'()*+,-./", 0xFFaf4c5d, (t_pixel){400, 25}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_s, create_msg("0123456789:;<=>?@", 0xFFaf4c5d, (t_pixel){400, 50}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_s, create_msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0xFFaf4c5d, (t_pixel){400, 75}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_s, create_msg("[\\]^_`", 0xFFaf4c5d, (t_pixel){400, 100}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_s, create_msg("abcdefghijklmnopqrstuvwxyz{|}~", 0xFFaf4c5d, (t_pixel){400, 125}));
+	//ft_printf("medium font:\n");
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_m, create_msg(" !\"#$%&'()*+,-./", 0xFF4caf69, (t_pixel){200, 225}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_m, create_msg("0123456789:;<=>?@", 0xFF4caf69, (t_pixel){200, 250}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_m, create_msg("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 0xFF4caf69, (t_pixel){200, 275}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_m, create_msg("[\\]^_`", 0xFF4caf69, (t_pixel){200, 300}));
+	write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_m, create_msg("abcdefghijklmnopqrstuvwxyz{|}~", 0xFF4caf69, (t_pixel){200, 325}));
 	//ft_sprintf(doom->ui.ui_str, "FOV: [%1.1f] | cube distance [%1.1f] ~", doom->world.cam_fov, doom->world.cam_distance);
-	//write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_m, \
+	//write_to_buffer(doom->rend.win_buffer, &doom->assets.ui_text_m,
 	//create_msg(doom->ui.ui_str, 0xFF123456, (t_pixel){25, 25}));
 	r_dotests(doom);
 }

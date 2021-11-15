@@ -8,7 +8,6 @@ int	blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start)
 {
 	uint32_t	x;
 	uint32_t	y;
-	int	i = 0;
 
 	if (!img || !buf)
 		return (-1);
@@ -23,8 +22,7 @@ int	blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start)
 			if (img->px[y * img->w + (x + s.start.x)] != 0)
 			{
 				buf->px[((y + start.y) * buf->w) + x + start.x] \
-				= img->px[(y + s.start.y) * img->w + (s.start.x + x)];
-				i++;
+				= img->px[img->w * (y + s.start.y) + (s.start.x + x)];
 			}
 			x++;
 		}

@@ -48,7 +48,7 @@ float	mv_length(t_vector v)
 t_vector	mv_normalize(t_vector v)
 {
 	t_vector	ret;
-	float	l;
+	float		l;
 
 	l = mv_length(v);
 	ret.x = v.x / l;

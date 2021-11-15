@@ -41,7 +41,6 @@ void	delete_msg(t_msg *msg)
 	}
 }
 
-
 /*
 *	Variation of blit_crop where each pixel inside the square [s] of the
 *	font atlas is checked to be a nonzero value (part of a symbol) and copied
@@ -92,6 +91,7 @@ void	write_to_buffer(t_buffer *buf, t_font *f, t_msg *msg)
 		crop.start.y = f->symlist[c].ypos;
 		crop.end.x = f->symlist[c].xpos + f->stride;
 		crop.end.y = (f->symlist[c].ypos + f->size);
+		//ft_printf("crop start:[%u|%u] crop end:[%u|%u]\n", crop.start.x, crop.start.y, crop.end.x, crop.end.y);
 		f->color = msg->color;
 		if (blit_fontsym(f, crop, buf, msg->pos))
 			ft_getout("invalid blit target/source or msg position OOB");

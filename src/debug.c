@@ -62,7 +62,8 @@ static void	blit_debug_ui_vars(t_doom *doom)
 	ft_strclr(doom->ui.ui_str);
 	ft_sprintf(doom->ui.ui_str, "%d", doom->global_fps);
 	write_to_buffer(doom->ui.db_buf_dyn, &doom->assets.ui_text_m, \
-	create_msg(doom->ui.ui_str, C_RED, (t_pixel){725, 5}));
+	create_msg(doom->ui.ui_str, ft_color_lerp(C_RED, C_GREEN, \
+	doom->global_fps / 300.0f), (t_pixel){725, 5}));
 	ft_strclr(doom->ui.ui_str);
 }
 

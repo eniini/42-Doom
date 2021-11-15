@@ -1,7 +1,7 @@
 #ifndef M_UTILS_H
 # define M_UTILS_H
 
-#include "defines.h"
+# include "defines.h"
 
 //vector funcs
 

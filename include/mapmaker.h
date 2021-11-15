@@ -1,4 +1,7 @@
-#include "doom.h"
+#ifndef MAPMAKER_H
+# define MAPMAKER_H
+
+# include "doom.h"
 
 /*
 ** Button size refers to the pizels of the square-shaped button.
@@ -80,3 +83,5 @@ void	e_undo(t_e_img *img, t_editor *edit);
 void	e_printf_head(t_wlist *head);
 void	e_redo(t_editor *edit);
 void	e_clear(t_e_img *img, t_editor *edit);
+
+#endif

@@ -1,6 +1,6 @@
 #include "doom.h"
 
-t_mat4 mm_init_rotationmatrix_x(float rad_angle)
+t_mat4	mm_init_rotationmatrix_x(float rad_angle)
 {
 	t_mat4	matrix;
 
@@ -14,9 +14,10 @@ t_mat4 mm_init_rotationmatrix_x(float rad_angle)
 	return (matrix);
 }
 
-t_mat4 mm_init_rotationmatrix_y(float rad_angle)
+t_mat4	mm_init_rotationmatrix_y(float rad_angle)
 {
 	t_mat4	matrix;
+
 	ft_bzero(&matrix, sizeof(t_mat4));
 	matrix.m[0][0] = cosf(rad_angle);
 	matrix.m[0][2] = sinf(rad_angle);
@@ -27,9 +28,10 @@ t_mat4 mm_init_rotationmatrix_y(float rad_angle)
 	return (matrix);
 }
 
-t_mat4 mm_init_rotationmatrix_z(float rad_angle)
+t_mat4	mm_init_rotationmatrix_z(float rad_angle)
 {
 	t_mat4	matrix;
+
 	ft_bzero(&matrix, sizeof(t_mat4));
 	matrix.m[0][0] = cosf(rad_angle);
 	matrix.m[0][1] = sinf(rad_angle);
