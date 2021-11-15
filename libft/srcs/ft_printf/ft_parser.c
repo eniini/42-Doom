@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 13:22:40 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 22:56:12 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:58:58 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	ft_precision(char *str, t_flags *data, va_list list)
 ** hh to 's' (unsigned & signed chars).
 */
 
-void		ft_length(char *str, t_flags *data)
+void	ft_length(char *str, t_flags *data)
 {
 	if (str[data->index + 1] == 'h')
 	{
@@ -88,7 +88,7 @@ static void	ft_assign_swidth(t_flags *data, va_list list)
 ** This function parses the data in the string into the t_flag data.
 */
 
-void		ft_parser(char *str, t_flags *data, va_list list)
+void	ft_parser(char *str, t_flags *data, va_list list)
 {
 	data->index++;
 	while (str[data->index] != '\0')

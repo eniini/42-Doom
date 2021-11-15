@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 20:00:17 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/24 19:27:26 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:03:23 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ char	*ft_minus_nb(int size, char *nb, t_flags *data)
 		buf[i++] = '0';
 	ft_strcat(buf, nb);
 	i = ft_strlen(buf);
-	if (data->hash == 1 && data->nprecis == -1 && (data->spec == 'f' ||
-		data->spec == 'F'))
+	if (data->hash == 1 && data->nprecis == -1 && (data->spec == 'f'
+			|| data->spec == 'F'))
 		buf[i++] = '.';
 	while (i < data->nwidth && data->zero == 0)
 		buf[i++] = ' ';
@@ -60,8 +60,8 @@ char	*ft_minus_neg_nb(int size, char *nb, t_flags *data)
 	while (x++ < (data->nprecis - ((int)ft_strlen(nb) - 1)))
 		buf[i++] = '0';
 	ft_strcat(buf, &nb[1]);
-	if (data->hash == 1 && data->nprecis == -1 && (data->spec == 'f' ||
-		data->spec == 'F'))
+	if (data->hash == 1 && data->nprecis == -1 && (data->spec == 'f'
+			|| data->spec == 'F'))
 		buf[i++] = '.';
 	i = ft_strlen(buf);
 	while (i < data->nwidth && data->zero == 0)

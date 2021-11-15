@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 14:04:11 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 22:58:33 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:13:48 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 char	*ft_convert(char *str, t_flags *data, va_list list)
 {
-	char *string;
+	char	*string;
 
 	free(str);
 	if (data->spec == 'd' || data->spec == 'i')
@@ -44,7 +44,7 @@ char	*ft_convert(char *str, t_flags *data, va_list list)
 
 char	*ft_convert_cont(t_flags *data, va_list list)
 {
-	char *string;
+	char	*string;
 
 	if (data->spec == 'f' || data->spec == 'F')
 		string = ft_float(data, list);

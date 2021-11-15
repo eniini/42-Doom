@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:31:54 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/20 15:52:21 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:06:00 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_int_cont(char *nb, t_flags *data, int space, int width)
 	int		size;
 	int		neg;
 
-	neg = (nb[0] == '-') ? 1 : 0;
+	neg = ft_add_neg(nb[0]);
 	if (((int)ft_strlen(nb) + space) < width)
 		size = width;
 	else

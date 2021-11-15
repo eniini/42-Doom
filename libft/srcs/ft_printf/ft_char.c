@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:24:03 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/24 19:31:08 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:05:40 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,15 @@ char	*ft_null_char(t_flags *data)
 
 char	*ft_return_null_char(size_t size, char *str, t_flags *data)
 {
-	char	buf[size + 1];
+	char	*buf;
 	size_t	diff;
 	size_t	i;
 
 	i = 0;
 	diff = size - 1;
-	ft_bzero(buf, (size + 1));
+	buf = ft_calloc((size + 1), sizeof(char));
+	if (!buf)
+		return (NULL);
 	while (diff >= 1)
 	{
 		if (data->zero == 1)
@@ -85,7 +87,7 @@ char	*ft_return_null_char(size_t size, char *str, t_flags *data)
 	ft_strncat(buf, str, 1);
 	i++;
 	buf[i] = '\0';
-	return (ft_strndup(buf, i));
+	return (buf);
 }
 
 /*
@@ -95,12 +97,14 @@ char	*ft_return_null_char(size_t size, char *str, t_flags *data)
 char	*ft_minus_null_char(int size, char *str, t_flags *data)
 {
 	char	*new;
-	char	buf[size + 1];
+	char	*buf;
 	int		i;
 	int		x;
 
 	x = 0;
-	ft_bzero(buf, size + 1);
+	buf = ft_calloc((size + 1), sizeof(char));
+	if (!buf)
+		return (NULL);
 	ft_strncat(buf, str, 1);
 	i = 1;
 	while (i < (data->nwidth))

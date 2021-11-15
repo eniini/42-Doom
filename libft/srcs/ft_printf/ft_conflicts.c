@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/14 10:48:14 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 19:57:01 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:15:43 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Check if the char is a length signifier.
 */
 
-int		ft_is_len(char c)
+int	ft_is_len(char c)
 {
 	char	*str;
 	int		i;
@@ -109,9 +109,9 @@ void	ft_conflicts(t_flags *data)
 	}
 	if (data->plus == 1 && data->space == 1)
 		data->space = 0;
-	if (data->spec != 'f' && data->spec != 'F' &&
-		data->spec != 'e' && data->spec != 'E' &&
-		data->nprecis != 0 && data->zero == 1)
+	if (data->spec != 'f' && data->spec != 'F'
+		&& data->spec != 'e' && data->spec != 'E'
+		&& data->nprecis != 0 && data->zero == 1)
 		data->zero = 0;
 	return (ft_conflicts_cont(data));
 }

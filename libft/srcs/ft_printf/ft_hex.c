@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:29:28 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 23:00:28 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:05:15 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_hex(t_flags *data, va_list list)
 
 	if (data->length == '0')
 		nb = ft_itoa_ulong_base((unsigned long long)
-			(va_arg(list, unsigned int)), 16);
+				(va_arg(list, unsigned int)), 16);
 	else
 		nb = ft_check_hexlength(data, list);
 	if (ft_strcmp("0", nb) == 0)
@@ -85,14 +85,14 @@ char	*ft_check_hexlength(t_flags *data, va_list list)
 	}
 	else if (data->length == 'l')
 		return (ft_itoa_ulong_base((unsigned long long)
-			(va_arg(list, unsigned long)), 16));
+				(va_arg(list, unsigned long)), 16));
 	else if (data->length == 'o')
 		return (ft_itoa_ulong_base((va_arg(list, unsigned long long)), 16));
 	else if (data->length == 'j')
 		return (ft_itoa_uintmax_base((va_arg(list, uintmax_t)), 16));
 	else if (data->length == 'z')
 		return (ft_itoa_ulong_base((unsigned long long)
-			(va_arg(list, size_t)), 16));
+				(va_arg(list, size_t)), 16));
 	else
 		return (NULL);
 }
@@ -103,11 +103,11 @@ char	*ft_check_hexlength(t_flags *data, va_list list)
 
 char	*ft_return_hex(int size, char *nb, t_flags *d)
 {
-	char	buf[size + 1];
+	char	*buf;
 	int		x;
 
 	x = (int)ft_strlen(nb);
-	ft_bzero(buf, (size + 1));
+	buf = ft_calloc((size + 1), sizeof(char));
 	buf[size + 1] = '\0';
 	while (x >= 0)
 		buf[size--] = nb[x--];
@@ -127,7 +127,7 @@ char	*ft_return_hex(int size, char *nb, t_flags *d)
 	}
 	while (size >= 0)
 		buf[size--] = ' ';
-	return (ft_strdup(buf));
+	return (buf);
 }
 
 /*

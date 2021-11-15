@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 19:40:55 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 20:02:04 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:01:38 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,17 @@ t_printf	*ft_init(char *str)
 	t_printf	*res;
 	int			i;
 
-	if (!(res = (t_printf *)malloc(sizeof(t_printf))))
+	res = (t_printf *)malloc(sizeof(t_printf));
+	if (!res)
 		return (NULL);
-	if (!(res->strings = ft_split(str)))
+	res->strings = ft_split(str);
+	if (!(res->strings))
 		return (NULL);
 	i = 0;
 	while (res->strings[i] != NULL)
 		i++;
-	if (!(res->lengths = (size_t *)malloc(sizeof(size_t) * (i))))
+	res->lengths = (size_t *)malloc(sizeof(size_t) * (i));
+	if (!(res->lengths))
 		return (NULL);
 	return (res);
 }
@@ -39,7 +42,7 @@ t_printf	*ft_init(char *str)
 ** reverse of init.
 */
 
-void		ft_rev_init(t_printf *res)
+void	ft_rev_init(t_printf *res)
 {
 	ft_free_array(res->strings);
 	free(res->lengths);

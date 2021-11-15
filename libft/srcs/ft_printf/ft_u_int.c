@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:31:32 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/24 17:08:37 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:26:48 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*ft_u_int(t_flags *data, va_list list)
 
 	if (data->length == '0')
 		nb = ft_itoa_ulong_base((unsigned long long)
-		(va_arg(list, unsigned int)), 10);
+				(va_arg(list, unsigned int)), 10);
 	else
 		nb = ft_check_ulength(data, list);
 	if (data->nprecis == -1 && ft_strcmp("0", nb) == 0)
@@ -79,14 +79,14 @@ char	*ft_check_ulength(t_flags *data, va_list list)
 	}
 	else if (data->length == 'l')
 		return (ft_itoa_ulong_base((unsigned long long)
-		(va_arg(list, unsigned long)), 10));
+				va_arg(list, unsigned long), 10));
 	else if (data->length == 'o')
 		return (ft_itoa_ulong_base((va_arg(list, unsigned long long)), 10));
 	else if (data->length == 'j')
 		return (ft_itoa_uintmax_base((va_arg(list, uintmax_t)), 10));
 	else if (data->length == 'z')
 		return (ft_itoa_ulong_base((unsigned long long)
-		(va_arg(list, size_t)), 10));
+				(va_arg(list, size_t)), 10));
 	else
 		return (NULL);
 }

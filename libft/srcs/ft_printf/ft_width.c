@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 19:52:20 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 23:01:16 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:39:58 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_width(char *str, t_flags *data)
 ** larger one.
 */
 
-int		ft_check_width(char *nb, t_flags *data)
+int	ft_check_width(char *nb, t_flags *data)
 {
 	int	neg;
 	int	space;
@@ -57,7 +57,7 @@ int		ft_check_width(char *nb, t_flags *data)
 ** no hash needed.
 */
 
-int		ft_check_hex_width(t_flags *data)
+int	ft_check_hex_width(t_flags *data)
 {
 	if (data->nprecis > data->nwidth)
 		return (data->nprecis + data->hash);
@@ -68,7 +68,7 @@ int		ft_check_hex_width(t_flags *data)
 ** Checks pointer width. Pointers need + 2 to precision, not width.
 */
 
-int		ft_check_ptr_width(t_flags *data)
+int	ft_check_ptr_width(t_flags *data)
 {
 	if (data->nprecis + 2 > data->nwidth)
 		return (data->nprecis + 2);

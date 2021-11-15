@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:48:24 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 19:53:32 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:15:06 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ void	ft_check_f_precis(char *str, t_flags *data)
 ** Returns 1 if an extra space is needed and a 0 if not.
 */
 
-int		ft_space(char *nb, t_flags *data)
+int	ft_space(char *nb, t_flags *data)
 {
-	if (nb[0] != '-' && data->zero == 1 &&
-		(data->space == 1 || data->plus == 1))
+	if (nb[0] != '-' && data->zero == 1
+		&& (data->space == 1 || data->plus == 1))
 		return (1);
 	if (nb[0] != '-' && (data->space == 1 || data->plus == 1))
 		return (1);
@@ -76,7 +76,7 @@ char	*ft_check_length(t_flags *data, va_list list)
 		return (ft_itoa_intmax_base((va_arg(list, intmax_t)), 10));
 	else if (data->length == 'z')
 		return (ft_itoa_llong_base((long long)
-			(va_arg(list, size_t)), 10));
+				(va_arg(list, size_t)), 10));
 	else
 		return (NULL);
 }

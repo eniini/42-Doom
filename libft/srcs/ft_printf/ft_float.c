@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:26:22 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/24 19:12:54 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:24:22 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	ft_nan_reset(char *nb, t_flags *data)
 ** be dealt with as a string.
 */
 
-char		*ft_float(t_flags *data, va_list list)
+char	*ft_float(t_flags *data, va_list list)
 {
 	char	*new;
 	char	*nb;
@@ -51,8 +51,8 @@ char		*ft_float(t_flags *data, va_list list)
 	dot = 0;
 	if (data->hash == 1 && data->nprecis < 0)
 		dot = 1;
-	if (!ft_strcmp("inf", nb) || !ft_strcmp("-inf", nb) ||
-		!ft_strcmp("nan", nb))
+	if (!ft_strcmp("inf", nb) || !ft_strcmp("-inf", nb)
+		|| !ft_strcmp("nan", nb))
 		dot = ft_nan_reset(nb, data);
 	new = ft_float_cont(nb, dot, data);
 	free(nb);
@@ -63,14 +63,14 @@ char		*ft_float(t_flags *data, va_list list)
 ** Continuation of ft_float.
 */
 
-char		*ft_float_cont(char *nb, int dot, t_flags *data)
+char	*ft_float_cont(char *nb, int dot, t_flags *data)
 {
 	char	*new;
 	int		size;
 	int		neg;
 	int		space;
 
-	neg = (nb[0] == '-') ? 1 : 0;
+	neg = ft_add_neg(nb[0]);
 	space = 0;
 	if (neg == 0 && (data->space == 1 || data->plus == 1))
 		space = 1;
@@ -96,26 +96,26 @@ char		*ft_float_cont(char *nb, int dot, t_flags *data)
 ** need plus, space.
 */
 
-char		*ft_return_float(int size, char *nb, t_flags *d)
+char	*ft_return_float(int size, char *nb, t_flags *d)
 {
 	char	*buf;
 	int		neg;
 	int		x;
 
-	neg = (nb[0] == '-') ? 1 : 0;
+	neg = ft_add_neg(nb[0]);
 	x = (int)ft_strlen(nb) - 1;
 	buf = ft_calloc((size + 1), sizeof(char));
 	size--;
-	if (d->hash == 1 && d->nprecis == -1 && ft_strcmp("inf", nb) != 0 &&
-		ft_strcmp("-inf", nb) != 0 && ft_strcmp("nan", nb) != 0)
+	if (d->hash == 1 && d->nprecis == -1 && ft_strcmp("inf", nb) != 0
+		&& ft_strcmp("-inf", nb) != 0 && ft_strcmp("nan", nb) != 0)
 		buf[size--] = '.';
 	while (neg == 0 && x >= 0)
 		buf[size--] = nb[x--];
 	while (neg == 1 && x >= 1)
 		buf[size--] = nb[x--];
 	x = 0;
-	while (d->zero == 1 && size > 0 &&
-		(x++ <= (d->nwidth - ((int)ft_strlen(nb) + neg))))
+	while (d->zero == 1 && size > 0
+		&& (x++ <= (d->nwidth - ((int)ft_strlen(nb) + neg))))
 		buf[size--] = '0';
 	return (ft_ret_f_cont(buf, d, neg, size));
 }
@@ -124,10 +124,10 @@ char		*ft_return_float(int size, char *nb, t_flags *d)
 ** Continuation of ft_return_float.
 */
 
-char		*ft_ret_f_cont(char *buf, t_flags *d, int neg, int size)
+char	*ft_ret_f_cont(char *buf, t_flags *d, int neg, int size)
 {
-	if (size >= 0 && d->plus == 0 && d->space == 0 && neg == 0 &&
-		d->zero == 1)
+	if (size >= 0 && d->plus == 0 && d->space == 0 && neg == 0
+		&& d->zero == 1)
 		buf[size--] = '0';
 	if (size >= 0 && d->space == 1 && neg == 0)
 		buf[size--] = ' ';

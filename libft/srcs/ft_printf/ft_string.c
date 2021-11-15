@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:25:50 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/17 13:56:17 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:09:00 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_string(t_flags *data, va_list list)
 	char	*prec_str;
 	size_t	size;
 
-	str = va_arg(list, char*);
+	str = va_arg(list, char *);
 	if (!str)
 		return (ft_null_string(data));
 	if (data->nprecis == -1)
@@ -68,19 +68,22 @@ char	*ft_string_cont(t_flags *data, char *prec_str, size_t size)
 
 char	*ft_prec_str(char *str, int prec)
 {
-	char	buf[prec + 1];
+	char	*buf;
 	int		i;
 
 	i = 0;
 	if (prec == 0)
 		return (ft_strdup(str));
+	buf = ft_calloc((prec + 1), sizeof(char));
+	if (!buf)
+		return (NULL);
 	while (i < prec)
 	{
 		buf[i] = str[i];
 		i++;
 	}
 	buf[i] = '\0';
-	return (ft_strdup(buf));
+	return (buf);
 }
 
 /*
@@ -89,14 +92,15 @@ char	*ft_prec_str(char *str, int prec)
 
 char	*ft_minus_str(size_t size, char *str, t_flags *data)
 {
-	char	*new;
-	char	buf[size + 1];
+	char	*buf;
 	size_t	i;
 	size_t	len;
 
 	i = 0;
 	len = ft_strlen(str);
-	ft_bzero(buf, (size + 1));
+	buf = ft_calloc((size + 1), sizeof(char));
+	if (!buf)
+		return (NULL);
 	ft_strcat(buf, str);
 	i = i + len;
 	while (i < (size_t)data->nwidth && data->zero == 0)
@@ -104,8 +108,7 @@ char	*ft_minus_str(size_t size, char *str, t_flags *data)
 	while (i < (size_t)data->nwidth && data->zero == 1)
 		buf[i++] = '0';
 	buf[i] = '\0';
-	new = ft_strdup(buf);
-	return (new);
+	return (buf);
 }
 
 /*
@@ -114,7 +117,7 @@ char	*ft_minus_str(size_t size, char *str, t_flags *data)
 
 char	*ft_return_str(size_t size, char *str, t_flags *data)
 {
-	char	buf[size + 1];
+	char	*buf;
 	size_t	len;
 	size_t	diff;
 	size_t	i;
@@ -122,7 +125,9 @@ char	*ft_return_str(size_t size, char *str, t_flags *data)
 	i = 0;
 	len = ft_strlen(str);
 	diff = size - len;
-	ft_bzero(buf, (size + 1));
+	buf = ft_calloc((size + 1), sizeof(char));
+	if (!buf)
+		return (NULL);
 	while (diff > 0)
 	{
 		if (data->zero == 1)
@@ -134,5 +139,5 @@ char	*ft_return_str(size_t size, char *str, t_flags *data)
 	ft_strcat(buf, str);
 	i = i + len;
 	buf[i] = '\0';
-	return (ft_strdup(buf));
+	return (buf);
 }

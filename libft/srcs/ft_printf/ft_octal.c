@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:29:00 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/24 16:57:43 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:08:26 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ char	*ft_octal(t_flags *data, va_list list)
 
 	if (data->length == '0')
 		nb = ft_itoa_ulong_base((unsigned long long)
-			(va_arg(list, unsigned int)), 8);
+				(va_arg(list, unsigned int)), 8);
 	else
 		nb = ft_check_olength(data, list);
-	if (data->nprecis == -1 && data->hash == 0 &&
-		ft_strcmp("0", nb) == 0)
+	if (data->nprecis == -1 && data->hash == 0
+		&& ft_strcmp("0", nb) == 0)
 	{
 		free(nb);
 		nb = ft_strdup("");
@@ -84,14 +84,14 @@ char	*ft_check_olength(t_flags *data, va_list list)
 	}
 	else if (data->length == 'l')
 		return (ft_itoa_ulong_base((unsigned long long)
-			(va_arg(list, unsigned long)), 8));
+				(va_arg(list, unsigned long)), 8));
 	else if (data->length == 'o')
 		return (ft_itoa_ulong_base((va_arg(list, unsigned long long)), 8));
 	else if (data->length == 'j')
 		return (ft_itoa_uintmax_base((va_arg(list, uintmax_t)), 8));
 	else if (data->length == 'z')
 		return (ft_itoa_ulong_base((unsigned long long)
-			(va_arg(list, size_t)), 8));
+				(va_arg(list, size_t)), 8));
 	else
 		return (NULL);
 }
@@ -131,23 +131,25 @@ char	*ft_minus_oct(char *nb, t_flags *data)
 
 char	*ft_return_oct(int size, char *nb, t_flags *data)
 {
-	char	buf[size + 1];
+	char	*buf;
 	int		x;
 
 	x = (int)ft_strlen(nb);
-	ft_bzero(buf, (size + 1));
+	buf = ft_calloc((size + 1), sizeof(char));
+	if (!buf)
+		return (NULL);
 	buf[size + 1] = '\0';
 	while (x >= 0)
 		buf[size--] = nb[x--];
 	x = 0;
 	if (data->hash != 0)
 		buf[size--] = '0';
-	while (size >= 0 &&
-			(x++ < (data->nprecis - (int)ft_strlen(nb) - data->hash)))
+	while (size >= 0
+		&& (x++ < (data->nprecis - (int)ft_strlen(nb) - data->hash)))
 		buf[size--] = '0';
 	while (data->nprecis == 0 && size >= 0 && data->zero == 1)
 		buf[size--] = '0';
 	while (size >= 0 && data->zero == 0)
 		buf[size--] = ' ';
-	return (ft_strdup(buf));
+	return (buf);
 }

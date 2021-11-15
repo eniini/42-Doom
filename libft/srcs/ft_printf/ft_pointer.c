@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:27:29 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 23:01:16 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:07:37 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*ft_ptr_cont(t_flags *data, char *str, size_t size)
 ** pointer from va_arg.
 */
 
-char		*ft_pointer(t_flags *data, va_list list)
+char	*ft_pointer(t_flags *data, va_list list)
 {
 	uintmax_t	pointer;
 	size_t		size;
@@ -46,7 +46,8 @@ char		*ft_pointer(t_flags *data, va_list list)
 	char		*new;
 
 	pointer = va_arg(list, uintmax_t);
-	if (!(str = ft_itoa_uintmax_base(pointer, 16)))
+	str = ft_itoa_uintmax_base(pointer, 16);
+	if (!str)
 		return (NULL);
 	if (data->nprecis == -1 && ft_strcmp(str, "0") == 0)
 	{
@@ -65,17 +66,18 @@ char		*ft_pointer(t_flags *data, va_list list)
 ** Returns pointer when left aligned.
 */
 
-char		*ft_minus_ptr(size_t size, char *str, t_flags *data)
+char	*ft_minus_ptr(size_t size, char *str, t_flags *data)
 {
-	char	*new;
-	char	buf[size + 1];
+	char	*buf;
 	size_t	i;
 	size_t	len;
 	size_t	diff;
 
 	i = 0;
 	len = ft_strlen(str);
-	ft_bzero(buf, (size + 1));
+	buf = ft_calloc((size + 1), sizeof(char));
+	if (!buf)
+		return (NULL);
 	ft_strcat(buf, "0x");
 	i = i + 2;
 	diff = size - len - 2;
@@ -89,17 +91,16 @@ char		*ft_minus_ptr(size_t size, char *str, t_flags *data)
 	while (i < (size_t)data->nwidth)
 		buf[i++] = ' ';
 	buf[i] = '\0';
-	new = ft_strdup(buf);
-	return (new);
+	return (buf);
 }
 
 /*
 ** Returns pointer when right aligned.
 */
 
-char		*ft_return_ptr(size_t size, char *str, t_flags *data)
+char	*ft_return_ptr(size_t size, char *str, t_flags *data)
 {
-	char	buf[size + 1];
+	char	*buf;
 	size_t	len;
 	size_t	diff;
 	size_t	i;
@@ -107,7 +108,7 @@ char		*ft_return_ptr(size_t size, char *str, t_flags *data)
 	i = 0;
 	len = ft_strlen(str);
 	diff = size - len - 2;
-	ft_bzero(buf, (size + 1));
+	buf = ft_calloc((size + 1), sizeof(char));
 	while (data->nprecis == 0 && data->zero == 0 && diff > 0)
 	{
 		buf[i++] = ' ';
@@ -115,13 +116,13 @@ char		*ft_return_ptr(size_t size, char *str, t_flags *data)
 	}
 	ft_strcat(buf, "0x");
 	i = i + 2;
-	while ((data->zero == 0 && data->nprecis > 0 && diff > 0) ||
-		(data->zero == 1 && diff > 0))
+	while ((data->zero == 0 && data->nprecis > 0 && diff > 0)
+		|| (data->zero == 1 && diff > 0))
 	{
 		buf[i++] = '0';
 		diff--;
 	}
 	ft_strcat(buf, str);
 	i = i + len;
-	return (ft_strdup(buf));
+	return (buf);
 }

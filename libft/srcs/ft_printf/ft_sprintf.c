@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/19 19:57:58 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/19 22:47:43 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:39:46 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static char	*ft_srev_split(t_printf *res, int size)
 	int		y;
 
 	i = 0;
-	if (!(str = (char*)malloc(sizeof(char) * (size + 1))))
+	str = ft_calloc((size + 1), sizeof(char));
+	if (!str)
 		return (NULL);
 	i = 0;
 	y = 0;
@@ -61,7 +62,7 @@ static char	*ft_srev_split(t_printf *res, int size)
 ** Sprintf function; like printf, but returns the output to a string.
 */
 
-int			ft_sprintf(char *str, const char *format, ...)
+int	ft_sprintf(char *str, const char *format, ...)
 {
 	t_flags		*data;
 	t_printf	*res;
@@ -69,10 +70,12 @@ int			ft_sprintf(char *str, const char *format, ...)
 	va_list		list;
 	int			ret;
 
-	if (!(data = (t_flags *)malloc(sizeof(t_flags))))
+	data = (t_flags *)malloc(sizeof(t_flags));
+	if (!data)
 		return (-1);
 	ft_reset(data);
-	if (!(res = ft_init((char*)format)))
+	res = ft_init((char *)format);
+	if (!res)
 		return (-1);
 	va_start(list, format);
 	res->strings = ft_next(res, data, list);

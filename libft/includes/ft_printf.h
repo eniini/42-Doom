@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 12:18:36 by esormune          #+#    #+#             */
-/*   Updated: 2021/11/01 18:08:46 by esormune         ###   ########.fr       */
+/*   Updated: 2021/11/15 17:25:22 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** for length, "ll" translates to "o" and "hh" to "s"
 */
 
-typedef struct	s_flags
+typedef struct s_flags
 {
 	int			plus;
 	int			minus;
@@ -38,7 +38,7 @@ typedef struct	s_flags
 	size_t		len;
 }				t_flags;
 
-typedef struct	s_printf
+typedef struct s_printf
 {
 	char		**strings;
 	size_t		*lengths;
@@ -63,6 +63,7 @@ void			ft_conflicts(t_flags *data);
 int				ft_is_len(char c);
 void			ft_width(char *str, t_flags *data);
 int				ft_space(char *nb, t_flags *data);
+int				ft_add_neg(char c);
 
 char			*ft_int(t_flags *data, va_list list);
 char			*ft_int_cont(char *nb, t_flags *data, int space, int width);

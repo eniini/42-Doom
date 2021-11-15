@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/18 20:16:47 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 22:26:02 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:03:34 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**ft_next(t_printf *res, t_flags *data, va_list list)
 		{
 			ft_parser(res->strings[i], data, list);
 			if (data->nprecis == 0 && (data->spec != 'e' && data->spec != 'E'
-				&& data->spec != 'c' && data->spec != '%'))
+					&& data->spec != 'c' && data->spec != '%'))
 				ft_check_zero(res->strings[i], data);
 			if (data->hash == 1 && (data->spec == 'x' || data->spec == 'X'))
 				data->hash = 2;

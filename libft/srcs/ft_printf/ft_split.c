@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 12:40:02 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/18 22:09:08 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:58:39 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Checks for parse ending character.
 */
 
-int			ft_spec(char c)
+int	ft_spec(char c)
 {
 	char	*spec;
 	int		i;
@@ -37,7 +37,7 @@ int			ft_spec(char c)
 ** Checks character for validity as a digit, flag, or an ending character.
 */
 
-int			ft_valid(char c)
+int	ft_valid(char c)
 {
 	char	*flag;
 	int		i;
@@ -76,8 +76,8 @@ static int	ft_count_size(char *str, size_t i, int count)
 		{
 			i++;
 			count++;
-			while (str[i] != '\0' && ft_spec(str[i]) == 0 &&
-				ft_valid(str[i]) == 1)
+			while (str[i] != '\0' && ft_spec(str[i]) == 0
+				&& ft_valid(str[i]) == 1)
 				i++;
 			if (ft_spec(str[i]) == 1)
 				i++;
@@ -128,7 +128,7 @@ static char	**ft_return_split(char **res, char *str, int count)
 ** into their string to be printed.
 */
 
-char		**ft_split(char *str)
+char	**ft_split(char *str)
 {
 	char	**res;
 	size_t	i;
@@ -137,7 +137,8 @@ char		**ft_split(char *str)
 	i = 0;
 	count = 0;
 	count = ft_count_size(str, i, count);
-	if (!(res = (char **)malloc(sizeof(char *) * (count + 1))))
+	res = (char **)malloc(sizeof(char *) * (count + 1));
+	if (!res)
 		return (NULL);
 	res = ft_return_split(res, str, count);
 	return (res);

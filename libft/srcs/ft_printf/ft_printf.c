@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/12 12:17:48 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/19 23:11:19 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:09:06 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,19 @@ void	ft_reset(t_flags *data)
 ** Begins parsing call. Has output call.
 */
 
-int		ft_printf(const char *str, ...)
+int	ft_printf(const char *str, ...)
 {
 	t_flags		*data;
 	t_printf	*res;
 	va_list		list;
 	int			ret;
 
-	if (!(data = (t_flags *)malloc(sizeof(t_flags))))
+	data = (t_flags *)malloc(sizeof(t_flags));
+	if (!data)
 		return (-1);
 	ft_reset(data);
-	if (!(res = ft_init((char*)str)))
+	res = ft_init((char *)str);
+	if (!res)
 		return (-1);
 	va_start(list, str);
 	res->strings = ft_next(res, data, list);

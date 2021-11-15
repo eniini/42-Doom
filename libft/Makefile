@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+         #
+#    By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/11 10:42:46 by eniini            #+#    #+#              #
-#    Updated: 2021/11/02 15:17:16 by eniini           ###   ########.fr        #
+#    Updated: 2021/11/15 17:26:07 by esormune         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -175,7 +175,8 @@ PFTSRCS	=	ft_parser.c \
 		ft_init.c \
 		ft_rev_split.c \
 		ft_width.c \
-		ft_nb.c
+		ft_nb.c \
+		ft_add_neg.c
 GFXSRCS	=	ft_argb_grayscale.c \
 		ft_argb_lerp.c \
 		ft_color_lerp.c \

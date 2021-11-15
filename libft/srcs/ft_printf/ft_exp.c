@@ -6,7 +6,7 @@
 /*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:28:10 by esormune          #+#    #+#             */
-/*   Updated: 2021/02/20 15:49:44 by esormune         ###   ########.fr       */
+/*   Updated: 2021/05/17 14:24:51 by esormune         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*ft_return_exp(int size, char *nb, t_flags *data)
 	int		x;
 
 	buf = ft_calloc((size + 1), sizeof(char));
-	neg = (nb[0] == '-') ? 1 : 0;
+	neg = ft_add_neg(nb[0]);
 	x = (int)ft_strlen(nb);
 	buf[size + 1] = '\0';
 	while (neg == 0 && x >= 0)
