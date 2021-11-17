@@ -22,6 +22,7 @@ void	init_ui(t_ui *ui)
 	if (!ui->db_buf_dyn->px)
 		ft_getout("failed to init dynamic ui framebuffer");
 	ft_bzero(ui->ui_str, 256);
+	ui->active = FALSE;
 }
 
 /*

@@ -62,8 +62,10 @@ static int	blit_fontsym(t_font *font, t_square s, t_buffer *buf, t_pixel start)
 		while ((x + start.x) < buf->w && (x + s.start.x) < s.end.x)
 		{
 			if (font->atlas->px[((y + s.start.y) * font->atlas->w) + \
-				(x + s.start.x)] != 0)
+				(x + s.start.x)] == 0xFFFFFFFF)
+			{
 				buf->px[((y + start.y) * buf->w) + x + start.x] = font->color;
+			}
 			x++;
 		}
 		y++;
@@ -91,7 +93,6 @@ void	write_to_buffer(t_buffer *buf, t_font *f, t_msg *msg)
 		crop.start.y = f->symlist[c].ypos;
 		crop.end.x = f->symlist[c].xpos + f->stride;
 		crop.end.y = (f->symlist[c].ypos + f->size);
-		//ft_printf("crop start:[%u|%u] crop end:[%u|%u]\n", crop.start.x, crop.start.y, crop.end.x, crop.end.y);
 		f->color = msg->color;
 		if (blit_fontsym(f, crop, buf, msg->pos))
 			ft_getout("invalid blit target/source or msg position OOB");

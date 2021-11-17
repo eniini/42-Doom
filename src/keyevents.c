@@ -84,5 +84,12 @@ void	keyevent(t_doom *doom, SDL_Event *e)
 			else
 				doom->fps_switch = FALSE;
 		}
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_u)
+		{
+			if (doom->ui.active)
+				doom->ui.active = FALSE;
+			else
+				doom->ui.active = TRUE;
+		}
 	}
 }

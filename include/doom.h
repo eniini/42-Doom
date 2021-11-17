@@ -118,6 +118,7 @@ typedef struct s_ui {
 	t_buffer	*db_buf_stat;
 	t_buffer	*db_buf_dyn;
 	char		ui_str[256];
+	t_bool		active;
 }				t_ui;
 //superstruct that holds all the subsystem structs.
 typedef struct s_doom {

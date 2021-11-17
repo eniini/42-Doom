@@ -81,7 +81,8 @@ static void	loop(t_doom	*doom)
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \
 		&doom->rend.win_pixels, &doom->rend.win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
-	//blit_debug_ui(doom);
+	if (doom->ui.active)
+		blit_debug_ui(doom);
 	ft_memcpy(doom->rend.win_pixels, doom->rend.win_buffer->px, \
 	WIN_H * doom->rend.win_pixel_pitch);
 	SDL_UnlockTexture(doom->rend.win_tex);
