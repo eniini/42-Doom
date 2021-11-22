@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/14 18:21:50 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/28 21:54:35 by eniini           ###   ########.fr       */
+/*   Updated: 2021/11/22 20:41:26 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 **	Interpolates each of the RGB color channels between the two given colors
-**	in 0x00RRGGBB format.
+**	in 0xAARRGGBB format.
 */
 int	ft_color_lerp(int c1, int c2, double p)
 {
