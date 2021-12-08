@@ -49,6 +49,30 @@
 
 # define C_DEBUG	0xFF26FF26
 
+
+
+typedef	struct	s_tests {
+
+	t_bool		test_active;
+	t_bool		test_cube;
+	t_bool		test_phys;
+
+}				t_tests;
+
+//Everything audio-related.
+//consider changing these in to struct array with enum
+typedef struct s_audio {
+	Mix_Music	*music;
+	Mix_Chunk	*sound;
+	Mix_Chunk	*boing;
+	Mix_Chunk	*money;
+	t_bool		sound_trigger;
+	t_bool		boing_trigger;
+	t_bool		money_trigger;
+	t_bool		music_trigger;
+	t_bool		mute_switch;
+}				t_audio;
+
 //Holds everything related directly to SDL's drawbuffer.
 typedef struct s_rend
 {
@@ -76,11 +100,6 @@ typedef struct s_assets {
 	t_font		ui_text_m;
 	t_font		ui_text_ss;
 }				t_assets;
-//Everything audio-related.
-typedef struct s_audio {
-	Mix_Chunk	*sound;
-	t_bool		sound_trigger;
-}				t_audio;
 //Minimap constitutes an independent rendition of map data and player's position
 //in it. Therefore it needs its own set of dynamic units.
 typedef struct s_mmap {
@@ -114,6 +133,9 @@ typedef struct s_keys {
 	t_bool		down_pressed;
 	t_bool		left_pressed;
 	t_bool		right_pressed;
+	t_bool		fps_switch;
+	t_bool		mouse_switch;
+	int			view_switch;
 }				t_keys;
 //Includes separate framebuffers for static and per-frame generated data.
 typedef struct s_ui {
@@ -137,8 +159,7 @@ typedef struct s_doom {
 	t_ui		ui;
 	int			global_fps;
 	double		delta;
-	t_bool		fps_switch;
-	t_bool		mouse_switch;
+	t_tests		tests;
 }				t_doom;
 
 int			blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start);
@@ -200,4 +221,6 @@ void		physics(t_doom *doom);
 void		keyevent(t_doom *doom, SDL_Event *e);
 void		fps_counter(int *global_fps);
 void		mouse_movement(t_doom *doom);
+
+void	ales_render(t_doom *doom);
 #endif

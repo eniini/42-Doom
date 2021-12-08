@@ -113,8 +113,8 @@ void	init_tests(t_doom *doom)
 
 void	cleanup_tests(t_doom *doom)
 {
-	//free(doom->room->vertices);
-	//free(doom->room);
+	//free(doom->world.room->vertices);
+	//free(doom->world.room);
 	//IF INIT_RESOURCES IS CALLED
 	//free(doom->assets->dev_skybox->data);
 	//free(doom->assets->dev_skybox);

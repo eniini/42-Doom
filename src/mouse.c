@@ -4,7 +4,7 @@ void	mouse_movement(t_doom *doom)
 {
 		int x, y;
 
-		if(doom->mouse_switch == TRUE)
+		if(doom->keys.mouse_switch == TRUE)
 		{
 			SDL_GetMouseState(&x, &y);
 			doom->mouse.x = x;

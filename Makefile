@@ -9,6 +9,7 @@ SRC_DIR =	./src/
 OBJ_DIR =	./build/
 SRC_LIST =	array_value_manip.c \
 		audio.c \
+		ales_render.c \
 		blit.c \
 		color.c \
 		debug.c \

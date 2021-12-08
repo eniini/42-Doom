@@ -46,6 +46,26 @@ static void projection_events(t_doom *doom, SDL_Event *e)
 		doom->world.cam_distance -= 0.1f;
 }
 
+void	test_switches(t_doom *doom, SDL_Event *e)
+{
+	
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_0) //turn off all tests
+			bzero(&doom->tests, sizeof(t_tests));
+
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_1 && !doom->tests.test_active) //cube test switch
+		{
+			doom->tests.test_active = TRUE;
+			doom->tests.test_cube = TRUE;
+		}
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_2 && !doom->tests.test_active) //phys test switch
+		{
+			doom->tests.test_active = TRUE;
+			doom->tests.test_phys = TRUE;
+		}
+
+}
+
+
 void	keyevent(t_doom *doom, SDL_Event *e)
 {
 	while (SDL_PollEvent(e))
@@ -71,25 +91,41 @@ void	keyevent(t_doom *doom, SDL_Event *e)
 		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_m) //mouse_swich
 		{
 			ft_printf("CLICK\n");
-			if (doom->mouse_switch == FALSE)
-				doom->mouse_switch = TRUE;
+			if (doom->keys.mouse_switch == FALSE)
+				doom->keys.mouse_switch = TRUE;
 			else
-				doom->mouse_switch = FALSE;
+				doom->keys.mouse_switch = FALSE;
 		}
 		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_t) //fps_swich
 		{
 			ft_printf("CLICK\n");
-			if(doom->fps_switch == FALSE)
-				doom->fps_switch = TRUE;
+			if(doom->keys.fps_switch == FALSE)
+				doom->keys.fps_switch = TRUE;
 			else
-				doom->fps_switch = FALSE;
+				doom->keys.fps_switch = FALSE;
 		}
-		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_u)
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_u) //ui_switch
 		{
 			if (doom->ui.active)
 				doom->ui.active = FALSE;
 			else
 				doom->ui.active = TRUE;
 		}
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_v) //view_swich
+		{
+			if(doom->keys.view_switch < 2)
+				doom->keys.view_switch++;
+			else
+				doom->keys.view_switch = 0;
+		}
+		if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_o) //mute_switch
+		{
+			ft_printf("mute_switch = %d\n", doom->audio.mute_switch);
+			if(doom->audio.mute_switch == FALSE)
+				doom->audio.mute_switch = TRUE;
+			else
+				doom->audio.mute_switch = FALSE;
+		}
+		test_switches(doom, e);
 	}
 }

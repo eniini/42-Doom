@@ -2,15 +2,17 @@
 
 static void	init_player(t_doom *doom)
 {
-	doom->player.pos.x = 100;
-	doom->player.pos.y = 100;
-	doom->player.yaw = 0.0;
+	doom->player.pos.x = WIN_W/2;
+	doom->player.pos.y = WIN_H/2;
+	doom->player.yaw = 90; //used to be -90
+
 	doom->keys.up_pressed = FALSE;
 	doom->keys.down_pressed = FALSE;
 	doom->keys.left_pressed = FALSE;
 	doom->keys.right_pressed = FALSE;
-	doom->fps_switch = FALSE;
-	doom->mouse_switch = FALSE;
+	doom->keys.fps_switch = FALSE;
+	doom->keys.mouse_switch = FALSE;
+	bzero(&doom->tests, sizeof(t_tests));
 }
 
 /*
@@ -71,13 +73,18 @@ static void	loop(t_doom	*doom)
 
 	ft_bzero(doom->rend.win_buffer->px, WIN_H * WIN_W * sizeof(uint32_t));
 	keyevent(doom, &e);
-	//mouse_movement(doom);
-	//physics(doom);
-	dotests(doom);
+	mouse_movement(doom);
+	if(doom->tests.test_cube)
+		dotests(doom);
+	if(doom->tests.test_phys)
+	{
+		physics(doom);
+		ales_render(doom);
+	}
 	audios(&doom->audio);
 	fps_counter(&doom->global_fps);
-	draw_circle(doom->rend.win_buffer, (t_pixel){doom->player.pos.x, \
-	doom->player.pos.y}, 10, MMAP_C_PLAYER);
+//	draw_circle(doom->rend.win_buffer, (t_pixel){doom->player.pos.x, \
+//	doom->player.pos.y}, 10, MMAP_C_PLAYER);
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \
 		&doom->rend.win_pixels, &doom->rend.win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());
@@ -89,7 +96,7 @@ static void	loop(t_doom	*doom)
 	if (SDL_RenderCopy(doom->rend.renderer, doom->rend.win_tex, NULL, NULL) < 0)
 		ft_getout(SDL_GetError());
 	SDL_RenderPresent(doom->rend.renderer);
-	if (doom->fps_switch == TRUE)
+	if (doom->keys.fps_switch == TRUE)
 		SDL_Delay(40);
 }
 

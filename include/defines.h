@@ -30,7 +30,13 @@ typedef struct s_vector {
 	float	w;
 }			t_vector;
 typedef t_vector	t_vertex;
-typedef t_vector	t_fvector;
+
+typedef struct s_fvector {
+	float	x;
+	float	y;
+	float	z;
+}			t_fvector;
+
 
 //base unit for 3d projection
 typedef struct s_tri {

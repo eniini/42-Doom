@@ -177,8 +177,8 @@ static void	drawtriangle(t_buffer *buf, t_point p1, t_point p2, t_point p3)
 	//draw_vector_line(buf, (t_line){v1, v2, 0}, 0xffa6a6a6);
 	//draw_vector_line(buf, (t_line){v2, v3, 0}, 0xff848484);
 	//draw_vector_line(buf, (t_line){v3, v1, 0}, 0xff4f4f4f);
-	//draw_filled_tri(buf, p1, p2, p3);
-	draw_bilinear_tri(buf, p1, p2, p3);
+	draw_filled_tri(buf, p1, p2, p3);
+//	draw_bilinear_tri(buf, p1, p2, p3);
 }
 
 void	draw_cube (t_doom *doom)
