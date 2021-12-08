@@ -6,6 +6,7 @@
 *	and added to two points 'walking' along the both lateral sides of the shape.
 */
 
+/*
 static void fill_bflat_tri(t_buffer *buf, t_point p1, t_point p2, t_point p3)
 {
 	float	slope_left;
@@ -51,6 +52,7 @@ static void fill_tflat_tri(t_buffer *buf, t_point p1, t_point p2, t_point p3)
 		scanline_y--;
 	}
 }
+*/
 
 //	1. Sort vectors in order so that v1.y <= v2.y <= v3.y (v1 is topmost)
 static void check_order(t_point *p1, t_point *p2, t_point *p3)
@@ -69,7 +71,7 @@ static void check_order(t_point *p1, t_point *p2, t_point *p3)
 *	same level as the middle point (y-direction wise) to create a fourth point
 *	that we can use to draw a pair of flat triangles. Link for algo:
 *	sunshine2k.de/coding/java/TriangleRasterization/generalTriangle.png
-*/
+
 static void	draw_filled_tri(t_buffer *buf, t_point p1, t_point p2, t_point p3)
 {
 	t_point	p4;
@@ -87,6 +89,7 @@ static void	draw_filled_tri(t_buffer *buf, t_point p1, t_point p2, t_point p3)
 		fill_tflat_tri(buf, p2, p4, p3);
 	}
 }
+*/
 
 static void blin_bflat_tri(t_buffer *buf, t_point p1, t_point p2, t_point p3)
 {
@@ -177,8 +180,8 @@ static void	drawtriangle(t_buffer *buf, t_point p1, t_point p2, t_point p3)
 	//draw_vector_line(buf, (t_line){v1, v2, 0}, 0xffa6a6a6);
 	//draw_vector_line(buf, (t_line){v2, v3, 0}, 0xff848484);
 	//draw_vector_line(buf, (t_line){v3, v1, 0}, 0xff4f4f4f);
-	draw_filled_tri(buf, p1, p2, p3);
-//	draw_bilinear_tri(buf, p1, p2, p3);
+	//draw_filled_tri(buf, p1, p2, p3);
+	draw_bilinear_tri(buf, p1, p2, p3);
 }
 
 void	draw_cube (t_doom *doom)
@@ -325,10 +328,12 @@ void	draw_cube (t_doom *doom)
 				color_2 = 0xff9dd8c5;
 				color_3 = 0xffc08063;
 			}
-			//drawtriangle(doom->rend.win_buffer, \
-			//(t_ivec3){(int)tri_projected.p[0].x, (int)tri_projected.p[0].y, color_lerp(C_BLACK, color_1, fabs(dotproduct))},
-			//(t_ivec3){(int)tri_projected.p[1].x, (int)tri_projected.p[1].y, color_lerp(C_BLACK, color_1, fabs(dotproduct))},
-			//(t_ivec3){(int)tri_projected.p[2].x, (int)tri_projected.p[2].y, color_lerp(C_BLACK, color_1, fabs(dotproduct))});
+			/*
+			drawtriangle(doom->rend.win_buffer, \
+			(t_ivec3){(int)tri_projected.p[0].x, (int)tri_projected.p[0].y, color_lerp(C_BLACK, color_1, fabs(dotproduct))},
+			(t_ivec3){(int)tri_projected.p[1].x, (int)tri_projected.p[1].y, color_lerp(C_BLACK, color_1, fabs(dotproduct))},
+			(t_ivec3){(int)tri_projected.p[2].x, (int)tri_projected.p[2].y, color_lerp(C_BLACK, color_1, fabs(dotproduct))});
+			*/
 			drawtriangle(doom->rend.win_buffer, \
 			(t_point){(int)tri_projected.p[0].x, (int)tri_projected.p[0].y, color_lerp(C_BLACK, color_1, fabs(dotproduct))},
 			(t_point){(int)tri_projected.p[1].x, (int)tri_projected.p[1].y, color_lerp(C_BLACK, color_2, fabs(dotproduct))},

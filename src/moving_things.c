@@ -27,7 +27,7 @@ float	DotProduct(t_fvector v1, t_fvector v2)
 //zero for linear
 int		p_orientation(t_vector p, t_vector q, t_fvector r)
 {
-	return((q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y));	
+	return((q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y));
 }
 
 //**
@@ -58,8 +58,7 @@ void	dir_arrow(t_doom *doom)
 
 	orbiter.x = doom->player.pos.x + 40;
 	orbiter.y = doom->player.pos.y;
-	result = vector2_rotate(orbiter, (t_vector){doom->player.pos.x, doom->player.pos.y}, doom->player.yaw);
-
+	result = vector_2drotate(orbiter, (t_vector){doom->player.pos.x, doom->player.pos.y, 0, 0}, doom->player.yaw);
 	line.start.x = doom->player.pos.x;
 	line.start.y = doom->player.pos.y;
 	line.start.z = doom->player.pos.z;
@@ -120,6 +119,8 @@ int		segment_intersect(t_doom *doom, t_fvector *velocity, int i)
 	vector.y = doom->player.pos.y - WIN_H/2;
 	vector2.x = doom->player.pos.x + velocity->x - WIN_W/2;
 	vector2.y = doom->player.pos.y + velocity->y - WIN_H/2;
+	vector.z = 0.f;
+	vector2.z = 0.f;
 	ret1 = p_orientation(doom->world.room->walls[i].start, doom->world.room->walls[i].end, vector);
 	ret2 = p_orientation(doom->world.room->walls[i].start, doom->world.room->walls[i].end, vector2);
 	if(ret2 == 0 )
@@ -196,10 +197,10 @@ void	friction(t_fvector* velocity, float delta)
 {
 //	printf("delta = %f\n", delta);
 
-//	velocity->x = velocity->x * delta * 1000;	
-//	velocity->y = velocity->y * delta * 1000;	
-
-
+//	velocity->x = velocity->x * delta * 1000;
+//	velocity->y = velocity->y * delta * 1000;
+	if (delta) //dummy check to utilize delta parameter
+		velocity->z = velocity->z;
 	velocity->x = velocity->x * 0.99;	
 	velocity->y = velocity->y * 0.99;	
 }
@@ -223,23 +224,23 @@ void	physics(t_doom *doom)
 //	doom->player.yaw_cos = cos(doom->player.yaw);
 	if (doom->keys.up_pressed == TRUE)
 	{	
-		dir.x = (dir.x + cos(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
-		dir.y = (dir.y + sin(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.x = (dir.x + cosf(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.y = (dir.y + sinf(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
 	}
 	if (doom->keys.down_pressed == TRUE)
 	{
-		dir.x = (dir.x - cos(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
-		dir.y = (dir.y - sin(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.x = (dir.x - cosf(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.y = (dir.y - sinf(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
 	}
 	if (doom->keys.left_pressed == TRUE)	
 	{
-		dir.x = (dir.x + sin(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
-		dir.y = (dir.y - cos(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.x = (dir.x + sinf(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.y = (dir.y - cosf(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
 	}
 	if (doom->keys.right_pressed == TRUE)
 	{
-		dir.x = (dir.x - sin(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
-		dir.y = (dir.y + cos(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.x = (dir.x - sinf(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
+		dir.y = (dir.y + cosf(doom->player.yaw * DEG_TO_RAD)) * doom->delta;
 	}
 //	wishspeed = sqrt(dir.x * dir.x + dir.y * dir.y);
 

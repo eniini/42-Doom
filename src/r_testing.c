@@ -1,5 +1,6 @@
 #include "doom.h"
 
+/*
 static void	draw_rays(t_buffer *buf, t_vector start, t_vector end, uint32_t c)
 {
 	int		ray_start;
@@ -22,8 +23,9 @@ static void	draw_rays(t_buffer *buf, t_vector start, t_vector end, uint32_t c)
 		draw_vector_line(buf, ray, c);
 		ray_i++;
 	}
-}
+}*/
 
+/*
 static void	draw_room3d(t_buffer *buf, t_world world)
 {
 	int			i = 0;
@@ -32,7 +34,7 @@ static void	draw_room3d(t_buffer *buf, t_world world)
 	int distance = 100;
 
 	int		fov = 60;
-	float	d = 1 / tan(fov / 2);
+	//float	d = 1 / tan(fov / 2);
 
 	draw_line(buf, (t_pixel){WIN_W / 2, 0}, (t_pixel){WIN_W / 2, WIN_H}, C_RED);
 	while (i < world.room->wallcount)
@@ -58,7 +60,7 @@ static void	draw_room3d(t_buffer *buf, t_world world)
 		}
 		i++;
 	}
-}
+}*/
 
 void	r_dotests(t_doom *doom)
 {

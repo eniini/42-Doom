@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_char.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/18 11:24:03 by esormune          #+#    #+#             */
-/*   Updated: 2021/05/17 15:05:40 by esormune         ###   ########.fr       */
+/*   Updated: 2021/12/08 16:33:40 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,7 @@ char	*ft_minus_null_char(int size, char *str, t_flags *data)
 	char	*new;
 	char	*buf;
 	int		i;
-	int		x;
 
-	x = 0;
 	buf = ft_calloc((size + 1), sizeof(char));
 	if (!buf)
 		return (NULL);

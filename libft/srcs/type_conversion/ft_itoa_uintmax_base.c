@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa_uintmax_base.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: esormune <esormune@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/02 16:44:17 by esormune          #+#    #+#             */
-/*   Updated: 2021/04/29 02:46:38 by esormune         ###   ########.fr       */
+/*   Updated: 2021/12/08 16:33:04 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ char	*ft_itoa_uintmax_base(uintmax_t nb, int base)
 	if (base < 2 || base > 16)
 		return (NULL);
 	neg = ft_is_neg_minus(nb);
-	if (nb < 0)
-		nb = nb * (-1);
 	if (nb == 0)
 	{
 		save = (char *)malloc(sizeof(char) * 2);

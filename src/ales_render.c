@@ -73,36 +73,30 @@ void	fp_view_map(t_doom *doom)
 
 void	centered_map(t_doom *doom)
 {
-	t_vector	result;
-	t_vector	start;
-	t_vector	end;
-	t_ivec3		istart, iend;
+	t_ivec3	result;
+	t_ivec3	start;
+	t_ivec3	end;
 
 	int			i = 0;
 	float		x = 1;
 
 	draw_circle(doom->rend.win_buffer, (t_pixel){WIN_W / 2, WIN_H / 2}, 10, C_TEAL);
-	draw_vector_line(doom->rend.win_buffer, (t_line){(t_ivec3){WIN_W/2, WIN_H/2, 0}, (t_ivec3){WIN_W/2, WIN_H/2 - 25, 0}}, 0xFFFFFF);
+	draw_vector_line(doom->rend.win_buffer, (t_line){(t_ivec3){WIN_W/2, WIN_H/2, 0}, (t_ivec3){WIN_W/2, WIN_H/2 - 25, 0}, 0}, 0xFFFFFF);
 while(i < doom->world.room->wallcount)
 	{
-		start.x = (doom->world.room->walls[i].start.x * x) - doom->player.pos.x + WIN_W;
-		start.y = doom->world.room->walls[i].start.y * x - doom->player.pos.y + WIN_H;
-		end.x = doom->world.room->walls[i].end.x * x - doom->player.pos.x + WIN_W;
-		end.y = doom->world.room->walls[i].end.y * x - doom->player.pos.y + WIN_H;
-		result = vector2_rotate((t_vector){start.x, start.y, 0}, (t_vector){WIN_W/2, WIN_H/2, 0}, doom->player.yaw * -1 - 90);
+		start.x = (int)((doom->world.room->walls[i].start.x * x) - doom->player.pos.x + WIN_W);
+		start.y = (int)(doom->world.room->walls[i].start.y * x - doom->player.pos.y + WIN_H);
+		end.x = (int)(doom->world.room->walls[i].end.x * x - doom->player.pos.x + WIN_W);
+		end.y = (int)(doom->world.room->walls[i].end.y * x - doom->player.pos.y + WIN_H);
+		result = ivec3_2drotate((t_ivec3){start.x, start.y, 0}, (t_ivec3){WIN_W/2, WIN_H/2, 0}, doom->player.yaw * -1 - 90);
 		start.x = result.x;
 		start.y = result.y;
-		result = vector2_rotate((t_vector){end.x, end.y, 0}, (t_vector){WIN_W/2, WIN_H/2, 0}, doom->player.yaw * -1 - 90);
+		result = ivec3_2drotate((t_ivec3){end.x, end.y, 0}, (t_ivec3){WIN_W/2, WIN_H/2, 0}, doom->player.yaw * -1 - 90);
 		end.x = result.x;
 		end.y = result.y;
-		
-		istart = (t_ivec3){start.x, start.y, 0};
-		iend = (t_ivec3){end.x, end.y, 0};
-
-		draw_vector_line(doom->rend.win_buffer, (t_line){istart, iend}, doom->world.room->walls[i].color);
+		draw_vector_line(doom->rend.win_buffer, (t_line){start, end, 0}, doom->world.room->walls[i].color);
 		i++;
 	}
-
 }
 
 void	map_draw(t_doom	*doom)
@@ -113,7 +107,7 @@ void	map_draw(t_doom	*doom)
 	float		x = 1;
 
 	draw_circle(doom->rend.win_buffer, (t_pixel){doom->player.pos.x, doom->player.pos.y}, 10, MMAP_C_PLAYER);
-	dir_arrow(doom);
+	//dir_arrow(doom);
 	while(i < doom->world.room->wallcount)
 	{
 		start.x = (doom->world.room->walls[i].start.x * x);
@@ -128,13 +122,11 @@ void	map_draw(t_doom	*doom)
 		draw_line(doom->rend.win_buffer, start, end, doom->world.room->walls[i].color);
 		i++;
 	}
-
-
 }
 
 void	ales_render(t_doom *doom)
 {
-	if(doom->keys.view_switch == 0)
+	if (doom->keys.view_switch == 0)
 		map_draw(doom);
 	else if(doom->keys.view_switch == 1)
 		map_draw(doom);
@@ -142,5 +134,3 @@ void	ales_render(t_doom *doom)
 		centered_map(doom);
 //	printf("player.x = %f\tplayer.y = %f\n", doom->player.pos.x, doom->player.pos.y);
 }
-
-

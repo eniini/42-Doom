@@ -2,8 +2,7 @@
 
 static void	init_player(t_doom *doom)
 {
-	doom->player.pos.x = WIN_W/2;
-	doom->player.pos.y = WIN_H/2;
+	doom->player.pos = (t_fvector){WIN_W / 2, WIN_H / 2, 0.f};
 	doom->player.yaw = 90; //used to be -90
 
 	doom->keys.up_pressed = FALSE;
@@ -12,6 +11,7 @@ static void	init_player(t_doom *doom)
 	doom->keys.right_pressed = FALSE;
 	doom->keys.fps_switch = FALSE;
 	doom->keys.mouse_switch = FALSE;
+	doom->keys.view_switch = FALSE;
 	bzero(&doom->tests, sizeof(t_tests));
 }
 
@@ -83,8 +83,6 @@ static void	loop(t_doom	*doom)
 	}
 	audios(&doom->audio);
 	fps_counter(&doom->global_fps);
-//	draw_circle(doom->rend.win_buffer, (t_pixel){doom->player.pos.x, \
-//	doom->player.pos.y}, 10, MMAP_C_PLAYER);
 	if (SDL_LockTexture(doom->rend.win_tex, NULL, \
 		&doom->rend.win_pixels, &doom->rend.win_pixel_pitch) < 0)
 		ft_getout(SDL_GetError());

@@ -74,7 +74,7 @@ uint32_t	wall_colortable(int i);
 long		map_value_to_range(t_range input, t_range output, long value);
 uint32_t	map_value_to_buffer(t_range input, uint32_t limit, long value);
 
-t_vector	vector2_rotate(t_vector rot_point, t_vector pivot_point, \
-			int angle);
+t_ivec3		ivec3_2drotate(t_ivec3 rot_point, t_ivec3 pivot_point, int angle);
+t_vector	vector_2drotate(t_vector rotation_p, t_vector pivot_p, float angle);
 
 #endif

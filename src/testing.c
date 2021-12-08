@@ -29,6 +29,7 @@ static void	init_resources(t_doom *doom)
 	rf_free_lumplist(doom->rf.lumplist);
 }
 
+/*
 static void	init_map(t_doom *doom)
 {
 	int	i;
@@ -43,7 +44,7 @@ static void	init_map(t_doom *doom)
 		i++;
 	}
 	cull_vertices(&doom->world);
-}
+}*/
 
 void	init_tests(t_doom *doom)
 {
@@ -113,6 +114,8 @@ void	init_tests(t_doom *doom)
 
 void	cleanup_tests(t_doom *doom)
 {
+	if (doom->global_fps) //dummy check to silence compiler warning
+		return ;
 	//free(doom->world.room->vertices);
 	//free(doom->world.room);
 	//IF INIT_RESOURCES IS CALLED
