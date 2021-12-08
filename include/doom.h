@@ -47,6 +47,8 @@
 # define C_BLACK	0xFF000000
 # define C_WHITE	0xFFFFFFFF
 
+# define C_DEBUG	0xFF26FF26
+
 //Holds everything related directly to SDL's drawbuffer.
 typedef struct s_rend
 {
@@ -145,6 +147,8 @@ int			blit_img_scaled(t_img *img, t_buffer *buf, t_pixel offs, float s);
 t_sprite	*create_sprite(t_img *img, uint32_t count, t_pixel dimensions);
 t_bool		blit_sprite(t_sprite *sprite, t_buffer *buf, int i, t_pixel start);
 
+uint32_t	color_lerp(uint32_t c1, uint32_t c2, double p);
+
 void		init_font_atlas(t_font *f, uint fsize, uint atlas_w, uint s_rowc);
 t_msg		*create_msg(char *str, uint32_t color, t_pixel pos);
 void		delete_msg(t_msg *msg);
@@ -156,6 +160,9 @@ void		blit_debug_ui(t_doom *doom);
 
 void		draw_pixel(uint32_t x, uint32_t y, t_buffer *buf, uint32_t color);
 void		draw_line(t_buffer *buf, t_pixel p0, t_pixel p1, uint32_t color);
+//wip
+void	draw_line_shaded(t_buffer *buf, t_pixel p0, t_pixel p1, t_pixel c);
+//wip
 void		draw_circle(t_buffer *buf, t_pixel p, int r, uint32_t color);
 void		draw_filled_circle(t_buffer *buf, t_pixel p, int r, uint32_t col);
 void		draw_square(t_pixel start, t_pixel end, t_buffer *buf, uint32_t c);

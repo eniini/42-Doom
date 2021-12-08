@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:54:01 by eniini            #+#    #+#             */
-/*   Updated: 2021/09/29 20:44:22 by eniini           ###   ########.fr       */
+/*   Updated: 2021/11/29 00:15:50 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,47 @@ void	draw_line(t_buffer *buf, t_pixel p0, t_pixel p1, uint32_t color)
 			draw_pixel(crawler.x++, crawler.y, buf, color);
 		else
 			draw_pixel(crawler.y, crawler.x++, buf, color);
+		error += derror;
+		if (error > (int)p1.x - (int)p0.x)
+		{
+			if (p1.y > p0.y)
+				crawler.y += 1;
+			else
+				crawler.y += -1;
+			error -= ((int)p1.x - (int)p0.x) * 2;
+		}
+	}
+}
+
+/*
+*	Because of how dumb this version of drawline is atm, third pixel consists
+*	of start/end uint values! x=start y=end.
+*/
+void	draw_line_shaded(t_buffer *buf, t_pixel p0, t_pixel p1, t_pixel c)
+{
+	int			derror;
+	int			error;
+	t_pixel		crawler;
+	t_bool		flip;
+	uint32_t	col;
+
+	clamp_values(buf, &p0, &p1);
+	flip = init_points(&p0, &p1);
+	crawler = (t_pixel){p0.x, p0.y};
+	init_errors(p0, p1, &derror, &error);
+	while (crawler.x <= p1.x)
+	{
+		col = color_lerp(c.x, c.y, crawler.x / (float)p1.x);
+		if (!flip)
+		{
+			col = color_lerp(c.x, c.y, crawler.x / (float)p1.x);
+			draw_pixel(crawler.x++, crawler.y, buf, col);
+		}
+		else
+		{
+			col = color_lerp(c.y, c.x, crawler.x / (float)p1.x);
+			draw_pixel(crawler.y, crawler.x++, buf, col);
+		}
 		error += derror;
 		if (error > (int)p1.x - (int)p0.x)
 		{

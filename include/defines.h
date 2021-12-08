@@ -46,6 +46,12 @@ typedef struct s_wall {
 typedef struct s_mat4 {
 	float	m[4][4];
 }			t_mat4;
+//screenspace unit. Essentially a pixel coordinate w/ color information
+typedef struct s_point {
+	int			x;
+	int			y;
+	uint32_t	c;
+}				t_point;
 
 typedef struct s_pixel {
 	uint32_t	x;
@@ -58,10 +64,10 @@ typedef struct s_square {
 }			t_square;
 
 typedef struct s_ivec3 {
-	int		x;
-	int		y;
-	int		z;
-}			t_ivec3;
+	int			x;
+	int			y;
+	int			z;
+}				t_ivec3;
 //integer-based line drawing stuct
 typedef struct s_line {
 	t_ivec3		start;
