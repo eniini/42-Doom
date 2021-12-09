@@ -13,6 +13,8 @@
 //		-	bounce angle when hitting walls
 //		-	diagonal input
 //
+//		this line was added for git test purposes
+//
 //*******************************************************
 
 float	DotProduct(t_fvector v1, t_fvector v2)
