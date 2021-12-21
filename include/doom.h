@@ -160,6 +160,7 @@ typedef struct s_doom {
 	int			global_fps;
 	double		delta;
 	t_tests		tests;
+	int			cur_sec;
 }				t_doom;
 
 int			blit_cropped(t_img *img, t_square s, t_buffer *buf, t_pixel start);

@@ -1,8 +1,40 @@
 #include "doom.h"
 
+
+static void	convex_room_setup2(t_room *room)
+{
+	int	i = 0;
+
+	room->vertices = (t_vertex[5]){
+	{2 * MAP_UNIT, -2 * MAP_UNIT, 0, 1},
+	{2 * MAP_UNIT, 2 * MAP_UNIT, 0, 1},
+	{6 * MAP_UNIT, 3 * MAP_UNIT, 0, 1},
+	{7 * MAP_UNIT, 0 * MAP_UNIT, 0, 1},
+	{5 * MAP_UNIT, -3 * MAP_UNIT, 0, 1}};
+	i = 0;
+	while (i < room->wallcount - 1)
+	{
+		if(i == 0)
+			room->walls[i].type = 0;
+		else
+			room->walls[i].type = -1;
+		room->walls[i].start = room->vertices[i];
+		room->walls[i].end = room->vertices[i + 1];
+		room->walls[i].color = wall_colortable(i);
+		room->proj_walls[i] = room->walls[i];
+		i++;
+	}
+
+	room->walls[i].type = -1;
+	room->walls[i].start = room->vertices[i];
+	room->walls[i].end = room->vertices[0];
+	room->walls[i].color = wall_colortable(i);
+	room->proj_walls[i] = room->walls[i];
+}
+
 static void	convex_room_setup(t_room *room)
 {
-	int	i;
+	int	i = 0;
 
 	room->vertices = (t_vertex[5]){
 	{2 * MAP_UNIT, -2 * MAP_UNIT, 0, 1},
@@ -11,14 +43,22 @@ static void	convex_room_setup(t_room *room)
 	{-4 * MAP_UNIT, 0 * MAP_UNIT, 0, 1},
 	{-2 * MAP_UNIT, -3 * MAP_UNIT, 0, 1}};
 	i = 0;
-	while (i < room->wallcount - 1)
+	
+	
+	while (i < room->wallcount -1)
 	{
+		if(i == 0)
+			room->walls[i].type = 1;
+		else
+			room->walls[i].type = -1;
 		room->walls[i].start = room->vertices[i];
 		room->walls[i].end = room->vertices[i + 1];
 		room->walls[i].color = wall_colortable(i);
 		room->proj_walls[i] = room->walls[i];
 		i++;
 	}
+	
+	room->walls[i].type = -1;
 	room->walls[i].start = room->vertices[i];
 	room->walls[i].end = room->vertices[0];
 	room->walls[i].color = wall_colortable(i);
@@ -29,7 +69,7 @@ static void	convex_room_setup(t_room *room)
 *	Initializes a convex-shaped room data.
 *	Consists of 5 vertices creating 5 walls.
 */
-t_room	*init_convex_room(void)
+t_room	*init_convex_room(int i)
 {
 	t_room	*room;
 
@@ -42,7 +82,10 @@ t_room	*init_convex_room(void)
 	room->proj_walls = malloc(sizeof(t_wall) * room->wallcount);
 	if (!room->vertices || !room->walls || !room->proj_walls)
 		ft_getout("malloc failed for debug room mapdata init");
-	convex_room_setup(room);
+	if(i == 1)
+		convex_room_setup(room);
+	else
+		convex_room_setup2(room);
 	room->boundingbox[0] = -3 * MAP_UNIT;
 	room->boundingbox[1] = -4 * MAP_UNIT;
 	room->boundingbox[2] = 3 * MAP_UNIT;

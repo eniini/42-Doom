@@ -48,7 +48,8 @@ static void	init_map(t_doom *doom)
 
 void	init_tests(t_doom *doom)
 {
-	doom->world.room = init_convex_room();
+	doom->world.room[0] = init_convex_room(1);
+	doom->world.room[1] = init_convex_room(2);
 	init_resources(doom);
 	//these are hardcoded values, do not mess with them!
 	init_font_atlas(&doom->assets.ui_text_m, 25, 240, 16);

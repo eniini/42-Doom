@@ -78,26 +78,27 @@ void	dir_arrow(t_doom *doom)
 int		wall_hitbox(t_doom *doom, t_fvector vector, int i)
 {
 	int minx, miny, maxx, maxy;
+	int j = 0;
 
-	if(doom->world.room->walls[i].start.x < doom->world.room->walls[i].end.x)
+	if(doom->world.room[j]->walls[i].start.x < doom->world.room[j]->walls[i].end.x)
 	{
-		minx = doom->world.room->walls[i].start.x - 1;
-		maxx = doom->world.room->walls[i].end.x + 1;
+		minx = doom->world.room[j]->walls[i].start.x - 1;
+		maxx = doom->world.room[j]->walls[i].end.x + 1;
 	}
 	else
 	{
-		minx = doom->world.room->walls[i].end.x - 1;
-		maxx = doom->world.room->walls[i].start.x + 1;
+		minx = doom->world.room[j]->walls[i].end.x - 1;
+		maxx = doom->world.room[j]->walls[i].start.x + 1;
 	}
-	if(doom->world.room->walls[i].start.y < doom->world.room->walls[i].end.y)
+	if(doom->world.room[j]->walls[i].start.y < doom->world.room[j]->walls[i].end.y)
 	{
-		miny = doom->world.room->walls[i].start.y - 1;
-		maxy = doom->world.room->walls[i].end.y + 1;
+		miny = doom->world.room[j]->walls[i].start.y - 1;
+		maxy = doom->world.room[j]->walls[i].end.y + 1;
 	}
 	else
 	{
-		miny = doom->world.room->walls[i].end.y - 1;
-		maxy = doom->world.room->walls[i].start.y + 1;
+		miny = doom->world.room[j]->walls[i].end.y - 1;
+		maxy = doom->world.room[j]->walls[i].start.y + 1;
 	}
 	if(minx < vector.x && vector.x < maxx && miny < vector.y && vector.y < maxy)
 		return(1);
@@ -112,10 +113,11 @@ int		wall_hitbox(t_doom *doom, t_fvector vector, int i)
 //the function will return 1.
 //If no collision is detected the function will return 0
 //
-int		segment_intersect(t_doom *doom, t_fvector *velocity, int i)
+int		segment_intersect(t_doom *doom, t_fvector *velocity, int i, int j)
 {
 	t_fvector vector, vector2;
 	int ret1, ret2;
+//	int j = 0;
 
 	vector.x = doom->player.pos.x - WIN_W/2;
 	vector.y = doom->player.pos.y - WIN_H/2;
@@ -123,8 +125,8 @@ int		segment_intersect(t_doom *doom, t_fvector *velocity, int i)
 	vector2.y = doom->player.pos.y + velocity->y - WIN_H/2;
 	vector.z = 0.f;
 	vector2.z = 0.f;
-	ret1 = p_orientation(doom->world.room->walls[i].start, doom->world.room->walls[i].end, vector);
-	ret2 = p_orientation(doom->world.room->walls[i].start, doom->world.room->walls[i].end, vector2);
+	ret1 = p_orientation(doom->world.room[j]->walls[i].start, doom->world.room[j]->walls[i].end, vector);
+	ret2 = p_orientation(doom->world.room[j]->walls[i].start, doom->world.room[j]->walls[i].end, vector2);
 	if(ret2 == 0 )
 		return(1);
 	if(ret1 > 0 && ret2 > 0)
@@ -168,23 +170,32 @@ void	window_border_col(t_doom *doom, t_fvector *velocity, float bounce)
 //**
 //This function checks for collision between the player and surroundings(walls).
 //and manipulates velocity accordingly.
+//Id collision with portal is detected, cur_sec is updated.
 //**
 void	collision(t_doom *doom, t_fvector *velocity)
 {	
-	float	bounce = 1;
+//	float	bounce = 1;
 	int		i = 0;
-	int 	j = 0;
+	int 	z = 0;
+	int		j = doom->cur_sec; //j is the room we are in
 
-	window_border_col(doom, velocity, bounce);	
-	while(i < doom->world.room->wallcount)
+
+	printf("cur_sec = %d\n", doom->cur_sec);
+//	window_border_col(doom, velocity, bounce);	
+	while(i < doom->world.room[j]->wallcount)
 	{
-		j = segment_intersect(doom, velocity, i);	
-		if(j)
+		z = segment_intersect(doom, velocity, i, j);	
+		if(z)
 		{
-			printf("COLLISION!!! WALL NUMBER %i\n", i);
-			velocity->x = 0;
-			velocity->y = 0;
-			doom->audio.boing_trigger = TRUE;
+			if(doom->world.room[j]->walls[i].type == -1)
+			{
+				printf("COLLISION!!! WALL NUMBER %i\n", i);
+				velocity->x = 0;
+				velocity->y = 0;
+				doom->audio.boing_trigger = TRUE;
+			}
+			else
+				doom->cur_sec = doom->world.room[j]->walls[i].type;
 		}
 		i++;
 	}

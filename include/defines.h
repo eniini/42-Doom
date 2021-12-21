@@ -47,6 +47,7 @@ typedef struct s_wall {
 	t_vector	start;
 	t_vector	end;
 	uint32_t	color;
+	int			type;
 }				t_wall;
 //4 x 4 matrix
 typedef struct s_mat4 {

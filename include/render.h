@@ -42,7 +42,7 @@ typedef struct s_room {
 	short		floor_h;
 }				t_room;
 
-t_room	*init_convex_room(void);
+t_room	*init_convex_room(int i);
 t_room	*init_nonconvex_room(void);
 
 typedef struct s_world {
@@ -64,7 +64,8 @@ typedef struct s_world {
 	float		cam_distance;
 	float		cam_fov;
 	//current version of the active room (which walls are drawn)
-	t_room		*room;
+	t_room		*room[2];
+	int			room_count;
 	int			player_angle;
 	int			player_rotation;
 }				t_world;
