@@ -15,6 +15,7 @@ void	init_audio(t_audio *audio)
 	audio->boing = Mix_LoadWAV("resources/boing.wav");
 	audio->money = Mix_LoadWAV("resources/money.wav");
 	audio->music = Mix_LoadMUS("resources/longsongnormal.wav");
+	audio->mute_switch = TRUE;
 }
 
 void audio_cleanup(t_audio *audio)

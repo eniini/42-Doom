@@ -66,6 +66,9 @@ void	r_dotests(t_doom *doom)
 {
 	//draw_room3d(doom->rend.win_buffer, doom->world);
 	draw_cube(doom);
-	doom->world.cube_rotation.x += 0.001;
-	doom->world.cube_rotation.z += 0.001;
+	if (doom->keys.rot_switch == TRUE)
+	{
+		doom->world.cube_rotation.x += 0.001;
+		doom->world.cube_rotation.z += 0.001;
+	}
 }

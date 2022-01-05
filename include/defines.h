@@ -36,7 +36,7 @@ typedef struct s_fvector {
 	float	y;
 	float	z;
 }			t_fvector;
-
+typedef t_fvector	t_fvec3;
 
 //base unit for 3d projection
 typedef struct s_tri {
@@ -59,6 +59,13 @@ typedef struct s_point {
 	int			y;
 	uint32_t	c;
 }				t_point;
+//screenspace floating-point unit. Pixel coordinate + color
+typedef struct s_fpoint {
+	float		x;
+	float		y;
+	uint32_t	c;
+}				t_fpoint;
+
 
 typedef struct s_pixel {
 	uint32_t	x;

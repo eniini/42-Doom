@@ -6,7 +6,7 @@
 /*   By: eniini <eniini@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/10 14:54:01 by eniini            #+#    #+#             */
-/*   Updated: 2021/11/29 00:15:50 by eniini           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:35:20 by eniini           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,6 @@ void	draw_line_shaded(t_buffer *buf, t_pixel p0, t_pixel p1, t_pixel c)
 	init_errors(p0, p1, &derror, &error);
 	while (crawler.x <= p1.x)
 	{
-		col = color_lerp(c.x, c.y, crawler.x / (float)p1.x);
 		if (!flip)
 		{
 			col = color_lerp(c.x, c.y, crawler.x / (float)p1.x);

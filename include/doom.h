@@ -46,6 +46,10 @@
 # define C_GREY		0XFF949494
 # define C_BLACK	0xFF000000
 # define C_WHITE	0xFFFFFFFF
+# define C_GRAY		0xFF808080
+# define C_PINK		0xFFE297DF
+# define C_PURPLE	0xFF6E26B4
+# define C_ORANGE	0xFFE7973D
 
 # define C_DEBUG	0xFF26FF26
 
@@ -135,6 +139,7 @@ typedef struct s_keys {
 	t_bool		right_pressed;
 	t_bool		fps_switch;
 	t_bool		mouse_switch;
+	t_bool		rot_switch;
 	int			view_switch;
 }				t_keys;
 //Includes separate framebuffers for static and per-frame generated data.

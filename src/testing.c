@@ -57,10 +57,11 @@ void	init_tests(t_doom *doom)
 	init_font_atlas(&doom->assets.ui_text_ss, 13, 160, 20);
 	//init_map(doom);
 	doom->world.tricount = 12;
+	//doom->world.tricount = 1; //TESTING
 	doom->world.cube_rotation = (t_vector){1, 1, 1, 1};
 	doom->world.camera = (t_vector){0, 0, 0, 1};
 	doom->world.cam_fov = 90;
-	doom->world.cam_distance = 16;
+	doom->world.cam_distance = 4;
 	doom->world.cube = (t_tri *)malloc(sizeof(t_tri) * doom->world.tricount);
 	if (!doom->world.cube)
 		ft_getout("failed to malloc cube!");

@@ -44,6 +44,13 @@ static void projection_events(t_doom *doom, SDL_Event *e)
 		doom->world.cam_distance += 0.1f;
 	if (e->key.keysym.sym == SDLK_DOWN && doom->world.cam_distance > 1.0f)
 		doom->world.cam_distance -= 0.1f;
+	if (e->type == SDL_KEYDOWN && e->key.keysym.sym == SDLK_r)
+	{
+		if (doom->keys.rot_switch == TRUE)
+			doom->keys.rot_switch = FALSE;
+		else
+			doom->keys.rot_switch = TRUE;
+	}
 }
 
 void	test_switches(t_doom *doom, SDL_Event *e)

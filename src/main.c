@@ -12,6 +12,7 @@ static void	init_player(t_doom *doom)
 	doom->keys.fps_switch = FALSE;
 	doom->keys.mouse_switch = FALSE;
 	doom->keys.view_switch = FALSE;
+	doom->keys.rot_switch = TRUE;
 	bzero(&doom->tests, sizeof(t_tests));
 	doom->cur_sec = 0;
 }

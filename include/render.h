@@ -4,6 +4,19 @@
 # include "defines.h"
 # include <limits.h>
 
+# define C_OCHRE	0xffbc8650
+# define C_BRICK 	0xffbc5050
+# define C_LEMON	0xffbcbc50
+# define C_LIME		0xff86bc50
+# define C_GRASS	0xff50bc50
+# define C_MINT		0xff50bc86
+# define C_ICE		0xff50bcb7
+# define C_SKY		0xff508bbc
+# define C_AZURE	0xff5055bc
+# define C_GRAPE	0xff8150bc
+# define C_CHERRY	0xffbc5080
+# define C_PLUM		0xffFF5733
+
 /*
 *	Similar to Doom, we use the [short] datatype to setup map bounds and the
 *	ingame dimensions unit.
