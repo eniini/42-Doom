@@ -32,6 +32,29 @@ int		p_orientation(t_vector p, t_vector q, t_fvector r)
 	return((q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y));
 }
 
+
+//
+//this function checks if point is inside a convex polygon.
+//If point is on the left side of each wall of sector,
+//point is inside the polygon and 1 is returned.
+//Otherwise 0 is retured
+//
+int		inside_polygon(t_fvector point, t_room *room)
+{
+	int i = 0;
+	int	res = 0;
+	printf("room->wallcount = %d\n", room->wallcount);
+	while(i < room->wallcount)
+	{
+		res = p_orientation(room->walls[i].start, room->walls[i].end, point);
+		printf("p_orientation of wall[%d]  = %d\n", i, res);
+		if (res < 0)
+			return(0);
+		i++;
+	}
+	return(1);
+}
+
 //**
 //This accelerate function is from quake source code.
 //**
@@ -170,7 +193,7 @@ void	window_border_col(t_doom *doom, t_fvector *velocity, float bounce)
 //**
 //This function checks for collision between the player and surroundings(walls).
 //and manipulates velocity accordingly.
-//Id collision with portal is detected, cur_sec is updated.
+//If collision with portal is detected, cur_sec is updated.
 //**
 void	collision(t_doom *doom, t_fvector *velocity)
 {	
@@ -257,10 +280,14 @@ void	physics(t_doom *doom)
 	}
 //	wishspeed = sqrt(dir.x * dir.x + dir.y * dir.y);
 
+
 	accelerate(&velocity, wishspeed, sv_accelerate, &dir, doom);
-	collision(doom, &velocity);	
-// if friction != velocity, then:
+	// if friction != velocity, then:
 	friction(&velocity, doom->delta);	
+	collision(doom, &velocity);	
+	int	ret = 0;
+	ret = inside_polygon(doom->player.pos, doom->world.room[0]);
+	printf("inside_polygon = %d\n",ret);
 	doom->player.pos.x += velocity.x;
 	doom->player.pos.y += velocity.y;
 }
